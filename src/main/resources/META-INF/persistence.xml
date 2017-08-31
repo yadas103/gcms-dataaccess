@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/persistence_2_1.xsd">
+
+	<persistence-unit name="GTSDBManager"
+		transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		
+		<!-- JBOSS Specific JTA Configuration  -->
+	    <!-- <non-jta-data-source>java:jboss/datasources/TRSPORTALDS</non-jta-data-source> -->
+
+		<!-- Tomcat Specific JTA Configuration --> 
+		<non-jta-data-source>java:comp/env/TRSPORTALDS</non-jta-data-source>
+
+		<!-- All classes should be mapped here -->
+		<class>com.pfizer.gcms.dataaccess.model.AbstractCountryModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.AbstractModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.AddressTypeLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.AnnouncementsModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.AttributesLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.BaseBatchAndFileModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.BaseCountryFileAndBatchModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.BatchLoadModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.BusinessPartyAddressModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.BusinessPartyConsentModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.BusinessPartyCredentialsModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.BusinessPartyIndividualModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.BusinessPartyLastNameModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.BusinessPartyModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.BusinessPartyOrganizationModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.BusinessPartyOrganizationNamesModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.BusinessPartySpecialityModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.BusinessPartyTypeLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.BusinessPartyUniqueIdentifierModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ChangeHistoryModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ClassificationModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ConsentStatusLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.CountryAttributeModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.CountryModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.CoveredRecipientModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.CredentialsLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.CurrencyLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.EntityActionsModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.EntityTypeIdentifierLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error</class>
+		<class>com.pfizer.gcms.dataaccess.model.EventModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ExpenseTypeMapToSourceLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ExpenseTypeModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.FileMonitorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.FileTypesLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.GeoaModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.HCOCredentialsLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.InKindPaymentMethodModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ItemModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.LookupModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.MessageTypeModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.NameTypeLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.PayeeTypeLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.PaymentFormTypeLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.PaymentMethodLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.PaymentTypeLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.PermissionKeyModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.QuickLinksModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ReportingStatusModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.RoleActionIdentifierModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.RoleActionsModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.RolePermissionsModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.RolesModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.SourceCodeModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.SpecialityLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.SpecialtyModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.StateModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.Status</class>
+		<class>com.pfizer.gcms.dataaccess.model.SuffixLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.TablesModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.TransactionAttendeeModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.UniqueIdLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.UserModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.UserProfileModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ValueExchangeTransactionModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.VenueModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.WelcomeMessageModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.BaseBPErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.BPAddressErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.BPConsentErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.BPCredentialErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.BPIndividualErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.BPOrganizationErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.BPUniqueIdentifierErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.BusinessPartyErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.ErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.ErrorReferenceLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.BaseValueExchangeErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.ValueExchangeErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.TransactionAttendeeErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.BPIndividualLastNameErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.BPIndividualSpecialtyErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.BPOrganizationNameErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.BPIndividualSpecialtyErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ErrorDtlDluPModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ErrorDtlDluTModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.changehistory.BusinessPartyChangeLogModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.changehistory.TransactionChangeLogModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ValueExchangeTransactionPayeeDtlModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.error.ValueExchangeTransactionPayeeDtlErrorModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.CountrySpecificUniqueIdentifierTypesModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.CountryDefaultUniqueIdentifierTypesModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.LegalEntityLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ValueExchangeTransactionDtlErpModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ExpenseTypeMappingModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.CurrencyConversionModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.CoveredRecipientRoleLovModel</class>
+		<!-- Oracle Configurations -->
+		<properties>
+			<!-- <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@amrndhl1081.pfizer.com:1535:hcpd1" />
+			<property name="javax.persistence.jdbc.user" value="TR_PORTAL" />
+			<property name="javax.persistence.jdbc.password" value="Saturn#485" /> -->
+		
+			<!-- <property name="hibernate.connect.datasource" value="jdbc/TRSDS"/> -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.transaction.flush_before_completion" value="true" />
+		</properties>
+	</persistence-unit>	
+</persistence>
