@@ -29,7 +29,7 @@ public class ConsentTemplateModel extends AbstractModel {
 	@MapsId
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CNTRY_ID", referencedColumnName = "CNTRY_ID")
-	private GCMSCountryModel cntry_id;
+	private CountryModel cntry_id;
 	
 	@Column(name = "TMPL_NAME")
 	private String tmpl_name;
@@ -66,11 +66,13 @@ public class ConsentTemplateModel extends AbstractModel {
 		this.id = id;
 	}
 
-	public GCMSCountryModel getCntry_id() {
+	
+
+	public CountryModel getCntry_id() {
 		return cntry_id;
 	}
 
-	public void setCntry_id(GCMSCountryModel cntry_id) {
+	public void setCntry_id(CountryModel cntry_id) {
 		this.cntry_id = cntry_id;
 	}
 
