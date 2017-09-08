@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+
 /**
  * @author KASWAS
  *ProfileRequestModel is a POJO classes,annotated with hibernate mappings and they are responsible for 
