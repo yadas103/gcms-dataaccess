@@ -78,6 +78,7 @@
 		<class>com.pfizer.gcms.dataaccess.model.TransactionAttendeeModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.UniqueIdLovModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.UserModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ProfileRequestModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.UserProfileModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.ValueExchangeTransactionModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.VenueModel</class>
