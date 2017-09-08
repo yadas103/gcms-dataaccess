@@ -39,7 +39,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 		setModelType(BusinessProfileModel.class);
 	}
 	*/
-
+@Override	
 public  List<BusinessProfileModel> findByCountry(String name,String type ) throws Exception {
 	LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type )" +name );
 		if (name == null || name.trim().isEmpty()) {
@@ -79,6 +79,7 @@ public  List<BusinessProfileModel> findByCountry(String name,String type ) throw
 	}
 	
 @SuppressWarnings("unchecked")
+@Override	
 public  List<BusinessProfileModel> findById(BigDecimal[] id) throws Exception {
 	LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type )" );
 		if (id == null) {

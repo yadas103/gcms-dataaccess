@@ -45,6 +45,11 @@ public class GCMSCountryModel extends AbstractModel{/**
 	@Column(name = "CRNC_ID")
 	private BigDecimal currencyID;
 	
+	@Column(name = "CNTRY_CONTACT")
+	private String cntry_contact;
+	
+	@Column(name = "CNTRY_REVIEWERS")
+	private String cntry_reviewers;
 	
 	/**
 	 * Default constructor.

@@ -35,6 +35,7 @@ import com.pfizer.gcms.dataaccess.common.exception.GCMSInternalServerError;
 import com.pfizer.gcms.dataaccess.dto.ISearchDTO;
 import com.pfizer.gcms.dataaccess.model.AbstractModel;
 import com.pfizer.gcms.dataaccess.model.BaseModel;
+import com.pfizer.gcms.dataaccess.model.BusinessProfileModel;
 import com.pfizer.gcms.dataaccess.model.error.ErrorModel;
 
 
@@ -821,5 +822,14 @@ public abstract class AbstractRepository<ModelType extends BaseModel> implements
 	        joined.alias(join.getAlias());
 	        doJoins(join.getJoins(), joined);
 	    }
+	}
+	
+	public List<BusinessProfileModel> findByCountry(String name, String type) throws Exception {		
+		// TODO Auto-generated method stub		
+		return null;		
+	}		
+	public List<BusinessProfileModel> findById(BigDecimal[] id) throws Exception {		
+		// TODO Auto-generated method stub		
+		return null;
 	}
 }

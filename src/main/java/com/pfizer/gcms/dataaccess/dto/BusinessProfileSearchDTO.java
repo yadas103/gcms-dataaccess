@@ -4,9 +4,8 @@ import java.math.BigDecimal;
 
 import com.pfizer.gcms.dataaccess.model.BusinessProfileModel;
 
-public class BusinessProfileSearchDTO extends  BaseSearchDTO<BusinessProfileModel> {/**
-	 * 
-	 */
+public class BusinessProfileSearchDTO extends  BaseSearchDTO<BusinessProfileModel> {
+	
 	private static final long serialVersionUID = 1L;
 	public static final String FIELD_COUNTRY_NAME = "country";
 	public static final String FIELD_PROFILE_TYPE = "profileType";
