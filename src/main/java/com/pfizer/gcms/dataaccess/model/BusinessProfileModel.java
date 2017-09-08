@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.metamodel.SingularAttribute;
+
 
 @Entity
 @Table(name = "GCMS_BUSINESS_PROFILE_VIEW")
@@ -19,7 +19,7 @@ public class BusinessProfileModel implements BaseModel {
 
 	public static final String FIELD_COUNTRY_NAME = "country";
 	public static final String FIELD_PROFILE_TYPE = "profileType";
-	public static final String FIELD_BP_ID = "id";
+	public static final String FIELD_BP_ID = "id";	
 	@Id
 	@Column(name = "BP_ID")
 	private BigDecimal id;
@@ -42,11 +42,24 @@ public class BusinessProfileModel implements BaseModel {
 	@Column(name = "ADDR_LN_1_TXT")
 	private String address;
 	
+	@Column(name = "ADDR_LN_2_TXT")
+	private String address2;
+	
+	
+	@Column(name = "ADDR_LN_3_TXT")
+	private String address3;
+	
+	@Column(name = "ADDR_LN_4_TXT")
+	private String address4;
+	
 	@Column(name = "CITY")
 	private String city;
 	
 	@Column(name = "REGION")
 	private String region;
+	
+	@Column(name = "SPECIALITY")
+	private String speciality;
 
 	public BigDecimal getId() {
 		return id;
@@ -103,6 +116,30 @@ public class BusinessProfileModel implements BaseModel {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	
+	public String getAddress2() {
+		return address2;
+	}
+
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+	public String getAddress3() {
+		return address3;
+	}
+
+	public void setAddress3(String address3) {
+		this.address3 = address3;
+	}
+
+	public String getAddress4() {
+		return address4;
+	}
+
+	public void setAddress4(String address4) {
+		this.address4 = address4;
+	}
 
 	public String getCity() {
 		return city;
@@ -120,6 +157,14 @@ public class BusinessProfileModel implements BaseModel {
 		this.region = region;
 	}
 	
+	public String getSpeciality() {
+		return speciality;
+	}
+
+	public void setSpeciality(String speciality) {
+		this.speciality = speciality;
+	}
+
 
 	
 	
