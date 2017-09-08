@@ -61,13 +61,17 @@ public class ProfileRequestModel extends AbstractModel {
 	private String status;
 
 
-	
-
-	public BigDecimal getId() {
+	/**
+	 * @return the profileReqId
+	 */
+	public BigDecimal getProfileReqId() {
 		return id;
 	}
 
-	public void setId(BigDecimal id) {
+	/**
+	 * @param profileReqId the profileReqId to set
+	 */
+	public void setProfileReqId(BigDecimal id) {
 		this.id = id;
 	}
 
