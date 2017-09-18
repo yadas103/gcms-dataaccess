@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "GCMS_BUSINESS_PROFILE_VIEW")
+@Table(name = "GCMS_BUS_PROFILE_MVIEW_NEW")
 public class BusinessProfileModel implements BaseModel {
 
 	/**

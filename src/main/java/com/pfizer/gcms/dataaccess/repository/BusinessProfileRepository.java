@@ -37,8 +37,8 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 		LOG.debug("Inside method BusinessProfileRepository(String name,String type)");
 		//findByCountry(name,type);
 		setModelType(BusinessProfileModel.class);
-	}
-	*/
+	}*/
+	
 @Override	
 public  List<BusinessProfileModel> findByCountry(String name,String type ) throws Exception {
 	LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type )" +name );
@@ -63,8 +63,12 @@ public  List<BusinessProfileModel> findByCountry(String name,String type ) throw
 		LOG.debug("profileTypeExp"+profileTypeExp);
 		Map<String, String> criteriaParameters = new HashMap<String, String>();
 		Predicate predicate = buildCaseSensitiveEqualPredicate(criteria, countryNameExp, name,criteriaParameters);
+		if(type!=null){
 		Predicate predicate1 = buildCaseSensitiveEqualPredicate(criteria, profileTypeExp, type,criteriaParameters);
 		query.where(predicate,predicate1);
+		}
+		else 
+			query.where(predicate);	
 		query = query.select(root);	
 		LOG.debug("query"+query);
 		TypedQuery<BusinessProfileModel> typedQuery = entityManager.createQuery(query);
@@ -81,7 +85,7 @@ public  List<BusinessProfileModel> findByCountry(String name,String type ) throw
 @SuppressWarnings("unchecked")
 @Override	
 public  List<BusinessProfileModel> findById(BigDecimal[] id) throws Exception {
-	LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type )" );
+	LOG.debug("Inside method List<BusinessProfileModel> findById(BigDecimal[] id )" );
 		if (id == null) {
 			String message = "Invalid selection";
 			LOG.warn(message);
@@ -101,7 +105,7 @@ public  List<BusinessProfileModel> findById(BigDecimal[] id) throws Exception {
 		LOG.debug("countryNameExp"+idExp);		
 		List<BigDecimal> ids = Arrays.asList(id);								
 		LOG.debug("query"+query);
-		Query typedQuery = entityManager.createQuery("FROM TR_ODS.GCMS_BUSINESS_PROFILE_VIEW WHERE BP_ID IN (:ids)");
+		Query typedQuery = entityManager.createQuery("FROM GCMS_BUSINESS_PROFILE_VIEW WHERE BP_ID IN (:ids)");
 		typedQuery.setParameter("ids", ids);
 		LOG.debug("typedQuery"+typedQuery);
 		models = typedQuery.getResultList();
