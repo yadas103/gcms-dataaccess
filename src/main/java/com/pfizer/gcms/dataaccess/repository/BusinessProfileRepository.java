@@ -105,7 +105,7 @@ public  List<BusinessProfileModel> findById(BigDecimal[] id) throws Exception {
 		LOG.debug("countryNameExp"+idExp);		
 		List<BigDecimal> ids = Arrays.asList(id);								
 		LOG.debug("query"+query);
-		Query typedQuery = entityManager.createQuery("FROM GCMS_BUSINESS_PROFILE_VIEW WHERE BP_ID IN (:ids)");
+		Query typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE id IN (:ids)");
 		typedQuery.setParameter("ids", ids);
 		LOG.debug("typedQuery"+typedQuery);
 		models = typedQuery.getResultList();

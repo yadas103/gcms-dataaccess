@@ -9,7 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 @Entity
@@ -20,16 +19,15 @@ public class ConsentTemplateModel extends AbstractModel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	public static final String FIELD_ID = "id";
 	
 	@Id
 	@Column(name = "COSN_TMPL_ID")
 	private BigDecimal id;
 	
-	@MapsId
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,targetEntity = CountryModel.class)
 	@JoinColumn(name = "CNTRY_ID", referencedColumnName = "CNTRY_ID")
-	private GCMSCountryModel cntry_id;
+	private CountryModel cntry_id;
 	
 	@Column(name = "TMPL_NAME")
 	private String tmpl_name;
@@ -58,6 +56,7 @@ public class ConsentTemplateModel extends AbstractModel {
 	@Column(name = "TMPL_STATUS")
 	private String tmpl_status;
 
+
 	public BigDecimal getId() {
 		return id;
 	}
@@ -66,11 +65,11 @@ public class ConsentTemplateModel extends AbstractModel {
 		this.id = id;
 	}
 
-	public GCMSCountryModel getCntry_id() {
+	public CountryModel getCntry_id() {
 		return cntry_id;
 	}
 
-	public void setCntry_id(GCMSCountryModel cntry_id) {
+	public void setCntry_id(CountryModel cntry_id) {
 		this.cntry_id = cntry_id;
 	}
 

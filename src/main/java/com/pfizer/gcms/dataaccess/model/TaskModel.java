@@ -6,9 +6,12 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
@@ -32,12 +35,14 @@ public class TaskModel extends AbstractModel {
 	
 	
 	@Id
+	@SequenceGenerator(name="seq",sequenceName="GCMS_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	@Column(name = "TASK_ID")
 	private BigDecimal	id;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "COSN_ANNEX_ID", referencedColumnName = "COSN_ANNEX_ID",insertable = true, updatable = true)
-	@Cascade({CascadeType.ALL})
+/*	@Cascade({CascadeType.ALL})*/ // DIVYA : Commented as of now. Need to find out an alternative to Cascade.All as it is affecting creating the records. 
 	private ConsentAnnexModel consannexid;
 	
 	@Column(name = "ASSIGNED_TO")

@@ -21,6 +21,15 @@ public class BusinessProfileSearchDTO extends  BaseSearchDTO<BusinessProfileMode
 	private String city;
 	private String region;
 	private BigDecimal id;
+	private BigDecimal[] ids;
+	
+	public BigDecimal[] getIds() {
+		return ids;
+	}
+
+	public void setIds(BigDecimal[] ids) {
+		this.ids = ids;
+	}
 	
 	public BigDecimal getId() {
 		return id;

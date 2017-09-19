@@ -41,6 +41,8 @@
 		<class>com.pfizer.gcms.dataaccess.model.CoveredRecipientModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.CredentialsLovModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.CurrencyLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ConsentAnnexModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.ConsentTemplateModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.EntityActionsModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.EntityTypeIdentifierLovModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.error</class>

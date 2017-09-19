@@ -3,13 +3,17 @@ package com.pfizer.gcms.dataaccess.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -28,38 +32,35 @@ public class ConsentAnnexModel extends AbstractModel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public static final String FIELD_ID = "id";
 
 
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name="seq",sequenceName="GCMS_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	@Column(name = "COSN_ANNEX_ID")
 	private BigDecimal id;
 
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PAYER_COUNTRY", referencedColumnName = "CNTRY_ID")
 	private CountryModel payercountry;
 
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PROFILE_COUNTRY", referencedColumnName = "CNTRY_ID")
 	private CountryModel profilecountry;
-
 	
-   
-	/*@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "COSN_TMPL_ID", referencedColumnName = "COSN_TMPL_ID")
-	private ConsentTemplateModel templateid;*/
-	
-	@Column(name = "COSN_TMPL_ID")
-	private BigDecimal templateid;
+	private ConsentTemplateModel tmpl_id;
 	
 	
 	@Column(name = "TEMPLATE_TYPE")
-	private BigDecimal templatetype;
+	private String templatetype;
 	
 	@Column(name = "PROFILE_TYPE")
-	private BigDecimal profiletype;
+	private String profileType;
 	
 	@Column(name = "EVENT_NAME")
 	private String eventname;
@@ -89,11 +90,11 @@ public class ConsentAnnexModel extends AbstractModel{
 	private String revocationDocLink;
 	
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "BP_ID", referencedColumnName = "BP_ID")
 	private BusinessProfileModel bpid;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CONSENT_STATUS", referencedColumnName = "CNSN_STS_ID")
 	private ConsentLovModel consentstatus;
 	
@@ -157,38 +158,38 @@ public class ConsentAnnexModel extends AbstractModel{
 */
 
 
-	public BigDecimal getTemplateid() {
-		return templateid;
+	public ConsentTemplateModel getTmpl_id() {
+		return tmpl_id;
 	}
 
 
 
-	public void setTemplateid(BigDecimal templateid) {
-		this.templateid = templateid;
+	public void setTmpl_id(ConsentTemplateModel tmpl_id) {
+		this.tmpl_id = tmpl_id;
 	}
 
 
 
-	public BigDecimal getTemplatetype() {
+	public String getTemplatetype() {
 		return templatetype;
 	}
 
 
 
-	public void setTemplatetype(BigDecimal templatetype) {
+	public void setTemplatetype(String templatetype) {
 		this.templatetype = templatetype;
 	}
 
 
 
-	public BigDecimal getProfiletype() {
-		return profiletype;
+	public String getProfileType() {
+		return profileType;
 	}
 
 
 
-	public void setProfiletype(BigDecimal profiletype) {
-		this.profiletype = profiletype;
+	public void setProfileType(String profileType) {
+		this.profileType = profileType;
 	}
 
 
