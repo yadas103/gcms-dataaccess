@@ -6,9 +6,12 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -16,16 +19,19 @@ import javax.persistence.Table;
 public class ConsentTemplateModel extends AbstractModel {
 
 	/**
-	 * 
+	 * selim
 	 */
 	private static final long serialVersionUID = 1L;
-	public static final String FIELD_ID = "id";
+	
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GCMS_SEQ")
+	@SequenceGenerator(name = "GCMS_SEQ", sequenceName = "GCMS_SEQ", allocationSize = 1)
 	@Column(name = "COSN_TMPL_ID")
 	private BigDecimal id;
 	
-	@ManyToOne(fetch = FetchType.LAZY,targetEntity = CountryModel.class)
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CNTRY_ID", referencedColumnName = "CNTRY_ID")
 	private CountryModel cntry_id;
 	
@@ -55,7 +61,12 @@ public class ConsentTemplateModel extends AbstractModel {
 	
 	@Column(name = "TMPL_STATUS")
 	private String tmpl_status;
-
+	
+	@Column(name = "DELETE_FLAG")
+	private Character deleted;
+		
+	@Column(name = "TMPL_DESC")
+	private String tmpl_desc;
 
 	public BigDecimal getId() {
 		return id;
@@ -145,4 +156,21 @@ public class ConsentTemplateModel extends AbstractModel {
 		this.tmpl_status = tmpl_status;
 	}
 
+	public Character getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Character deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getTmpl_desc() {
+		return tmpl_desc;
+	}
+
+	public void setTmpl_desc(String tmpl_desc) {
+		this.tmpl_desc = tmpl_desc;
+	}
+	
+	
 }
