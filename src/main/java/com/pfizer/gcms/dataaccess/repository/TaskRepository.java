@@ -3,10 +3,15 @@ package com.pfizer.gcms.dataaccess.repository;
 import java.util.Locale;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.time.StopWatch;
 
+import com.pfizer.gcms.dataaccess.model.AbstractModel;
 import com.pfizer.gcms.dataaccess.model.TaskModel;
 
 
@@ -45,4 +50,34 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 		
 		return result;
 	}
+
+	/**
+	 * Soft deletes the quick link model.
+	 * @param item
+	 * 		(AnnouncementsModel) - The item representation
+	 * @throws Exception
+	 * 		If delete is unsuccessful
+	 */
+	
+	public void delete(TaskModel item) throws Exception {
+		TaskModel model = find(item.getId());
+		if (model != null) {
+			model.setDeleted('Y');
+			update(model);
+		}		
+	}
+	
+	/**
+	 * Returns a flag indicating it supports soft delete.
+	 * @return the soft delete enabled Flag
+	 */
+	
+	public boolean isSoftDeleteEnabled() {
+		return true;
+	}
+
+	@Override
+	public Predicate prepareSoftDeletePredicate(CriteriaBuilder builder, Root<TaskModel> rootModelType) {
+		return null;
+	}	
 }
