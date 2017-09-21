@@ -79,6 +79,7 @@ public  List<BusinessProfileModel> findByCountry(String name,String type,String 
 		Query typedQuery;
 		lastName = '%'+lastName+'%';
 		if(speciality != null){
+		speciality = '%'+speciality+'%';
 		 typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE country = (:country) and (lastName LIKE (:lastName) or organisationName LIKE (:organisationName)) and profileType = (:profileType) and speciality = (:speciality)");
 		//applyParameterExpressionValues(typedQuery, criteriaParameters);
 		typedQuery.setParameter("country", name.trim());
