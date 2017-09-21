@@ -39,9 +39,10 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 		setModelType(BusinessProfileModel.class);
 	}*/
 	
+@SuppressWarnings("unchecked")
 @Override	
-public  List<BusinessProfileModel> findByCountry(String name,String type ) throws Exception {
-	LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type )" +name );
+public  List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String speciality ) throws Exception {
+	LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type,String lastName )" +name );
 		if (name == null || name.trim().isEmpty()) {
 			String message = "Invalid Country Name";
 			LOG.warn(message);
@@ -54,26 +55,49 @@ public  List<BusinessProfileModel> findByCountry(String name,String type ) throw
 		CriteriaBuilder criteria = entityManager.getCriteriaBuilder();
 		LOG.debug("criteria"+criteria);
 		CriteriaQuery<BusinessProfileModel> query = criteria.createQuery(getModelType());
-		LOG.debug("query:getModelType()"+query +" "+ getModelType());
+		/*LOG.debug("query:getModelType()"+query +" "+ getModelType());
 		Root<BusinessProfileModel> root = query.from(getModelType());
 		LOG.debug("root"+root);
 		Expression<String> countryNameExp = root.get(BusinessProfileModel.FIELD_COUNTRY_NAME);
 		Expression<String> profileTypeExp = root.get(BusinessProfileModel.FIELD_PROFILE_TYPE);
+		Expression<String> lastNameExp = root.get(BusinessProfileModel.FIELD_LAST_NAME);
+		Expression<String> organisationNameExp = root.get(BusinessProfileModel.FIELD_ORGANISATION_NAME);
 		LOG.debug("countryNameExp"+countryNameExp);
 		LOG.debug("profileTypeExp"+profileTypeExp);
 		Map<String, String> criteriaParameters = new HashMap<String, String>();
 		Predicate predicate = buildCaseSensitiveEqualPredicate(criteria, countryNameExp, name,criteriaParameters);
+		Predicate predicateLastName = buildCaseSensitiveEqualPredicate(criteria, lastNameExp, lastName,criteriaParameters);
+		Predicate predicateOrgName = buildCaseSensitiveEqualPredicate(criteria, organisationNameExp, lastName,criteriaParameters);
 		if(type!=null){
 		Predicate predicate1 = buildCaseSensitiveEqualPredicate(criteria, profileTypeExp, type,criteriaParameters);
-		query.where(predicate,predicate1);
+		query.where(predicate,predicate1,predicateLastName);
 		}
 		else 
-			query.where(predicate);	
+			query.where(predicate,predicateLastName);	
 		query = query.select(root);	
-		LOG.debug("query"+query);
-		TypedQuery<BusinessProfileModel> typedQuery = entityManager.createQuery(query);
-		applyParameterExpressionValues(typedQuery, criteriaParameters);
+		LOG.debug("query"+query);*/
+		Query typedQuery;
+		lastName = '%'+lastName+'%';
+		if(speciality != null){
+		 typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE country = (:country) and (lastName LIKE (:lastName) or organisationName LIKE (:organisationName)) and profileType = (:profileType) and speciality = (:speciality)");
+		//applyParameterExpressionValues(typedQuery, criteriaParameters);
+		typedQuery.setParameter("country", name.trim());
+		typedQuery.setParameter("lastName", lastName.trim());
+		typedQuery.setParameter("organisationName", lastName.trim());
+		typedQuery.setParameter("profileType", type.trim());
+		typedQuery.setParameter("speciality", speciality.trim());	
+	
 		LOG.debug("typedQuery"+typedQuery);
+			
+		}				
+		else 
+		{
+			 typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE country = (:country) and (lastName LIKE (:lastName) or organisationName LIKE (:organisationName)) and profileType = (:profileType) ");			
+				typedQuery.setParameter("country", name.trim());
+				typedQuery.setParameter("lastName", lastName.trim());
+				typedQuery.setParameter("profileType", type.trim());
+				typedQuery.setParameter("organisationName", lastName.trim());
+		}
 		models = typedQuery.getResultList();
 		LOG.debug("models" +models);
 		if (models == null || models.isEmpty()) {
