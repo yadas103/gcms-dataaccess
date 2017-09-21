@@ -115,6 +115,7 @@
 		<class>com.pfizer.gcms.dataaccess.model.ExpenseTypeMappingModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.CurrencyConversionModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.CoveredRecipientRoleLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.UserProfileLovModel</class>
 		<!-- Oracle Configurations -->
 		<properties>
 			<!-- <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />

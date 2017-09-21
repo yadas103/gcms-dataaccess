@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * holding instances of data objects.This holds the Country data object.
  */
 @Entity
-@Table(name = "GCMS_COUNTRIES_VIEW")
+@Table(name = "GCMS_COUNTRIES_MVIEW")
 public class CountryModel extends AbstractModel {
 
 	/**

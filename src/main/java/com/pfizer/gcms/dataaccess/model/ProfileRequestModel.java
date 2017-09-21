@@ -65,14 +65,15 @@ public class ProfileRequestModel extends AbstractModel {
 	/**
 	 * @return the profileReqId
 	 */
-	public BigDecimal getProfileReqId() {
+	public BigDecimal getId() {
 		return id;
 	}
+
 
 	/**
 	 * @param profileReqId the profileReqId to set
 	 */
-	public void setProfileReqId(BigDecimal id) {
+	public void setId(BigDecimal id) {
 		this.id = id;
 	}
 
@@ -110,6 +111,9 @@ public class ProfileRequestModel extends AbstractModel {
 	public String getLastName() {
 		return lastName;
 	}
+
+	
+	
 
 	/**
 	 * @param lastName the lastName to set
