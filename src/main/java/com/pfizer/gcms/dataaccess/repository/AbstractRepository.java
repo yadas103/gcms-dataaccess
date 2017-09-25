@@ -36,6 +36,7 @@ import com.pfizer.gcms.dataaccess.dto.ISearchDTO;
 import com.pfizer.gcms.dataaccess.model.AbstractModel;
 import com.pfizer.gcms.dataaccess.model.BaseModel;
 import com.pfizer.gcms.dataaccess.model.BusinessProfileModel;
+import com.pfizer.gcms.dataaccess.model.ConsentTemplateModel;
 import com.pfizer.gcms.dataaccess.model.error.ErrorModel;
 
 
@@ -824,12 +825,23 @@ public abstract class AbstractRepository<ModelType extends BaseModel> implements
 	    }
 	}
 	
-	public List<BusinessProfileModel> findByCountry(String name, String type) throws Exception {		
+/*	public List<BusinessProfileModel> findByCountry(String name, String type) throws Exception {		
 		// TODO Auto-generated method stub		
 		return null;		
-	}		
+	}*/		
 	public List<BusinessProfileModel> findById(BigDecimal[] id) throws Exception {		
 		// TODO Auto-generated method stub		
+		return null;
+	}
+
+	public List<ConsentTemplateModel> fetchTemplate(BigDecimal id) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<BusinessProfileModel> findByCountry(String name, String type, String lastName, String speciality)
+			throws Exception {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

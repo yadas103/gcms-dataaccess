@@ -19,6 +19,10 @@ public class BusinessProfileModel implements BaseModel {
 
 	public static final String FIELD_COUNTRY_NAME = "country";
 	public static final String FIELD_PROFILE_TYPE = "profileType";
+	public static final String FIELD_LAST_NAME = "lastName";
+	public static final String FIELD_ORGANISATION_NAME = "organisationName";
+	public static final String FIELD_SPECIALITY = "speciality";
+
 	public static final String FIELD_BP_ID = "id";	
 	@Id
 	@Column(name = "BP_ID")

@@ -80,7 +80,7 @@ public  List<BusinessProfileModel> findByCountry(String name,String type,String 
 		lastName = '%'+lastName+'%';
 		if(speciality != null){
 		speciality = '%'+speciality+'%';
-		 typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE country = (:country) and (lastName LIKE (:lastName) or organisationName LIKE (:organisationName)) and profileType = (:profileType) and speciality = (:speciality)");
+		 typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE country = (:country) and (UPPER(lastName) LIKE UPPER((:lastName)) or UPPER(organisationName) LIKE UPPER((:organisationName))) and profileType = (:profileType) and UPPER(speciality) = UPPER((:speciality))");
 		//applyParameterExpressionValues(typedQuery, criteriaParameters);
 		typedQuery.setParameter("country", name.trim());
 		typedQuery.setParameter("lastName", lastName.trim());
@@ -93,7 +93,7 @@ public  List<BusinessProfileModel> findByCountry(String name,String type,String 
 		}				
 		else 
 		{
-			 typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE country = (:country) and (lastName LIKE (:lastName) or organisationName LIKE (:organisationName)) and profileType = (:profileType) ");			
+			 typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE country = (:country) and (UPPER(lastName) LIKE UPPER((:lastName)) or UPPER(organisationName) LIKE UPPER((:organisationName))) and profileType = (:profileType) ");			
 				typedQuery.setParameter("country", name.trim());
 				typedQuery.setParameter("lastName", lastName.trim());
 				typedQuery.setParameter("profileType", type.trim());
