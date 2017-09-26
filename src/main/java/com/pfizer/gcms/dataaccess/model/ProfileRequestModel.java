@@ -61,6 +61,10 @@ public class ProfileRequestModel extends AbstractModel {
 	@Column(name = "STATUS")
 	private String status;
 
+	@Column(name = "BP_ID")
+	private BigDecimal bpid;
+	
+
 
 	/**
 	 * @return the profileReqId
@@ -218,6 +222,21 @@ public class ProfileRequestModel extends AbstractModel {
 	 */
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	/**
+	 * @return the bpid
+	 */
+	public BigDecimal getBpid() {
+		return bpid;
+	}
+
+
+	/**
+	 * @param bpid
+	 */
+	public void setBpid(BigDecimal bpid) {
+		this.bpid = bpid;
 	}
 
 	

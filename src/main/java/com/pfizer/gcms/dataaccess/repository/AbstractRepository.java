@@ -844,4 +844,8 @@ public abstract class AbstractRepository<ModelType extends BaseModel> implements
 		// TODO Auto-generated method stub
 		return null;
 	}
+	public List<BusinessProfileModel> ValidationfindById(BigDecimal id) throws Exception {		
+		// TODO Auto-generated method stub		
+		return null;
+	}
 }

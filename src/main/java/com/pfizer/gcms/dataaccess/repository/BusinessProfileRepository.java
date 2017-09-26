@@ -140,5 +140,35 @@ public  List<BusinessProfileModel> findById(BigDecimal[] id) throws Exception {
 		}
 		return models;
 	}
-
+public  List<BusinessProfileModel> ValidationfindById(BigDecimal id) throws Exception {
+	LOG.debug("Inside method List<BusinessProfileModel> ValidationfindById(BigDecimal id )" );
+		if (id == null) {
+			String message = "Invalid selection";
+			LOG.warn(message);
+			throw new GCMSBadDataException(message);
+		}
+		
+		EntityManager entityManager = getEntityManager();
+		LOG.debug("entityManager"+entityManager);
+		List<BusinessProfileModel> models = null;
+		CriteriaBuilder criteria = entityManager.getCriteriaBuilder();
+		LOG.debug("criteria"+criteria);
+		CriteriaQuery<BusinessProfileModel> query = criteria.createQuery(getModelType());
+		LOG.debug("query:getModelType()"+query +" "+ getModelType());
+		Root<BusinessProfileModel> root = query.from(getModelType());
+		LOG.debug("root"+root);
+		Expression<BigDecimal> idExp = root.get(BusinessProfileModel.FIELD_BP_ID);
+		LOG.debug("countryNameExp"+idExp);		
+		List<BigDecimal> ids = Arrays.asList(id);								
+		LOG.debug("query"+query);
+		Query typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE id IN (:ids)");
+		typedQuery.setParameter("ids", ids);
+		LOG.debug("typedQuery"+typedQuery);
+		models = typedQuery.getResultList();
+		LOG.debug("models" +models);
+		if (models == null || models.isEmpty()) {
+			return null;
+		}
+		return models;
+	}
 }
