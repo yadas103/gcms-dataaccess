@@ -23,6 +23,7 @@ public class ConsentTemplateModel extends AbstractModel {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	public static final String FIELD_TMPL_CODE = "tmpl_code";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GCMS_SEQ")

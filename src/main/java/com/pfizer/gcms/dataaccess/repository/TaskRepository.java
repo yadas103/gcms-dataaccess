@@ -1,17 +1,20 @@
 package com.pfizer.gcms.dataaccess.repository;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Locale;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.time.StopWatch;
 
-import com.pfizer.gcms.dataaccess.model.AbstractModel;
 import com.pfizer.gcms.dataaccess.model.TaskModel;
 
 
@@ -50,6 +53,71 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 		
 		return result;
 	}
+	
+	/*selim
+	 * To get all task ID to match with template
+	 * 
+	 * */		
+		public List<BigDecimal> findID() throws Exception {
+			LOG.debug("Inside method find()");
+			StopWatch timer = new StopWatch();
+	        timer.start();
+	        LOG.debug("Bfr entity");
+			EntityManager entityManager = getEntityManager();	
+			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+			LOG.debug("builder"+builder);
+			CriteriaQuery<BigDecimal> query = builder.createQuery(BigDecimal.class);
+			LOG.debug("query"+query);
+			Root<TaskModel> root = query.from(getModelType());
+			LOG.debug("root"+root);
+			query = query.select(root.<BigDecimal>get(TaskModel.FIELD_TASK_ID));	
+			LOG.debug("query"+query);
+
+			TypedQuery<BigDecimal> typedQuery = entityManager.createQuery(query);
+			List<BigDecimal> ids=(List<BigDecimal>)typedQuery.getResultList();
+			
+			LOG.debug("#Performance#Repository#Total time took for find() operation is - " + timer.getTime());
+			return ids;
+		}
+		
+		
+		/**selim 
+		 * getting task according to assigned id
+		 * Returns the collection of all the instances of type ModelType an empty partial model is generated 
+		 * and the Find overload is called.
+		 * @return ArrayList<ModelType>
+		 */
+		public List<TaskModel> findUserSpecificTask(String s) {
+			LOG.debug("Inside method findUserSpecificTask()");
+			StopWatch timer = new StopWatch();
+	        timer.start();
+	        
+			EntityManager entityManager = getEntityManager();
+			List<TaskModel> models = null;
+			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<TaskModel> query = builder.createQuery(getModelType());
+			Root<TaskModel> root = query.from(getModelType());
+			Predicate namePredicate = builder.equal(root.get(TaskModel.FIELD_ASSIGNED_TO), s);
+			Predicate deleteFilter = prepareSoftDeletePredicate(builder, root);
+			if (deleteFilter != null) {
+				query.where(deleteFilter);
+			}
+			Predicate predicate = deleteFilter == null 
+					? namePredicate : builder.and(namePredicate, deleteFilter);
+			query.where(predicate);
+			query = query.select(root);
+			List<TaskModel> models1 = entityManager.createQuery(query).getResultList();
+			
+			LOG.debug("#Performance#Repository#Total time took for findUserSpecificTask(String s) operation is - " + timer.getTime());
+			
+			if (models1 == null || models1.isEmpty()) {
+				return null;
+			} 
+			return models1;
+		}
+		
+		
+		
 
 	/**
 	 * Soft deletes the quick link model.
@@ -62,7 +130,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 	public void delete(TaskModel item) throws Exception {
 		TaskModel model = find(item.getId());
 		if (model != null) {
-			model.setDeleted('Y');
+			//model.setDeleted('Y');
 			update(model);
 		}		
 	}

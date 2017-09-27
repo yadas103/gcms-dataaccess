@@ -2,6 +2,7 @@ package com.pfizer.gcms.dataaccess.model;
 
 import java.math.BigDecimal;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,6 +33,8 @@ public class TaskModel extends AbstractModel {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	public static final String FIELD_TASK_ID = "id";
+	public static final String FIELD_ASSIGNED_TO = "assignedto";
 	
 	@Id
 	@SequenceGenerator(name="seq",sequenceName="GCMS_SEQ")
