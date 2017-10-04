@@ -111,11 +111,11 @@ public  List<BusinessProfileModel> findByCountry(String name,String type,String 
 				pStmt.setString(5, city.trim());
 			}
 			
-			LOG.debug("Before time execute" + new Date().toString());
+			LOG.info("Before time execute" + new Date().toString());
 			// execute query  
 			ResultSet resultSet = pStmt.executeQuery(); 
-			resultSet.setFetchSize(4000);
-			LOG.debug("After query execute" + new Date().toString() );
+			resultSet.setFetchSize(2000);
+			LOG.info("After query execute" + new Date().toString() );
 			models = new ArrayList<BusinessProfileModel>();
 			while(resultSet.next()) {	
 				BusinessProfileModel bp = new BusinessProfileModel();
@@ -133,7 +133,7 @@ public  List<BusinessProfileModel> findByCountry(String name,String type,String 
 			resultSet.close();
 			pStmt.close();
 			conn.close();  
-			LOG.debug("After closing connection" + new Date().toString() );
+			LOG.info("After closing connection" + new Date().toString() );
 			
 		} catch (Exception e) {
 			// TODO: handle exception
