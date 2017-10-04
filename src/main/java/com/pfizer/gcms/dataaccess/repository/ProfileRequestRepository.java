@@ -1,12 +1,24 @@
 package com.pfizer.gcms.dataaccess.repository;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.time.StopWatch;
 
+import com.pfizer.gcms.dataaccess.common.exception.GCMSBadDataException;
 import com.pfizer.gcms.dataaccess.model.ProfileRequestModel;
 
 /**
@@ -54,4 +66,35 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
 		
 		return result;
 	}
+	public  List<ProfileRequestModel> findReviewerRecord(String userNTID ) throws Exception {
+		LOG.debug("Inside method List<ProfileRequestModel> findReviewerRecord(String userNTID )" +userNTID );
+			if (userNTID == null || userNTID.trim().isEmpty()) {
+				String message = "Invalid userNTID";
+				LOG.warn(message);
+				throw new GCMSBadDataException(message);
+			}
+			
+			EntityManager entityManager = getEntityManager();
+			LOG.debug("entityManager"+entityManager);
+			List<ProfileRequestModel> models = null;
+			CriteriaBuilder criteria = entityManager.getCriteriaBuilder();
+			LOG.debug("criteria"+criteria);
+			
+			Query typedQuery;
+			userNTID = '%'+userNTID+'%';
+			typedQuery=entityManager.createQuery("select name FROM com.pfizer.gcms.dataaccess.model.CountryModel where id IN (select countries.id FROM com.pfizer.gcms.dataaccess.model.CountryReviewerModel WHERE UPPER(cntryReviewer) Like UPPER((:userNTID)))");
+			typedQuery.setParameter("userNTID", userNTID.trim());
+			LOG.debug("typedQuery"+typedQuery);
+			List<String> country = typedQuery.getResultList();
+			
+			 typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel WHERE country IN (:country)");
+			 typedQuery.setParameter("country", country);
+			LOG.debug("typedQuery"+typedQuery);
+			models = typedQuery.getResultList();
+			LOG.debug("models" +models);
+			if (models == null || models.isEmpty()) {
+				return null;
+			}
+			return models;
+		}
 }
