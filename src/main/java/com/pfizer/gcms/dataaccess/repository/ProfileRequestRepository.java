@@ -87,7 +87,7 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
 			LOG.debug("typedQuery"+typedQuery);
 			List<String> country = typedQuery.getResultList();
 			
-			 typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel WHERE country IN (:country)");
+			 typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel WHERE country IN (:country) order by createdDate DESC");
 			 typedQuery.setParameter("country", country);
 			LOG.debug("typedQuery"+typedQuery);
 			models = typedQuery.getResultList();
