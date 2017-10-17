@@ -80,6 +80,36 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			return ids;
 		}
 		
+		/**selim 
+		 * getting all task
+		 * Returns the collection of all the instances of type ModelType an empty partial model is generated 
+		 * and the Find overload is called.
+		 * @return ArrayList<ModelType>
+		 */
+		  public List<TaskModel> find() {
+			LOG.debug("Inside method find()");
+			StopWatch timer = new StopWatch();
+	        timer.start();
+	        
+			EntityManager entityManager = getEntityManager();
+			List<TaskModel> models = null;
+			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<TaskModel> query = builder.createQuery(getModelType());
+			Root<TaskModel> root = query.from(getModelType());
+			Predicate deleteFilter = prepareSoftDeletePredicate(builder, root);
+			if (deleteFilter != null) {
+				query.where(deleteFilter);
+			}
+			String sortByField = sortByField();
+			if (sortByField != null){
+				applySorting(builder, query, sortByField, sortDescending(), root);
+			}
+			query.select(root);
+			models = entityManager.createQuery(query).getResultList();
+			
+			LOG.debug("#Performance#Repository#Total time took for find() operation is - " + timer.getTime());
+			return models;
+		}
 		
 		/**selim 
 		 * getting task according to assigned id
@@ -133,6 +163,22 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			//model.setDeleted('Y');
 			update(model);
 		}		
+	}
+	
+	/**
+	 * Informs whether sort by field need to be applied on which column.
+	 * If no sorting needed then returns null otherwise overrides the particular column.
+	 * @return the sort by field value
+	 */
+	public String sortByField() {
+		
+		return TaskModel.FIELD_UPDATED_DATE;
+		//return null;
+		
+	}
+	
+	public Boolean sortDescending() {
+		return true;
 	}
 	
 	/**
