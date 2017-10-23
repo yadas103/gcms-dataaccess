@@ -33,6 +33,7 @@ public class ConsentAnnexModel extends AbstractModel{
 	 */
 	private static final long serialVersionUID = 1L;
 	public static final String FIELD_ID = "id";
+	public static final String FIELD_BPID = "bpid";
 
 
 	@Id
