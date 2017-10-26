@@ -1,7 +1,6 @@
 package com.pfizer.gcms.dataaccess.repository;
 
 
-
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,6 +29,7 @@ import com.pfizer.gcms.dataaccess.common.exception.GCMSBadDataException;
 import com.pfizer.gcms.dataaccess.model.BusinessProfileModel;
 
 
+
 public class BusinessProfileRepository extends AbstractRepository<BusinessProfileModel>{
 
 	private static final Log LOG = LogFactory.getLog(AbstractRepository.class);
@@ -40,7 +40,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 	
 @SuppressWarnings("unchecked")
 @Override	
-public  List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city ) throws Exception {
+public  List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address ) throws Exception {
 	LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type,String lastName )" +name );
 		if (name == null || name.trim().isEmpty()) {
 			String message = "Invalid Country Name";
@@ -51,34 +51,6 @@ public  List<BusinessProfileModel> findByCountry(String name,String type,String 
 		EntityManager entityManager = getEntityManager();
 		LOG.debug("entityManager"+entityManager);
 		List<BusinessProfileModel> models = null;
-		
-		//CriteriaBuilder criteria = entityManager.getCriteriaBuilder();
-		//LOG.debug("criteria"+criteria);
-		//CriteriaQuery<BusinessProfileModel> query = criteria.createQuery(getModelType());		
-		//Query typedQuery;
-		lastName = '%'+lastName+'%';
-		
-		/*if(city != null){
-		city = '%'+city+'%';
-		 typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE country = (:country) and (UPPER(lastName) LIKE UPPER((:lastName)) or UPPER(organisationName) LIKE UPPER((:organisationName))) and profileType = (:profileType) and UPPER(city) LIKE UPPER((:city))");		
-		typedQuery.setParameter("country", name.trim());
-		typedQuery.setParameter("lastName", lastName.trim());
-		typedQuery.setParameter("organisationName", lastName.trim());
-		typedQuery.setParameter("profileType", type.trim());
-		typedQuery.setParameter("city", city.trim());	
-	
-		LOG.debug("typedQuery"+typedQuery);
-			
-		}				
-		else 
-		{
-			 typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE country = (:country) and (UPPER(lastName) LIKE UPPER((:lastName)) or UPPER(organisationName) LIKE UPPER((:organisationName))) and profileType = (:profileType) ");			
-				typedQuery.setParameter("country", name.trim());
-				typedQuery.setParameter("lastName", lastName.trim());
-				typedQuery.setParameter("profileType", type.trim());
-				typedQuery.setParameter("organisationName", lastName.trim());
-		}*/
-		
 		
 		try {
 			
@@ -93,25 +65,35 @@ public  List<BusinessProfileModel> findByCountry(String name,String type,String 
 			// create the statement object  
 			Statement stmt=conn.createStatement();  
 			
-			String searchBPQuery = "select BP_ID, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDR_LN_1_TXT,SPECIALITY from GCMS_BUS_PROFILE_MVIEW_NEW  where COUNTRY= ?   and ( " + 
-					"  upper(LAST_NAME) like upper(?) " + 
-					"	  or upper(ORGANISATION_NAME) like upper(?) " + 
-					"	 ) and PROFILE_TYPE_ID= ? " ;
-			if(city != null){
+			
+			String searchBPQuery = "select BP_ID, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDR_LN_1_TXT,SPECIALITY from GCMS_BUS_PROFILE_MVIEW_NEW  where COUNTRY= '"+name.trim()+"' and PROFILE_TYPE_ID= '"+type.trim()+"'  " ;
+			if(lastName != null && !lastName.equals("lastName")){
+			lastName = '%'+lastName+'%';	
+			searchBPQuery = searchBPQuery + " and( " + 
+					"  upper(LAST_NAME) like upper('"+lastName.trim()+"') " + 
+					"	  or upper(ORGANISATION_NAME) like upper('"+lastName.trim()+"') " + 
+					"	 )";			
+			}
+			if(city != null && !city.equals("city")){
 				city = '%'+city+'%';
-				searchBPQuery = searchBPQuery + " and UPPER(city) LIKE UPPER(?)";
+				searchBPQuery = searchBPQuery + " and UPPER(CITY) LIKE UPPER('"+city.trim()+"')";
+			
+			}
+			if(firstName != null && !firstName.equals("firstName")){
+				firstName = '%'+firstName+'%';
+				searchBPQuery = searchBPQuery + " and UPPER(FIRST_NAME) LIKE UPPER('"+firstName.trim()+"')";
+			
+			}
+			if(address != null && !address.equals("address")){
+				address = '%'+address+'%';
+				searchBPQuery = searchBPQuery + " and UPPER(ADDR_LN_1_TXT) LIKE UPPER('"+address.trim()+"')";
+			
 			}
 			PreparedStatement pStmt = conn.prepareStatement(searchBPQuery);
 			
-			pStmt.setString(1, name.trim());
-			pStmt.setString(2, lastName.trim());
-			pStmt.setString(3, lastName.trim());
-			pStmt.setString(4, type.trim());
-			if(city != null){
-				pStmt.setString(5, city.trim());
-			}
 			
 			LOG.info("Before time execute" + new Date().toString());
+			LOG.info("Query" + pStmt.toString());
 			// execute query  
 			ResultSet resultSet = pStmt.executeQuery(); 
 			resultSet.setFetchSize(2000);

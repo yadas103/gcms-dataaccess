@@ -40,6 +40,8 @@ import com.pfizer.gcms.dataaccess.model.ConsentTemplateModel;
 import com.pfizer.gcms.dataaccess.model.error.ErrorModel;
 
 
+
+
 /**
  * @author rtalapaneni 
  * The Abstract Repository will provide methods for accessing, creating and updating the Models
@@ -839,7 +841,7 @@ public abstract class AbstractRepository<ModelType extends BaseModel> implements
 		return null;
 	}
 
-	public List<BusinessProfileModel> findByCountry(String name, String type, String lastName, String speciality)
+	public List<BusinessProfileModel> findByCountry(String name, String type, String lastName, String city, String firstname, String address)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
