@@ -1,19 +1,13 @@
 package com.pfizer.gcms.dataaccess.repository;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.EntityManager;
+
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.time.StopWatch;
@@ -40,18 +34,18 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
 	
 	
 	/**
-	 * Updates the current instance of Model and persists the changes to the database.
+	 *@description  Updates the current instance of Model and persists the changes to the database.
 	 * @param item
-	 *            (ModelType) – The representation containing the data that was just updated
-	 * @return ModelType
+	 *            (ProfileRequestModel) – The representation containing the data that was just updated
+	 * @return ProfileRequestModel
 	 * @throws Exception
 	 *             if save is unsuccessful
 	 */
 	public ProfileRequestModel update(ProfileRequestModel item) throws Exception {
 		LOG.debug("Inside update(ProfileRequestModel item)");
 		
-		StopWatch timer = new StopWatch();
-        timer.start();
+		StopWatch profilerequesttimer = new StopWatch();
+		profilerequesttimer.start();
 		
 		EntityManager entityManager = getEntityManager();
 		
@@ -60,15 +54,24 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
         
         ProfileRequestModel result = entityManager.merge(item);
 		
-		LOG.debug("#Performance#Repository#Total time took only for merge during update is - " + timer1.getTime());
+		LOG.debug("#Performance#Repository#Total time took only for merge during update is - " + profilerequesttimer.getTime());
 		
-		LOG.debug("#Performance#Repository#Total time took for update(ModelType item) operation is - " + timer.getTime());
+		LOG.debug("#Performance#Repository#Total time took for update(ModelType item) operation is - " + profilerequesttimer.getTime());
 		
 		return result;
 	}
+
+	/**
+	 *@description  find ReviewerRecord in ProfileRequest table according to logged in userNTID database.
+	 * @param item
+	 *            (ProfileRequestModel) – The representation containing the data that was just updated
+	 * @return ProfileRequestModel
+	 * @throws Exception
+	 *             if save is unsuccessful
+	 */
 	public  List<ProfileRequestModel> findReviewerRecord(String userNTID ) throws Exception {
 		LOG.debug("Inside method List<ProfileRequestModel> findReviewerRecord(String userNTID )" +userNTID );
-			if (userNTID == null || userNTID.trim().isEmpty()) {
+			if (null == userNTID || userNTID.trim().isEmpty()) {
 				String message = "Invalid userNTID";
 				LOG.warn(message);
 				throw new GCMSBadDataException(message);
@@ -80,7 +83,7 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
 			CriteriaBuilder criteria = entityManager.getCriteriaBuilder();
 			LOG.debug("criteria"+criteria);
 			
-			Query typedQuery;
+			Query typedQuery=null;
 			userNTID = '%'+userNTID+'%';
 			typedQuery=entityManager.createQuery("select name FROM com.pfizer.gcms.dataaccess.model.CountryModel where id IN (select countries.id FROM com.pfizer.gcms.dataaccess.model.CountryReviewerModel WHERE UPPER(cntryReviewer) Like UPPER((:userNTID)))");
 			typedQuery.setParameter("userNTID", userNTID.trim());
