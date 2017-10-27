@@ -43,7 +43,6 @@ import com.pfizer.gcms.dataaccess.model.error.ErrorModel;
 
 
 /**
- * @author rtalapaneni 
  * The Abstract Repository will provide methods for accessing, creating and updating the Models
  * stored in the database. All other Repositories will inherit from it.
  * @param <ModelType> the model type used by repository implementation
@@ -846,7 +845,7 @@ public abstract class AbstractRepository<ModelType extends BaseModel> implements
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public List<BusinessProfileModel> ValidationfindById(BigDecimal id) throws Exception {		
+	public List<BusinessProfileModel> validationfindById(BigDecimal id) throws Exception {		
 		// TODO Auto-generated method stub		
 		return null;
 	}
