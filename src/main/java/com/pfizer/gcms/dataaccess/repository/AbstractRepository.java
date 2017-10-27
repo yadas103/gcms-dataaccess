@@ -2,14 +2,12 @@
  * 
  */
 package com.pfizer.gcms.dataaccess.repository;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-
 import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
