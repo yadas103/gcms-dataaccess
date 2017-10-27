@@ -14,7 +14,7 @@ import javax.persistence.Table;
 /**
  * @author KASWAS
  *ProfileRequestModel is a POJO classes,annotated with hibernate mappings and they are responsible for 
- * holding instances of data objects.This holds the ProfileRequest data  object.
+ * holding instances of data objects.
  */
 @Entity
 @Table(name = "GCMS_PROFILE_REQUEST")
