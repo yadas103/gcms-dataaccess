@@ -163,8 +163,17 @@ public  List<BusinessProfileModel> findById(BigDecimal[] id) throws Exception {
 		}
 		return models;
 	}
-public  List<BusinessProfileModel> ValidationfindById(BigDecimal id) throws Exception {
-	LOG.debug("Inside method List<BusinessProfileModel> ValidationfindById(BigDecimal id )" );
+
+/**
+ * @Kaswas
+ * @param bpid
+ * @return profile of that particular bpid 
+ * @throws Exception
+ * @description this method is used to get data for one particular Bpid 
+ * from BusinessProfile table for validation in Profile Review 
+ */
+public  List<BusinessProfileModel> validationfindById(BigDecimal id) throws Exception {
+	LOG.debug("Inside method List<BusinessProfileModel> validationfindById(BigDecimal id )" );
 		if (id == null) {
 			String message = "Invalid selection";
 			LOG.warn(message);
