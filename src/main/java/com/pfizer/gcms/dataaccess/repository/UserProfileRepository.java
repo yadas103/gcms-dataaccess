@@ -16,7 +16,6 @@ import javax.persistence.criteria.Root;
 import com.pfizer.gcms.dataaccess.model.AbstractCountryModel;
 import com.pfizer.gcms.dataaccess.model.UserProfileModel;
 /**
- * @author rnarne
  *  The User Profile Repository will provide methods for accessing, creating and updating the User Profiles stored in
  *  the database.
  */
