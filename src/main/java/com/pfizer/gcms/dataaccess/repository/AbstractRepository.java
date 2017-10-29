@@ -823,28 +823,20 @@ public abstract class AbstractRepository<ModelType extends BaseModel> implements
 	        doJoins(join.getJoins(), joined);
 	    }
 	}
-	
-/*	public List<BusinessProfileModel> findByCountry(String name, String type) throws Exception {		
-		// TODO Auto-generated method stub		
-		return null;		
-	}*/		
-	public List<BusinessProfileModel> findById(BigDecimal[] id) throws Exception {		
-		// TODO Auto-generated method stub		
+		
+	public List<BusinessProfileModel> findById(BigDecimal[] id) throws Exception {			
 		return null;
 	}
 
 	public List<ConsentTemplateModel> fetchTemplate(BigDecimal id) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<BusinessProfileModel> findByCountry(String name, String type, String lastName, String city, String firstname, String address)
+	public List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,BigDecimal id)
 			throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
-	public List<BusinessProfileModel> validationfindById(BigDecimal id) throws Exception {		
-		// TODO Auto-generated method stub		
+	public List<BusinessProfileModel> validationfindById(BigDecimal id) throws Exception {			
 		return null;
 	}
 }

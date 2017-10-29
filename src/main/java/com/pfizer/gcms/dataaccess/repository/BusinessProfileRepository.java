@@ -57,94 +57,101 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<BusinessProfileModel> findByCountry(String name, String type, String lastName, String city,
-			String firstName, String address) throws Exception {
-		LOG.debug(
-				"Inside method List<BusinessProfileModel> String name,String type,String lastName, String city,String firstName,String address");
-		if (name == null || name.trim().isEmpty()) {
-			String message = "Invalid Country Name";
-			LOG.warn(message);
-			throw new GCMSBadDataException(message);
+	public  List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,BigDecimal id ) throws Exception {
+		LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,BigDecimal id )" );
+		BigDecimal zero = BigDecimal.ZERO;
+			if (name == null || name.trim().isEmpty()) {
+				String message = "Invalid Country Name";
+				LOG.warn(message);
+				throw new GCMSBadDataException(message);
+			}
+			
+			EntityManager entityManager = getEntityManager();
+			LOG.debug("entityManager"+entityManager);
+			List<BusinessProfileModel> models = null;
+				
+			try {
+				
+				Session session = entityManager.unwrap(org.hibernate.Session.class);
+				SessionFactory sessionFactory = session.getSessionFactory();
+				SessionFactoryImplementor impl = (SessionFactoryImplementor)sessionFactory;
+				ConnectionProvider cp = impl.getConnectionProvider();
+				Connection conn = cp.getConnection();
+				String sqlString = "query in here";
+				conn.setAutoCommit(false);
+
+				// create the statement object  
+				Statement stmt=conn.createStatement(); 		
+				
+				
+				String searchBPQuery = "select BP_ID, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDR_LN_1_TXT,SPECIALITY from GCMS_BUS_PROFILE_MVIEW_NEW  where COUNTRY= '"+name.trim()+"' and PROFILE_TYPE_ID= '"+type.trim()+"'  " ;
+				if(lastName != null && !lastName.equals("lastName")){
+				lastName = '%'+lastName+'%';	
+				searchBPQuery = searchBPQuery + " and( " + 
+						"  upper(LAST_NAME) like upper('"+lastName.trim()+"') " + 
+						"	  or upper(ORGANISATION_NAME) like upper('"+lastName.trim()+"') " + 
+						"	 )";			
+				}
+				if(city != null && !city.equals("city")){
+					city = '%'+city+'%';
+					searchBPQuery = searchBPQuery + " and UPPER(CITY) LIKE UPPER('"+city.trim()+"')";
+				
+				}
+				if(firstName != null && !firstName.equals("firstName")){
+					firstName = '%'+firstName+'%';
+					searchBPQuery = searchBPQuery + " and UPPER(FIRST_NAME) LIKE UPPER('"+firstName.trim()+"')";
+				
+				}
+				if(address != null && !address.equals("address")){
+					address = '%'+address+'%';
+					searchBPQuery = searchBPQuery + " and UPPER(ADDR_LN_1_TXT) LIKE UPPER('"+address.trim()+"')";
+				
+				}
+				if(id != null && id != zero){
+					
+					searchBPQuery = searchBPQuery + " and BP_ID = "+id;
+				
+				}
+				PreparedStatement pStmt = conn.prepareStatement(searchBPQuery);
+				
+							
+				LOG.info("Before time execute" + new Date().toString());
+				LOG.info("Query executed " + searchBPQuery);
+				
+				// execute query  
+				ResultSet resultSet = pStmt.executeQuery(); 
+				resultSet.setFetchSize(2000);
+				LOG.info("After query execute" + new Date().toString() );
+				models = new ArrayList<BusinessProfileModel>();
+				while(resultSet.next()) {	
+					BusinessProfileModel bp = new BusinessProfileModel();
+					bp.setId(resultSet.getBigDecimal("BP_ID"));
+					bp.setProfileType(resultSet.getString("PROFILE_TYPE_ID"));
+					bp.setFirstName(resultSet.getString("FIRST_NAME"));
+					bp.setLastName(resultSet.getString("LAST_NAME"));
+					bp.setOrganisationName(resultSet.getString("ORGANISATION_NAME"));
+					bp.setCity(resultSet.getString("CITY"));
+					bp.setAddress(resultSet.getString("ADDR_LN_1_TXT"));
+					bp.setSpeciality(resultSet.getString("SPECIALITY"));
+					models.add(bp);
+				}
+				
+				// close the connection object 
+				resultSet.close();
+				pStmt.close();
+				conn.close();  
+				LOG.info("After closing connection" + new Date().toString() );
+				
+			} catch (Exception e) {
+				LOG.debug(e.getStackTrace());
+			}
+						
+			LOG.debug("models" +models);
+			if (models == null || models.isEmpty()) {
+				return null;
+			}
+			return models;
 		}
-
-		EntityManager entityManager = getEntityManager();
-		LOG.debug("entityManager" + entityManager);
-		List<BusinessProfileModel> models = null;
-
-		try {
-
-			Session session = entityManager.unwrap(org.hibernate.Session.class);
-			SessionFactory sessionFactory = session.getSessionFactory();
-			SessionFactoryImplementor impl = (SessionFactoryImplementor) sessionFactory;
-			ConnectionProvider cp = impl.getConnectionProvider();
-			Connection conn = cp.getConnection();
-			String sqlString = "query in here";
-			conn.setAutoCommit(false);
-
-			// create the statement object
-			Statement stmt = conn.createStatement();
-
-			String searchBPQuery = "select BP_ID, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDR_LN_1_TXT,SPECIALITY from GCMS_BUS_PROFILE_MVIEW_NEW  where COUNTRY= '"
-					+ name.trim() + "' and PROFILE_TYPE_ID= '" + type.trim() + "'  ";
-			if (lastName != null && !lastName.equals("lastName")) {
-				lastName = '%' + lastName + '%';
-				searchBPQuery = searchBPQuery + " and( " + "  upper(LAST_NAME) like upper('" + lastName.trim() + "') "
-						+ "	  or upper(ORGANISATION_NAME) like upper('" + lastName.trim() + "') " + "	 )";
-			}
-			if (city != null && !city.equals("city")) {
-				city = '%' + city + '%';
-				searchBPQuery = searchBPQuery + " and UPPER(CITY) LIKE UPPER('" + city.trim() + "')";
-
-			}
-			if (firstName != null && !firstName.equals("firstName")) {
-				firstName = '%' + firstName + '%';
-				searchBPQuery = searchBPQuery + " and UPPER(FIRST_NAME) LIKE UPPER('" + firstName.trim() + "')";
-
-			}
-			if (address != null && !address.equals("address")) {
-				address = '%' + address + '%';
-				searchBPQuery = searchBPQuery + " and UPPER(ADDR_LN_1_TXT) LIKE UPPER('" + address.trim() + "')";
-
-			}
-			PreparedStatement pStmt = conn.prepareStatement(searchBPQuery);
-
-			LOG.info("Before time execute" + new Date().toString());
-			LOG.debug("Query executed " + searchBPQuery);
-
-			// execute query
-			ResultSet resultSet = pStmt.executeQuery();
-			resultSet.setFetchSize(2000);
-			LOG.info("After query execute" + new Date().toString());
-			models = new ArrayList<BusinessProfileModel>();
-			while (resultSet.next()) {
-				BusinessProfileModel bp = new BusinessProfileModel();
-				bp.setId(resultSet.getBigDecimal("BP_ID"));
-				bp.setProfileType(resultSet.getString("PROFILE_TYPE_ID"));
-				bp.setFirstName(resultSet.getString("FIRST_NAME"));
-				bp.setLastName(resultSet.getString("LAST_NAME"));
-				bp.setOrganisationName(resultSet.getString("ORGANISATION_NAME"));
-				bp.setCity(resultSet.getString("CITY"));
-				bp.setAddress(resultSet.getString("ADDR_LN_1_TXT"));
-				bp.setSpeciality(resultSet.getString("SPECIALITY"));
-				models.add(bp);
-			}
-			// close the connection object
-			resultSet.close();
-			pStmt.close();
-			conn.close();
-			LOG.info("After closing connection" + new Date().toString());
-
-		} catch (Exception e) {
-			LOG.debug(e.getStackTrace());
-		}
-
-		LOG.debug("models" + models);
-		if (models == null || models.isEmpty()) {
-			return null;
-		}
-		return models;
-	}
-
 	/**
 	 * @author KHANS129
 	 * @param BigDecimal[] id
