@@ -37,7 +37,8 @@ public class ConsentAnnexRepository extends AbstractRepository<ConsentAnnexModel
 	}
 	private static final Log LOG = LogFactory.getLog(AbstractRepository.class);
 
-	/**selim
+	/**
+	 * @author khans129
 	 * Returns the representation of the current Model.
 	 * @param id
 	 *            (ModelType id) – The representation containing the data that was just updated
@@ -54,10 +55,8 @@ public class ConsentAnnexRepository extends AbstractRepository<ConsentAnnexModel
 			throw new GCMSBadDataException("Invalid ID");
 		}
 		
-		EntityManager entityManager = getEntityManager();
-		
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		
+		EntityManager entityManager = getEntityManager();		
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();		
 		CriteriaQuery<ConsentAnnexModel> query = builder.createQuery(getModelType());
 		Root<ConsentAnnexModel> root = query.from(getModelType());
 		Predicate idPredicate = builder.equal(root.get(ConsentAnnexModel.FIELD_BPID), id);

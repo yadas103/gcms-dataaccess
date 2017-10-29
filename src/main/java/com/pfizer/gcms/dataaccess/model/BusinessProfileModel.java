@@ -7,14 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @author VENKAD09 BusinessProfileModel is a POJO classes,annotated with hibernate
+ *         mappings and they are responsible for holding instances of data
+ *         objects.This holds the Business Profile data object.
+ */
 
 @Entity
 @Table(name = "GCMS_BUS_PROFILE_MVIEW_NEW")
 public class BusinessProfileModel implements BaseModel {
 
-	/**
-	 * The serial version UID
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public static final String FIELD_COUNTRY_NAME = "country";
@@ -23,45 +25,44 @@ public class BusinessProfileModel implements BaseModel {
 	public static final String FIELD_ORGANISATION_NAME = "organisationName";
 	public static final String FIELD_SPECIALITY = "speciality";
 
-	public static final String FIELD_BP_ID = "id";	
+	public static final String FIELD_BP_ID = "id";
 	@Id
 	@Column(name = "BP_ID")
 	private BigDecimal id;
-	
+
 	@Column(name = "PROFILE_TYPE_ID")
 	private String profileType;
-	
+
 	@Column(name = "FIRST_NAME")
 	private String firstName;
-	
+
 	@Column(name = "LAST_NAME")
 	private String lastName;
-	
+
 	@Column(name = "ORGANISATION_NAME")
 	private String organisationName;
-	
+
 	@Column(name = "COUNTRY")
 	private String country;
-	
+
 	@Column(name = "ADDR_LN_1_TXT")
 	private String address;
-	
+
 	@Column(name = "ADDR_LN_2_TXT")
 	private String address2;
-	
-	
+
 	@Column(name = "ADDR_LN_3_TXT")
 	private String address3;
-	
+
 	@Column(name = "ADDR_LN_4_TXT")
 	private String address4;
-	
+
 	@Column(name = "CITY")
 	private String city;
-	
+
 	@Column(name = "REGION")
 	private String region;
-	
+
 	@Column(name = "SPECIALITY")
 	private String speciality;
 
@@ -120,7 +121,7 @@ public class BusinessProfileModel implements BaseModel {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
+
 	public String getAddress2() {
 		return address2;
 	}
@@ -160,7 +161,7 @@ public class BusinessProfileModel implements BaseModel {
 	public void setRegion(String region) {
 		this.region = region;
 	}
-	
+
 	public String getSpeciality() {
 		return speciality;
 	}
@@ -168,9 +169,5 @@ public class BusinessProfileModel implements BaseModel {
 	public void setSpeciality(String speciality) {
 		this.speciality = speciality;
 	}
-
-
-	
-	
 
 }
