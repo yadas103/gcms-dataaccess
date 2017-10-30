@@ -12,12 +12,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- * @author rtalapaneni
+ * 
  * CountryModel is a POJO classes,annotated with hibernate mappings and they are responsible for 
  * holding instances of data objects.This holds the Country data object.
  */
 @Entity
-@Table(name = "GCMS_COUNTRIES_MVIEW")
+@Table(name = "GCMS_COUNTRIES_VIEW")
 public class CountryModel extends AbstractModel {
 
 	/**
