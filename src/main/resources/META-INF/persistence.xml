@@ -11,7 +11,7 @@
 	    <non-jta-data-source>java:jboss/datasources/TRSPORTALDS</non-jta-data-source>
 
 		<!-- Tomcat Specific JTA Configuration 
-		<non-jta-data-source>java:comp/env/TRSPORTALDS</non-jta-data-source>  --> 
+		<non-jta-data-source>java:comp/env/TRSPORTALDS</non-jta-data-source>  -->
 
 		<!-- All classes should be mapped here -->
 		<class>com.pfizer.gcms.dataaccess.model.AbstractCountryModel</class>
