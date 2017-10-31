@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -17,12 +18,48 @@ import org.apache.commons.logging.LogFactory;
 
 import com.pfizer.gcms.dataaccess.model.TaskModel;
 
-
+/**
+ * @author khans129
+ * The Task Repository will provide methods for accessing, creating and updating the values 
+ * stored in the database. 
+ */
 public class TaskRepository extends AbstractRepository<TaskModel> {
+	
 	private static final Log LOG = LogFactory.getLog(AbstractRepository.class);
+	/**
+	 * Creates a new instance of the Task Repository and configures the abstract class with the 
+	 * correct models.
+	 * 
+	 * @param country
+	 *            (Locale) – The country by which to limit the result list
+	 */
 	public TaskRepository(Locale country) {
 		setModelType(TaskModel.class);
 	}
+	
+	
+	
+	/**
+	 * This method gets all task id from the task table 
+	 * Returns the collection of all the ids  
+	 * @return ArrayList<ids>
+	 */	
+		public List<BigDecimal> findID() throws Exception {
+			LOG.debug("Inside method findID()");
+			StopWatch timer = new StopWatch();
+	        timer.start();
+			EntityManager entityManager = getEntityManager();	
+			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<BigDecimal> query = builder.createQuery(BigDecimal.class);
+			Root<TaskModel> root = query.from(getModelType());
+			query = query.select(root.<BigDecimal>get(TaskModel.FIELD_TASK_ID));	
+			TypedQuery<BigDecimal> typedQuery = entityManager.createQuery(query);
+			List<BigDecimal> ids=(List<BigDecimal>)typedQuery.getResultList();			
+			LOG.debug("#Performance#Repository#Total time took for find() operation is - " + timer.getTime());
+			return ids;
+		}
+	
+	
 	/**
 	 * Updates the current instance of Model and persists the changes to the database.
 	 * @param item
@@ -32,65 +69,26 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 	 *             if save is unsuccessful
 	 */
 	public TaskModel update(TaskModel item) throws Exception {
-		LOG.debug("Inside update(ModelType item)");
-		
+		LOG.debug("Inside update(ModelType item)");		
 		StopWatch timer = new StopWatch();
-        timer.start();
-		
-		EntityManager entityManager = getEntityManager();
-		//Map<Class<?>, List<BigDecimal>> childEntitiesToRemove = getChildEntitiesToBeDeleted(item);
-		//delete(childEntitiesToRemove, item);
-		//LOG.debug("#Performance#Repository#Total time took deleting child objects during update is - " + timer.getTime());
-		
-		StopWatch timer1 = new StopWatch();
-        timer1.start();
-        
-        TaskModel result = entityManager.merge(item);
-		
-		LOG.debug("#Performance#Repository#Total time took only for merge during update is - " + timer1.getTime());
-		
-		LOG.debug("#Performance#Repository#Total time took for update(ModelType item) operation is - " + timer.getTime());
-		
+        timer.start();		
+		EntityManager entityManager = getEntityManager();       
+        TaskModel result = entityManager.merge(item);		
+		LOG.debug("#Performance#Repository#Total time took for update(ModelType item) operation is - " + timer.getTime());		
 		return result;
 	}
 	
-	/*selim
-	 * To get all task ID to match with template
-	 * 
-	 * */		
-		public List<BigDecimal> findID() throws Exception {
-			LOG.debug("Inside method find()");
-			StopWatch timer = new StopWatch();
-	        timer.start();
-	        LOG.debug("Bfr entity");
-			EntityManager entityManager = getEntityManager();	
-			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-			LOG.debug("builder"+builder);
-			CriteriaQuery<BigDecimal> query = builder.createQuery(BigDecimal.class);
-			LOG.debug("query"+query);
-			Root<TaskModel> root = query.from(getModelType());
-			LOG.debug("root"+root);
-			query = query.select(root.<BigDecimal>get(TaskModel.FIELD_TASK_ID));	
-			LOG.debug("query"+query);
-
-			TypedQuery<BigDecimal> typedQuery = entityManager.createQuery(query);
-			List<BigDecimal> ids=(List<BigDecimal>)typedQuery.getResultList();
-			
-			LOG.debug("#Performance#Repository#Total time took for find() operation is - " + timer.getTime());
-			return ids;
-		}
+	
 		
-		/**selim 
-		 * getting all task
+		/**
+		 * This method gets all task according to decending order of updation date when rold id is sytem admin
 		 * Returns the collection of all the instances of type ModelType an empty partial model is generated 
-		 * and the Find overload is called.
 		 * @return ArrayList<ModelType>
 		 */
 		  public List<TaskModel> find() {
 			LOG.debug("Inside method find()");
 			StopWatch timer = new StopWatch();
-	        timer.start();
-	        
+	        timer.start();	        
 			EntityManager entityManager = getEntityManager();
 			List<TaskModel> models = null;
 			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -105,23 +103,20 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 				applySorting(builder, query, sortByField, sortDescending(), root);
 			}
 			query.select(root);
-			models = entityManager.createQuery(query).getResultList();
-			
+			models = entityManager.createQuery(query).getResultList();			
 			LOG.debug("#Performance#Repository#Total time took for find() operation is - " + timer.getTime());
 			return models;
 		}
 		
-		/**selim 
-		 * getting task according to assigned id
-		 * Returns the collection of all the instances of type ModelType an empty partial model is generated 
-		 * and the Find overload is called.
-		 * @return ArrayList<ModelType>
-		 */
-		public List<TaskModel> findUserSpecificTask(String s) {
-			LOG.debug("Inside method findUserSpecificTask()");
+		  /**
+			 * This method gets task according to assigned id when role id is local and global user
+			 * Returns the collection of all the instances of type ModelType an empty partial model is generated 
+			 * @return ArrayList<ModelType>
+			 */
+		  public List<TaskModel> findUserSpecificTask(String s) {
+			LOG.debug("Inside method findUserSpecificTask(String s)");
 			StopWatch timer = new StopWatch();
-	        timer.start();
-	        
+	        timer.start();        
 			EntityManager entityManager = getEntityManager();
 			List<TaskModel> models = null;
 			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -146,7 +141,33 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			return models1;
 		}
 		
-		
+		  /**
+			 * This method gets task according to country when role id is EFPIA lead and data stewerd
+			 * Returns the collection of all the instances of type ModelType an empty partial model is generated 
+			 * @return ArrayList<ModelType>
+			 */
+			public List<TaskModel> findCountryTask(BigDecimal country) throws Exception  {
+				LOG.debug("Inside method findCountryTask(BigDecimal country)");
+				StopWatch timer = new StopWatch();
+		        timer.start();		        
+				EntityManager entityManager = getEntityManager();
+				CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+				List<TaskModel> models = null;
+				Query typedQuery;
+				typedQuery=entityManager.createQuery("select e FROM com.pfizer.gcms.dataaccess.model.TaskModel e "
+						+ "where consannexid IN (select id FROM com.pfizer.gcms.dataaccess.model.ConsentAnnexModel"
+						+ " WHERE profilecountry.id = :country)");
+				typedQuery.setParameter("country", country);
+				LOG.debug("typedQuery"+typedQuery);
+				models = typedQuery.getResultList();
+				LOG.debug("models" +models);
+				if (models == null || models.isEmpty()) {
+					return null;
+				}
+				return models;
+				
+
+			}
 		
 
 	/**
@@ -176,7 +197,9 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 		//return null;
 		
 	}
-	
+	/**
+	 * @return If true return decending order
+	 */
 	public Boolean sortDescending() {
 		return true;
 	}
