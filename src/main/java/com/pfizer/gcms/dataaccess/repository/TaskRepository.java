@@ -113,7 +113,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
         if(searchDTO.getPageSize()!=null){
         	pageSz=searchDTO.getPageSize();
         }else{
-        	pageSz="10";	
+        	pageSz="6";	
         }
         int pageNumber=Integer.parseInt(pageNo);
         int pageSize=Integer.parseInt(pageSz);
