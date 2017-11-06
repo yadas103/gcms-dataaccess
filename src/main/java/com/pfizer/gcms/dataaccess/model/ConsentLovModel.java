@@ -29,6 +29,7 @@ public class ConsentLovModel extends AbstractModel{
 	 * The constant consent name.
 	 */		
 	public static final String FIELD_CONSENT_NAME = "consentName";
+	public static final String FIELD_CONSENT_STS_ID = "id";
 	
 	@Id
 	@Column(name = "CNSN_STS_ID")

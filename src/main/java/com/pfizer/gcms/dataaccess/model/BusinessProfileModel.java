@@ -22,6 +22,7 @@ public class BusinessProfileModel implements BaseModel {
 	public static final String FIELD_COUNTRY_NAME = "country";
 	public static final String FIELD_PROFILE_TYPE = "profileType";
 	public static final String FIELD_LAST_NAME = "lastName";
+	public static final String FIELD_FIRST_NAME = "firstName";
 	public static final String FIELD_ORGANISATION_NAME = "organisationName";
 	public static final String FIELD_SPECIALITY = "speciality";
 

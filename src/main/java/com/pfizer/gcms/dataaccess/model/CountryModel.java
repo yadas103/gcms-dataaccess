@@ -36,6 +36,10 @@ public class CountryModel extends AbstractModel {
 	 * The constant country name.
 	 */		
 	public static final String FIELD_COUNTRY_NAME = "name";
+	/**
+	 * The constant country id.
+	 */	
+	public static final String FIELD_COUNTRY_ID = "id";
 	
 	@Id
 	@Column(name = "CNTRY_ID")

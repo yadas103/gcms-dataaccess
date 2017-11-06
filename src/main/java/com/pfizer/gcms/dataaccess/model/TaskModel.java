@@ -35,6 +35,8 @@ public class TaskModel extends AbstractModel {
 	
 	public static final String FIELD_TASK_ID = "id";
 	public static final String FIELD_ASSIGNED_TO = "assignedto";
+	public static final String FIELD_CONS = "consannexid";
+	public static final String FIELD_TASKSTATUS = "taskstatus";
 	
 	@Id
 	@SequenceGenerator(name="seq",sequenceName="GCMS_SEQ")

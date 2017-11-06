@@ -29,6 +29,9 @@ public class ConsentAnnexModel extends AbstractModel {
 	private static final long serialVersionUID = 1L;
 	public static final String FIELD_ID = "id";
 	public static final String FIELD_BPID = "bpid";
+	public static final String FIELD_PROFILECOUNTRY = "profilecountry";
+	public static final String FIELD_EVENTNAME = "eventname";
+	public static final String FIELD_CONSENT = "consentstatus";
 
 	@Id
 	@SequenceGenerator(name = "seq", sequenceName = "GCMS_SEQ")
