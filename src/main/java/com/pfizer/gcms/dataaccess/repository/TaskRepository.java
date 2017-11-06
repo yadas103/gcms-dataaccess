@@ -103,8 +103,18 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 		LOG.debug("Inside method find");
 		StopWatch timer = new StopWatch();
         timer.start();
-        String pageNo=searchDTO.getPageNumber();
-        String pageSz=searchDTO.getPageSize();
+        String pageNo=null;
+        String pageSz=null;
+        if(searchDTO.getPageNumber()!=null){
+        	pageNo=searchDTO.getPageNumber();
+        }else{
+        	pageNo="1";
+        }
+        if(searchDTO.getPageSize()!=null){
+        	pageSz=searchDTO.getPageSize();
+        }else{
+        	pageSz="10";	
+        }
         int pageNumber=Integer.parseInt(pageNo);
         int pageSize=Integer.parseInt(pageSz);
         int firstIndex=pageSize*(pageNumber - 1);
