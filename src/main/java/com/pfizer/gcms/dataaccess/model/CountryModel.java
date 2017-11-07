@@ -36,10 +36,6 @@ public class CountryModel extends AbstractModel {
 	 * The constant country name.
 	 */		
 	public static final String FIELD_COUNTRY_NAME = "name";
-	/**
-	 * The constant country id.
-	 */	
-	public static final String FIELD_COUNTRY_ID = "id";
 	
 	@Id
 	@Column(name = "CNTRY_ID")
@@ -59,6 +55,9 @@ public class CountryModel extends AbstractModel {
 	
 	@Column(name = "CRNC_ID")
 	private BigDecimal currencyID;
+	
+	@Column(name = "EFPIA_CNTRY_FLAG")
+	private String efpiaCntryFlag;
 	
 	//@OneToMany(cascade = CascadeType.ALL, mappedBy = "country", fetch = FetchType.LAZY)
 	//@JoinColumn(name = "CNTRY_ID", referencedColumnName = "CNTRY_ID")
@@ -159,34 +158,19 @@ public class CountryModel extends AbstractModel {
 	public void setCurrencyID(BigDecimal currencyID) {
 		this.currencyID = currencyID;
 	}
-/*
-	*//**
-	 * @return the attributes
-	 *//*
-	public List<CountryAttributeModel> getAttributes() {
-		return attributes;
+
+	/**
+	 * @return the efpiaCntryFlag
+	 */
+	
+	public String getEfpiaCntryFlag() {
+		return efpiaCntryFlag;
 	}
 
-	*//**
-	 * @param attributes the attributes to set
-	 *//*
-	public void setAttributes(List<CountryAttributeModel> attributes) {
-		this.attributes = attributes;
+	/**
+	 * @param efpiaCntryFlag the efpiaCntryFlag to set
+	 */
+	public void setEfpiaCntryFlag(String efpiaCntryFlag) {
+		this.efpiaCntryFlag = efpiaCntryFlag;
 	}
-
-	*//**
-	 * @return the displayUniqueIdentifierType
-	 *//*
-	public List<CountryDefaultUniqueIdentifierTypesModel> getDisplayUniqueIdentifierType() {
-		return displayUniqueIdentifierType;
-	}
-
-	*//**
-	 * @param displayUniqueIdentifierType the displayUniqueIdentifierType to set
-	 *//*
-	public void setDisplayUniqueIdentifierType(
-			List<CountryDefaultUniqueIdentifierTypesModel> displayUniqueIdentifierType) {
-		this.displayUniqueIdentifierType = displayUniqueIdentifierType;
-	}
-*/
 }
