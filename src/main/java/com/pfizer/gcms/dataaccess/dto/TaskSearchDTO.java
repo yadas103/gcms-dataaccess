@@ -14,9 +14,6 @@ public class TaskSearchDTO {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	
-	public static final String FIELD_TASKID = "taskId";
-	public static final String FIELD_TRID = "trId";
 	public static final String FIELD_FIRSTNAME = "firstName";
 	public static final String FIELD_LASTNAME = "lastName";
 	public static final String FIELD_CONSENTSTAUS = "consentStatus";
@@ -25,12 +22,12 @@ public class TaskSearchDTO {
 	public static final String FIELD_PAGESIZE = "pageSize";
 	public static final String FIELD_EVENTNAME = "eventName";
 	public static final String FIELD_INITIATEDBY = "initiatedBy";
-	public static final String FIELD_COUNTRY = "country";
+	public static final String FIELD_PROFILE_COUNTRY = "profilecountry";
+	public static final String FIELD_PAYER_COUNTRY = "payercountry";
 	public static final String FIELD_SORTBY = "sortBy";
 	public static final String FIELD_SORTDESCENDING = "sortDescending";
 
-	private String taskId;
-	private String trId;
+
 	private String firstName;
 	private String lastName;
 	private String consentStatus;
@@ -39,22 +36,13 @@ public class TaskSearchDTO {
 	private String pageSize;
 	private String eventName;
 	private String initiatedBy;
-	private String country;
+	private String profilecountry;
+	private String payercountry;
 	private String sortBy;
-	private String sortDescending ;
+	private boolean	sortDescending = false;
 	
-	public String getTaskId() {
-		return taskId;
-	}
-	public void setTaskId(String taskId) {
-		this.taskId = taskId;
-	}
-	public String getTrId() {
-		return trId;
-	}
-	public void setTrId(String trId) {
-		this.trId = trId;
-	}
+	
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -103,11 +91,19 @@ public class TaskSearchDTO {
 	public void setInitiatedBy(String initiatedBy) {
 		this.initiatedBy = initiatedBy;
 	}
-	public String getCountry() {
-		return country;
+	
+	public String getProfilecountry() {
+		return profilecountry;
 	}
-	public void setCountry(String country) {
-		this.country = country;
+	public void setProfilecountry(String profilecountry) {
+		this.profilecountry = profilecountry;
+	}
+	
+	public String getPayercountry() {
+		return payercountry;
+	}
+	public void setPayercountry(String payercountry) {
+		this.payercountry = payercountry;
 	}
 	public String getSortBy() {
 		return sortBy;
@@ -115,12 +111,13 @@ public class TaskSearchDTO {
 	public void setSortBy(String sortBy) {
 		this.sortBy = sortBy;
 	}
-	public String getSortDescending() {
+	public boolean isSortDescending() {
 		return sortDescending;
 	}
-	public void setSortDescending(String sortDescending) {
+	public void setSortDescending(boolean sortDescending) {
 		this.sortDescending = sortDescending;
 	}
+	
 	
 	
 }

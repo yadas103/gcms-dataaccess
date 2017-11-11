@@ -12,6 +12,8 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -132,10 +134,10 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 		if (deleteFilter != null) {
 			query.where(deleteFilter);
 		}
-		String sortByField = sortByField();
+		/*String sortByField = sortByField();
 		if (sortByField != null){
 			applySorting(builder, query, sortByField, sortDescending(), root);
-		}
+		}*/
 		CriteriaQuery<TaskModel> select = query.select(root);
 		TypedQuery<TaskModel> typedQuery = entityManager.createQuery(select);
 		typedQuery.setFirstResult(firstIndex);
@@ -144,8 +146,8 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 		CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
 		Root<TaskModel> countRoot = countQuery.from(query.getResultType());
 		countQuery.where(wherePredicate);
-		doJoins(root.getJoins(), countRoot);
-		doJoinsOnFetches(root.getFetches(), countRoot);
+		//doJoins(root.getJoins(), countRoot);
+		//doJoinsOnFetches(root.getFetches(), countRoot);
 		countQuery.select(builder.countDistinct(countRoot));			
 		//countQuery.distinct(true);
 		TypedQuery<Long> typedCountQuery = entityManager.createQuery(countQuery);
@@ -182,8 +184,9 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			StopWatch timer = new StopWatch();
 	        timer.start();
 			List<Predicate> andPredicates = new ArrayList<Predicate>();
-			
-			//search task status  from task page				
+			List<Order> sortOrders = new ArrayList<Order>();
+			//server side searching
+			//search by taskstatus
 			if(searchDTO.getTaskStatus() != null){					
 				Predicate taskstatusPredicate =  builder.equal(rootModelType.get(TaskModel.FIELD_TASKSTATUS), searchDTO.getTaskStatus());					 
 				andPredicates.add(taskstatusPredicate);
@@ -192,34 +195,25 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 				andPredicates.add(taskstatusPredicate);
 				
 			}
-			//search task id  from task page
-			
-			if(searchDTO.getTaskId() != null){
-				String taskID=searchDTO.getTaskId();					
-				Expression<String> idkey= rootModelType.get(TaskModel.FIELD_TASK_ID).as(String.class);
-				Predicate idPredicate =  builder.like(idkey,taskID+"%");					 
-				andPredicates.add(idPredicate);
-			}
-			//search trid  from task page
-			if(searchDTO.getTrId() != null){
-				String trid=searchDTO.getTrId();
+			//search by payer country
+			if(searchDTO.getPayercountry() != null){						
+				String country=searchDTO.getPayercountry();
 				Path<TaskModel> pathTaskModel=rootModelType.get(TaskModel.FIELD_CONS);
 				Subquery<TaskModel> subquryTask=query.subquery(TaskModel.class);
 				Root<ConsentAnnexModel> rootConsentAnnex=subquryTask.from(ConsentAnnexModel.class);					
-				Path<ConsentAnnexModel> pathConsentAnnexModel=rootConsentAnnex.get(ConsentAnnexModel.FIELD_BPID);
+				Path<ConsentAnnexModel> pathConsentAnnexModel=rootConsentAnnex.get(ConsentAnnexModel.FIELD_PAYERCOUNTRY);
 				Subquery<ConsentAnnexModel> subqueryConsentAnnex=query.subquery(ConsentAnnexModel.class);
-				Root<BusinessProfileModel> rootBusinessProfile=subqueryConsentAnnex.from(BusinessProfileModel.class);
-				Expression<String> idkey= rootBusinessProfile.get(BusinessProfileModel.FIELD_BP_ID).as(String.class);
-				Predicate predicateBpId = builder.like(idkey, trid+"%");	
-				subqueryConsentAnnex.where(predicateBpId);
-				subqueryConsentAnnex = subqueryConsentAnnex.select(rootBusinessProfile.get(BusinessProfileModel.FIELD_BP_ID));					
-				Predicate predicateBusinessID=builder.in(pathConsentAnnexModel).value(subqueryConsentAnnex);					
-				subquryTask.where(predicateBusinessID);
+				Root<CountryModel> rootCountry=subqueryConsentAnnex.from(CountryModel.class);
+				Predicate predicateCountryName = builder.like(builder.lower(rootCountry.get(CountryModel.FIELD_COUNTRY_NAME)), country.toLowerCase()+"%");	
+				subqueryConsentAnnex.where(predicateCountryName);
+				subqueryConsentAnnex = subqueryConsentAnnex.select(rootCountry.get(CountryModel.FIELD_COUNTRY_ID));					
+				Predicate predicateConsentID=builder.in(pathConsentAnnexModel).value(subqueryConsentAnnex);					
+				subquryTask.where(predicateConsentID);
 				subquryTask = subquryTask.select(rootConsentAnnex.get(ConsentAnnexModel.FIELD_ID));
 				Predicate predicate=builder.in(pathTaskModel).value(subquryTask);
 				andPredicates.add(predicate);
 			}
-			//search last initiated by name  from task page
+			//search by last name  
 			if(searchDTO.getLastName() != null){						
 				String lastname=searchDTO.getLastName();
 				Path<TaskModel> pathTaskModel=rootModelType.get(TaskModel.FIELD_CONS);
@@ -237,7 +231,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 				Predicate predicate=builder.in(pathTaskModel).value(subquryTask);
 				andPredicates.add(predicate);
 			}
-			//search first name  from task page
+			//search by first name
 			if(searchDTO.getFirstName() != null){						
 				String firstname=searchDTO.getFirstName();
 				Path<TaskModel> pathTaskModel=rootModelType.get(TaskModel.FIELD_CONS);
@@ -255,9 +249,10 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 				Predicate predicate=builder.in(pathTaskModel).value(subquryTask);
 				andPredicates.add(predicate);
 			}
-			//search country name from task page
-			if(searchDTO.getCountry() != null){						
-				String country=searchDTO.getCountry();
+			
+			//search by profile country
+			if(searchDTO.getProfilecountry() != null){						
+				String country=searchDTO.getProfilecountry();
 				Path<TaskModel> pathTaskModel=rootModelType.get(TaskModel.FIELD_CONS);
 				Subquery<TaskModel> subquryTask=query.subquery(TaskModel.class);
 				Root<ConsentAnnexModel> rootConsentAnnex=subquryTask.from(ConsentAnnexModel.class);					
@@ -273,7 +268,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 				Predicate predicate=builder.in(pathTaskModel).value(subquryTask);
 				andPredicates.add(predicate);
 			}
-			//search consent status name  from task page
+			//search by consent status name
 			if(searchDTO.getConsentStatus() != null){						
 				String consentstatus=searchDTO.getConsentStatus();
 				Path<TaskModel> pathTaskModel=rootModelType.get(TaskModel.FIELD_CONS);
@@ -291,12 +286,6 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 				Predicate predicate=builder.in(pathTaskModel).value(subquryTask);
 				andPredicates.add(predicate);
 			}
-			//search initiated by name  from task page
-			if(searchDTO.getInitiatedBy() != null){
-				String initiatedBy=searchDTO.getInitiatedBy();
-				Predicate initiatedPredicate =  builder.like(builder.lower(rootModelType.get(TaskModel.FIELD_CREATED_BY)), initiatedBy.toLowerCase()+"%");					 
-				andPredicates.add(initiatedPredicate);
-			}
 			//search event name from task page
 			if(searchDTO.getEventName() !=null){
 				String eventname=searchDTO.getEventName();
@@ -309,6 +298,148 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 				Predicate predicate=builder.in(pathTaskModel).value(subqueryTask);
 				andPredicates.add(predicate);
 				}
+			//search initiated by name  from task page
+			if(searchDTO.getInitiatedBy() != null){
+				String initiatedBy=searchDTO.getInitiatedBy();
+				Predicate initiatedPredicate =  builder.like(builder.lower(rootModelType.get(TaskModel.FIELD_CREATED_BY)), initiatedBy.toLowerCase()+"%");					 
+				andPredicates.add(initiatedPredicate);
+			}
+			
+			//Server side sorting
+			
+			//sort by updatedDate (default sort)
+			if (searchDTO.getSortBy() == null || searchDTO.getSortBy().equalsIgnoreCase("updateddate")){
+				applySorting(builder, query, TaskModel.FIELD_UPDATED_DATE,
+						true, rootModelType);
+			}
+			//sort by payer country name
+			if (searchDTO.getSortBy() != null && searchDTO.getSortBy().equalsIgnoreCase("payercountry")){
+				if (CountryModel.FIELD_COUNTRY_NAME != null) {					
+					Join<TaskModel, ConsentAnnexModel> conAnnexIdJoin1= rootModelType.join(
+							TaskModel.FIELD_CONS);
+					Join<ConsentAnnexModel,CountryModel> cntryJoin1= conAnnexIdJoin1.join(
+							ConsentAnnexModel.FIELD_PAYERCOUNTRY);
+					buildSortingOrder(builder, cntryJoin1, CountryModel.FIELD_COUNTRY_NAME,
+							searchDTO.isSortDescending(), sortOrders);
+					applySorting(builder, query, sortOrders);
+				}
+				
+			}
+			
+			//sort by last name
+			if (searchDTO.getSortBy() != null && searchDTO.getSortBy().equalsIgnoreCase("lastname")){
+				
+				if (BusinessProfileModel.FIELD_LAST_NAME != null) {					
+					Join<TaskModel, ConsentAnnexModel> conAnnexIdJoin1= rootModelType.join(
+							TaskModel.FIELD_CONS);
+					Join<ConsentAnnexModel,BusinessProfileModel> bpIdJoin1= conAnnexIdJoin1.join(
+							ConsentAnnexModel.FIELD_BPID);
+					buildSortingOrder(builder, bpIdJoin1, BusinessProfileModel.FIELD_LAST_NAME,
+							searchDTO.isSortDescending(), sortOrders);
+					applySorting(builder, query, sortOrders);
+				}
+								
+			}
+			//sort first name
+			if (searchDTO.getSortBy() != null && searchDTO.getSortBy().equalsIgnoreCase("firstname")){
+				if (BusinessProfileModel.FIELD_FIRST_NAME != null) {					
+					Join<TaskModel, ConsentAnnexModel> conAnnexIdJoin1= rootModelType.join(
+							TaskModel.FIELD_CONS);
+					Join<ConsentAnnexModel,BusinessProfileModel> bpIdJoin1= conAnnexIdJoin1.join(
+							ConsentAnnexModel.FIELD_BPID);
+					buildSortingOrder(builder, bpIdJoin1, BusinessProfileModel.FIELD_FIRST_NAME,
+							searchDTO.isSortDescending(), sortOrders);
+					applySorting(builder, query, sortOrders);
+				}
+			}
+			
+			//sort by profile country name
+			if (searchDTO.getSortBy() != null && searchDTO.getSortBy().equalsIgnoreCase("profilecountry")){
+				if (CountryModel.FIELD_COUNTRY_NAME != null) {					
+					Join<TaskModel, ConsentAnnexModel> conAnnexIdJoin1= rootModelType.join(
+							TaskModel.FIELD_CONS);
+					Join<ConsentAnnexModel,CountryModel> cntryJoin1= conAnnexIdJoin1.join(
+							ConsentAnnexModel.FIELD_PROFILECOUNTRY);
+					buildSortingOrder(builder, cntryJoin1, CountryModel.FIELD_COUNTRY_NAME,
+							searchDTO.isSortDescending(), sortOrders);
+					applySorting(builder, query, sortOrders);
+				}
+				
+			}
+			
+			//sort consent name
+			if (searchDTO.getSortBy() != null && searchDTO.getSortBy().equalsIgnoreCase("consentstaus")){
+				
+				if (ConsentLovModel.FIELD_CONSENT_NAME != null) {					
+					Join<TaskModel, ConsentAnnexModel> conAnnexIdJoin1= rootModelType.join(
+							TaskModel.FIELD_CONS);
+					Join<ConsentAnnexModel,ConsentLovModel> cncntJoin1= conAnnexIdJoin1.join(
+							ConsentAnnexModel.FIELD_CONSENT);
+					buildSortingOrder(builder, cncntJoin1, ConsentLovModel.FIELD_CONSENT_NAME,
+							searchDTO.isSortDescending(), sortOrders);
+					applySorting(builder, query, sortOrders);
+				}
+			}
+			
+			//sort initiated by name
+			if (searchDTO.getSortBy() != null && searchDTO.getSortBy().equalsIgnoreCase("initiatedby")){
+				applySorting(builder, query, TaskModel.FIELD_CREATED_BY,
+						searchDTO.isSortDescending(), rootModelType);
+			}
+			
+			//sort event name
+			if (searchDTO.getSortBy() != null && searchDTO.getSortBy().equalsIgnoreCase("eventname")){
+								
+				if (ConsentAnnexModel.FIELD_EVENTNAME != null) {
+					Join<TaskModel, ConsentAnnexModel> conAnnexIdJoin= rootModelType.join(
+							TaskModel.FIELD_CONS);
+					buildSortingOrder(builder, conAnnexIdJoin, ConsentAnnexModel.FIELD_EVENTNAME,
+							searchDTO.isSortDescending(), sortOrders);
+					applySorting(builder, query, sortOrders);
+				}
+								
+			}
+			
+			
+			
+			//search task id  from task page
+			
+			/*if(searchDTO.getTaskId() != null){
+				String taskID=searchDTO.getTaskId();					
+				Expression<String> idkey= rootModelType.get(TaskModel.FIELD_TASK_ID).as(String.class);
+				Predicate idPredicate =  builder.like(idkey,taskID+"%");					 
+				andPredicates.add(idPredicate);
+			}
+			//sort task id 
+			if (searchDTO.getSortBy() != null && searchDTO.getSortBy().equalsIgnoreCase("taskid")){
+				applySorting(builder, query, TaskModel.FIELD_TASK_ID,
+						searchDTO.isSortDescending(), rootModelType);
+			}*/
+			//search trid  from task page
+			/*if(searchDTO.getTrId() != null){
+				String trid=searchDTO.getTrId();
+				Path<TaskModel> pathTaskModel=rootModelType.get(TaskModel.FIELD_CONS);
+				Subquery<TaskModel> subquryTask=query.subquery(TaskModel.class);
+				Root<ConsentAnnexModel> rootConsentAnnex=subquryTask.from(ConsentAnnexModel.class);					
+				Path<ConsentAnnexModel> pathConsentAnnexModel=rootConsentAnnex.get(ConsentAnnexModel.FIELD_BPID);
+				Subquery<ConsentAnnexModel> subqueryConsentAnnex=query.subquery(ConsentAnnexModel.class);
+				Root<BusinessProfileModel> rootBusinessProfile=subqueryConsentAnnex.from(BusinessProfileModel.class);
+				Expression<String> idkey= rootBusinessProfile.get(BusinessProfileModel.FIELD_BP_ID).as(String.class);
+				Predicate predicateBpId = builder.like(idkey, trid+"%");	
+				subqueryConsentAnnex.where(predicateBpId);
+				subqueryConsentAnnex = subqueryConsentAnnex.select(rootBusinessProfile.get(BusinessProfileModel.FIELD_BP_ID));					
+				Predicate predicateBusinessID=builder.in(pathConsentAnnexModel).value(subqueryConsentAnnex);					
+				subquryTask.where(predicateBusinessID);
+				subquryTask = subquryTask.select(rootConsentAnnex.get(ConsentAnnexModel.FIELD_ID));
+				Predicate predicate=builder.in(pathTaskModel).value(subquryTask);
+				andPredicates.add(predicate);
+			}
+			//sort tr id 
+			if (searchDTO.getSortBy() != null && searchDTO.getSortBy().equalsIgnoreCase("trid")){
+								
+				applySorting(builder, query, BusinessProfileModel.FIELD_BP_ID,
+						searchDTO.isSortDescending(), rootModelType);
+			}*/
 			
 			Predicate andPredicate = null;
 			if (andPredicates != null && !andPredicates.isEmpty()) {
@@ -332,8 +463,18 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			LOG.debug("Inside method findUserSpecificTask");
 			StopWatch timer = new StopWatch();
 	        timer.start();
-	        String pageNo=searchDTO.getPageNumber();
-	        String pageSz=searchDTO.getPageSize();
+	        String pageNo=null;
+	        String pageSz=null;
+	        if(searchDTO.getPageNumber()!=null){
+	        	pageNo=searchDTO.getPageNumber();
+	        }else{
+	        	pageNo="1";
+	        }
+	        if(searchDTO.getPageSize()!=null){
+	        	pageSz=searchDTO.getPageSize();
+	        }else{
+	        	pageSz="6";	
+	        }
 	        int pageNumber=Integer.parseInt(pageNo);
 	        int pageSize=Integer.parseInt(pageSz);
 	        int firstIndex=pageSize*(pageNumber - 1);
@@ -351,10 +492,10 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			if (deleteFilter != null) {
 				query.where(deleteFilter);
 			}
-			String sortByField = sortByField();
+			/*String sortByField = sortByField();
 			if (sortByField != null){
 				applySorting(builder, query, sortByField, sortDescending(), root);
-			}
+			}*/
 			CriteriaQuery<TaskModel> select = query.select(root);
 			TypedQuery<TaskModel> typedQuery = entityManager.createQuery(select);
 			typedQuery.setFirstResult(firstIndex);
@@ -363,8 +504,8 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
 			Root<TaskModel> countRoot = countQuery.from(query.getResultType());
 			countQuery.where(wherePredicate);
-			doJoins(root.getJoins(), countRoot);
-			doJoinsOnFetches(root.getFetches(), countRoot);
+			//doJoins(root.getJoins(), countRoot);
+			//doJoinsOnFetches(root.getFetches(), countRoot);
 			countQuery.select(builder.countDistinct(countRoot));			
 			//countQuery.distinct(true);
 			TypedQuery<Long> typedCountQuery = entityManager.createQuery(countQuery);
@@ -428,8 +569,18 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			LOG.debug("Inside method findCountry Specific task");
 			StopWatch timer = new StopWatch();
 	        timer.start();
-	        String pageNo=searchDTO.getPageNumber();
-	        String pageSz=searchDTO.getPageSize();
+	        String pageNo=null;
+	        String pageSz=null;
+	        if(searchDTO.getPageNumber()!=null){
+	        	pageNo=searchDTO.getPageNumber();
+	        }else{
+	        	pageNo="1";
+	        }
+	        if(searchDTO.getPageSize()!=null){
+	        	pageSz=searchDTO.getPageSize();
+	        }else{
+	        	pageSz="6";	
+	        }
 	        int pageNumber=Integer.parseInt(pageNo);
 	        int pageSize=Integer.parseInt(pageSz);
 	        int firstIndex=pageSize*(pageNumber - 1);
@@ -447,10 +598,10 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			if (deleteFilter != null) {
 				query.where(deleteFilter);
 			}
-			String sortByField = sortByField();
+			/*String sortByField = sortByField();
 			if (sortByField != null){
 				applySorting(builder, query, sortByField, sortDescending(), root);
-			}
+			}*/
 			CriteriaQuery<TaskModel> select = query.select(root);
 			TypedQuery<TaskModel> typedQuery = entityManager.createQuery(select);
 			typedQuery.setFirstResult(firstIndex);
@@ -459,8 +610,8 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
 			Root<TaskModel> countRoot = countQuery.from(query.getResultType());
 			countQuery.where(wherePredicate);
-			doJoins(root.getJoins(), countRoot);
-			doJoinsOnFetches(root.getFetches(), countRoot);
+			//doJoins(root.getJoins(), countRoot);
+			//doJoinsOnFetches(root.getFetches(), countRoot);
 			countQuery.select(builder.countDistinct(countRoot));			
 			//countQuery.distinct(true);
 			TypedQuery<Long> typedCountQuery = entityManager.createQuery(countQuery);
@@ -552,6 +703,46 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 	 */
 	public Boolean sortDescending() {
 		return true;
+	}
+	/**
+	 * Configures the sort property.
+	 * @param builder
+	 * 		(CriteriaBuilder) - The builder criteria of type TaskModel representation
+	 * @param join
+	 * 		(Join<?, ?>) - The join criteria of type TaskModel representation
+	 * @param sortProperty
+	 * 		(String) - The sort property criteria of type TaskModel representation
+	 * @param sortDescending
+	 * 		(Boolean) - The sorting order criteria of type TaskModel representation
+	 * @param sortOrders
+	 * 		(List<Order>) - The sorting order criteria of type TaskModel representation
+	 */
+
+  
+  private void buildSortingOrder(CriteriaBuilder builder,
+			Join<?, ?> join, String sortProperty, Boolean sortDescending, List<Order> sortOrders) {
+		Expression<String> sortPropertyExp = join.<String> get(sortProperty);
+		if (sortDescending) {
+			sortOrders.add(builder.desc(builder.upper(sortPropertyExp)));
+		} else {
+			sortOrders.add(builder.asc(builder.upper(sortPropertyExp)));
+		}
+	}
+  
+  /**
+	 * Applies sorting for all the orders.
+	 * @param builder
+	 * 		(CriteriaBuilder) - The builder criteria of type TaskModel representation
+	 * @param query
+	 * 	(CriteriaQuery<TaskModel>) - The query criteria of type TaskModel representation
+	 * @param sortOrders
+	 * 		(List<Order>) - The order list criteria of type TaskModel representation
+	 */
+  private void applySorting(CriteriaBuilder builder,
+			CriteriaQuery<TaskModel> query, List<Order> sortOrders) {
+		if (sortOrders != null && !sortOrders.isEmpty()) {
+			query.orderBy(sortOrders);
+		}
 	}
 	
 	/**
