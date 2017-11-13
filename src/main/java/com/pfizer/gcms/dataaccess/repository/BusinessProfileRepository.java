@@ -109,7 +109,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 				}
 				if(speciality != null && !speciality.equals("speciality")){
 					speciality = '%'+speciality+'%';
-					searchBPQuery = searchBPQuery + " and SPECIALITY = "+speciality;
+					searchBPQuery = searchBPQuery + " and UPPER(SPECIALITY) LIKE UPPER('"+speciality.trim()+"')";
 				
 				}
 				PreparedStatement pStmt = conn.prepareStatement(searchBPQuery);

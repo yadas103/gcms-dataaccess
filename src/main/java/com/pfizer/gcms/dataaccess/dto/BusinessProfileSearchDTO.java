@@ -21,7 +21,7 @@ public class BusinessProfileSearchDTO extends BaseSearchDTO<BusinessProfileModel
 	private String country;
 	private String address;
 	private String city;
-	private String region;
+	private String speciality;
 	private BigDecimal id;
 	private BigDecimal[] ids;
 
@@ -97,11 +97,11 @@ public class BusinessProfileSearchDTO extends BaseSearchDTO<BusinessProfileModel
 		this.city = city;
 	}
 
-	public String getRegion() {
-		return region;
+	public String getSpeciality() {
+		return speciality;
 	}
 
-	public void setRegion(String region) {
-		this.region = region;
+	public void setSpeciality(String speciality) {
+		this.speciality = speciality;
 	}
 }
