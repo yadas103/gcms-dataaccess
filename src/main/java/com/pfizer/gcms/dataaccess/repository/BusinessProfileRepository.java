@@ -57,8 +57,8 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public  List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,BigDecimal id ) throws Exception {
-		LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,BigDecimal id )" );
+	public  List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality ) throws Exception {
+		LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality )" );
 		BigDecimal zero = BigDecimal.ZERO;
 			if (name == null || name.trim().isEmpty()) {
 				String message = "Invalid Country Name";
@@ -107,9 +107,9 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 					searchBPQuery = searchBPQuery + " and UPPER(ADDR_LN_1_TXT) LIKE UPPER('"+address.trim()+"')";
 				
 				}
-				if(id != null && id != zero){
-					
-					searchBPQuery = searchBPQuery + " and BP_ID = "+id;
+				if(speciality != null && !speciality.equals("speciality")){
+					speciality = '%'+speciality+'%';
+					searchBPQuery = searchBPQuery + " and SPECIALITY = "+speciality;
 				
 				}
 				PreparedStatement pStmt = conn.prepareStatement(searchBPQuery);

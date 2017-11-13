@@ -832,7 +832,7 @@ public abstract class AbstractRepository<ModelType extends BaseModel> implements
 		return null;
 	}
 
-	public List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,BigDecimal id)
+	public List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality)
 			throws Exception {
 		return null;
 	}
