@@ -66,7 +66,7 @@ public abstract class AbstractModel implements  BaseModel {
 	@Column(name = "CRTD_BY")
 	protected String 	createdBy;
 	
-	@Column(name = "UPDTD_DT", insertable = false, updatable = true)
+	@Column(name = "UPDTD_DT", insertable = true, updatable = true)
 	private Date	updatedDate;
 	
 	@Column(name = "UPDTD_BY")
