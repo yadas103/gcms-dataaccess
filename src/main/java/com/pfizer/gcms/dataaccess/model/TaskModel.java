@@ -103,18 +103,18 @@ public class TaskModel extends AbstractModel {
 	}
 
 
-
-
-	public String getAssignedto() {
+	public UserModelNew getAssignedto() {
 		return assignedto;
 	}
 
 
 
 
-	public void setAssignedto(String assignedto) {
+	public void setAssignedto(UserModelNew assignedto) {
 		this.assignedto = assignedto;
 	}
+
+
 
 
 
