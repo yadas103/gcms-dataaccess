@@ -30,6 +30,7 @@ import com.pfizer.gcms.dataaccess.model.ConsentAnnexModel;
 import com.pfizer.gcms.dataaccess.model.ConsentLovModel;
 import com.pfizer.gcms.dataaccess.model.CountryModel;
 import com.pfizer.gcms.dataaccess.model.TaskModel;
+import com.pfizer.gcms.dataaccess.model.UserModelNew;
 
 /**
  * @author khans129
@@ -539,10 +540,20 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			List<Predicate> andPredicates = new ArrayList<Predicate>();
 			
 			//search assigned user specific task 
-			if(assign !=null){							
+			/*if(assign !=null){							
 				Predicate assignPredicate = builder.equal(builder.lower(rootModelType.get(TaskModel.FIELD_ASSIGNED_TO)), assign.toLowerCase());
 				andPredicates.add(assignPredicate);
-			}
+			}*/
+			if(assign !=null){			
+				Path<TaskModel> pathTaskModel=rootModelType.get(TaskModel.FIELD_ASSIGNED_TO);
+				Subquery<TaskModel> subqueryTask=query.subquery(TaskModel.class);
+				Root<UserModelNew> rootUserModel=subqueryTask.from(UserModelNew.class);					
+				Predicate eventpredicate = builder.equal(builder.lower(rootUserModel.get(UserModelNew.FIELD_USERNAME)), assign.toLowerCase());					
+				subqueryTask.where(eventpredicate);
+				subqueryTask = subqueryTask.select(rootUserModel.get(UserModelNew.FIELD_USERNAME));
+				Predicate predicate=builder.in(pathTaskModel).value(subqueryTask);
+				andPredicates.add(predicate);
+				}
 			
 			//search user provided field
 			Predicate otherPredicate= buildSearchCriteriaPredicate(builder,
