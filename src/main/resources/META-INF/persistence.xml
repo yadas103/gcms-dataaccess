@@ -85,6 +85,7 @@
 		<class>com.pfizer.gcms.dataaccess.model.TablesModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.TransactionAttendeeModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.UniqueIdLovModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.UserModelNew</class>		
 		<class>com.pfizer.gcms.dataaccess.model.UserModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.ProfileRequestModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.UserProfileModel</class>
@@ -123,13 +124,7 @@
 		<class>com.pfizer.gcms.dataaccess.model.CoveredRecipientRoleLovModel</class>
 		
 		<!-- Oracle Configurations -->
-		<properties>
-			<!-- <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@amrndhl1081.pfizer.com:1535:hcpd1" />
-			<property name="javax.persistence.jdbc.user" value="TR_PORTAL" />
-			<property name="javax.persistence.jdbc.password" value="Saturn#485" /> -->
-		
-			<!-- <property name="hibernate.connect.datasource" value="jdbc/TRSDS"/> -->
+		<properties>			
 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
