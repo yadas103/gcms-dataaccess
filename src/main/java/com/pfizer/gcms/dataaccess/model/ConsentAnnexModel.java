@@ -84,6 +84,11 @@ public class ConsentAnnexModel extends AbstractModel {
 
 	@Column(name = "REVOCATION_REASON_DOC")
 	private String revocationDocLink;
+	
+	@Column(name = "CONSENT_STATUS_CHANGE_REASON")
+	private String consentstatuschangeReason;
+
+	
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "BP_ID", referencedColumnName = "BP_ID")
@@ -234,5 +239,11 @@ public class ConsentAnnexModel extends AbstractModel {
 	public void setRevocationDocLink(String revocationDocLink) {
 		this.revocationDocLink = revocationDocLink;
 	}
+	public String getConsentstatuschangeReason() {
+		return consentstatuschangeReason;
+	}
 
+	public void setConsentstatuschangeReason(String consentstatuschangeReason) {
+		this.consentstatuschangeReason = consentstatuschangeReason;
+	}
 }
