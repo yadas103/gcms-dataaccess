@@ -50,8 +50,7 @@ public class TaskModel extends AbstractModel {
 	private ConsentAnnexModel consannexid;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ASSIGNED_TO", referencedColumnName = "USRNM",insertable = true, updatable = true)	
-	@Cascade({CascadeType.ALL})	
+	@JoinColumn(name = "ASSIGNED_TO", referencedColumnName = "USRNM")	
 	private UserModelNew assignedto;
 	
 	@Column(name = "TASK_STATUS")
