@@ -1,5 +1,4 @@
 package com.pfizer.gcms.dataaccess.model;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
