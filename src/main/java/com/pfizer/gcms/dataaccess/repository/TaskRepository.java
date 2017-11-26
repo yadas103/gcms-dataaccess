@@ -13,6 +13,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -139,6 +140,10 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 		if (sortByField != null){
 			applySorting(builder, query, sortByField, sortDescending(), root);
 		}*/
+		//doJoins(root.getJoins(), root);
+		root.fetch(TaskModel.FIELD_CONS,JoinType.INNER);
+		root.fetch(TaskModel.FIELD_ASSIGNED_TO,JoinType.INNER);
+		
 		CriteriaQuery<TaskModel> select = query.select(root);
 		TypedQuery<TaskModel> typedQuery = entityManager.createQuery(select);
 		typedQuery.setFirstResult(firstIndex);

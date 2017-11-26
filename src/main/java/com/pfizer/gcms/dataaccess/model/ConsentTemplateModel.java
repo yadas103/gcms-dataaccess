@@ -14,6 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 /**
  * @author VENKAD09 ConsentTemplateModel is a POJO classes,annotated with
  *         hibernate mappings and they are responsible for holding instances of
@@ -34,7 +37,8 @@ public class ConsentTemplateModel extends AbstractModel {
 	@Column(name = "COSN_TMPL_ID")
 	private BigDecimal id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY) 
+	@Fetch(FetchMode.JOIN)
 	@JoinColumn(name = "CNTRY_ID", referencedColumnName = "CNTRY_ID")
 	private CountryModel cntry_id;
 

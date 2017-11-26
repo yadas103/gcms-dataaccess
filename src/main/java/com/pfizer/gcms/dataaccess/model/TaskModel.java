@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -44,12 +45,12 @@ public class TaskModel extends AbstractModel {
 	@Column(name = "TASK_ID")
 	private BigDecimal	id;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne/*(fetch = FetchType.LAZY)*/
 	@JoinColumn(name = "COSN_ANNEX_ID", referencedColumnName = "COSN_ANNEX_ID",insertable = true, updatable = true)	
 	@Cascade({CascadeType.ALL})
 	private ConsentAnnexModel consannexid;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne/*(fetch = FetchType.LAZY)*/
 	@JoinColumn(name = "ASSIGNED_TO", referencedColumnName = "USRNM")	
 	private UserModelNew assignedto;
 	

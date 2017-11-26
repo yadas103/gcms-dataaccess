@@ -15,6 +15,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 /**
  * @author khans129 ConsentAnnex is a POJO classes,annotated with hibernate
  *         mappings and they are responsible for holding instances of data
@@ -39,15 +42,15 @@ public class ConsentAnnexModel extends AbstractModel {
 	@Column(name = "COSN_ANNEX_ID")
 	private BigDecimal id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PAYER_COUNTRY", referencedColumnName = "CNTRY_ID")
+	@ManyToOne/*(fetch = FetchType.LAZY)*///commented to improve task page performance
+	@JoinColumn(name = "PAYER_COUNTRY", referencedColumnName = "CNTRY_ID")	
 	private CountryModel payercountry;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne/*(fetch = FetchType.LAZY)*///commented to improve task page performance
 	@JoinColumn(name = "PROFILE_COUNTRY", referencedColumnName = "CNTRY_ID")
 	private CountryModel profilecountry;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne/*(fetch = FetchType.LAZY)*///commented to improve task page performance
 	@JoinColumn(name = "COSN_TMPL_ID", referencedColumnName = "COSN_TMPL_ID")
 	private ConsentTemplateModel tmpl_id;
 
@@ -89,11 +92,11 @@ public class ConsentAnnexModel extends AbstractModel {
 
 	
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne/*(fetch = FetchType.LAZY)*///commented to improve task page performance
 	@JoinColumn(name = "BP_ID", referencedColumnName = "BP_ID")
 	private BusinessProfileModel bpid;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne/*(fetch = FetchType.LAZY)*///commented to improve task page performance
 	@JoinColumn(name = "CONSENT_STATUS", referencedColumnName = "CNSN_STS_ID")
 	private ConsentLovModel consentstatus;
 
