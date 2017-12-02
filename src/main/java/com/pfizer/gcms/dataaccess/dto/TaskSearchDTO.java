@@ -22,6 +22,7 @@ public class TaskSearchDTO {
 	public static final String FIELD_PAGESIZE = "pageSize";
 	public static final String FIELD_EVENTNAME = "eventName";
 	public static final String FIELD_INITIATEDBY = "initiatedBy";
+	public static final String FIELD_UPDATEDDATE = "updateddate";
 	public static final String FIELD_PROFILE_COUNTRY = "profilecountry";
 	public static final String FIELD_PAYER_COUNTRY = "payercountry";
 	public static final String FIELD_SORTBY = "sortBy";
@@ -36,6 +37,7 @@ public class TaskSearchDTO {
 	private String pageSize;
 	private String eventName;
 	private String initiatedBy;
+	private String updateddate;
 	private String profilecountry;
 	private String payercountry;
 	private String sortBy;
@@ -117,7 +119,12 @@ public class TaskSearchDTO {
 	public void setSortDescending(boolean sortDescending) {
 		this.sortDescending = sortDescending;
 	}
-	
+	public String getUpdateddate() {
+		return updateddate;
+	}
+	public void setUpdateddate(String updateddate) {
+		this.updateddate = updateddate;
+	}
 	
 	
 }

@@ -33,6 +33,8 @@ public class UserModelNew extends AbstractModel {
 	 * The constant user name.
 	 */
 	public static final String FIELD_USERNAME = "userName";
+	
+	public static final String FIELD_FIRSTNAME = "firstName";
 	/**
 	 * The serial version UID.
 	 */

@@ -304,11 +304,30 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 				Predicate predicate=builder.in(pathTaskModel).value(subqueryTask);
 				andPredicates.add(predicate);
 				}
-			//search initiated by name  from task page
+			/*//search initiated by name  from task page
 			if(searchDTO.getInitiatedBy() != null){
 				String initiatedBy=searchDTO.getInitiatedBy();
 				Predicate initiatedPredicate =  builder.like(builder.lower(rootModelType.get(TaskModel.FIELD_CREATED_BY)), initiatedBy.toLowerCase()+"%");					 
 				andPredicates.add(initiatedPredicate);
+			}*/
+			//search initiated by name  from task page			
+			if(searchDTO.getInitiatedBy() !=null){
+				String initiatedBy=searchDTO.getInitiatedBy();
+				Path<TaskModel> pathTaskModel=rootModelType.get(TaskModel.FIELD_ASSIGNED_TO);
+				Subquery<TaskModel> subqueryTask=query.subquery(TaskModel.class);
+				Root<UserModelNew> rootConsentAnnex=subqueryTask.from(UserModelNew.class);					
+				Predicate inipredicate = builder.like(builder.lower(rootConsentAnnex.get(UserModelNew.FIELD_FIRSTNAME)), initiatedBy.toLowerCase()+"%");					
+				subqueryTask.where(inipredicate);
+				subqueryTask = subqueryTask.select(rootConsentAnnex.get(UserModelNew.FIELD_USERNAME));
+				Predicate predicate=builder.in(pathTaskModel).value(subqueryTask);
+				andPredicates.add(predicate);
+				}
+			//search updated date  from task page			
+			if(searchDTO.getUpdateddate() != null){
+				String date=searchDTO.getUpdateddate();					
+				Expression<String> idkey= rootModelType.get(TaskModel.FIELD_UPDATED_DATE).as(String.class);
+				Predicate datePredicate =  builder.like(idkey,date+"%");					 
+				andPredicates.add(datePredicate);
 			}
 			
 			//Server side sorting
@@ -316,7 +335,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			//sort by updatedDate (default sort)
 			if (searchDTO.getSortBy() == null || searchDTO.getSortBy().equalsIgnoreCase("updateddate")){
 				applySorting(builder, query, TaskModel.FIELD_UPDATED_DATE,
-						true, rootModelType);
+						searchDTO.isSortDescending(), rootModelType);
 			}
 			//sort by payer country name
 			if (searchDTO.getSortBy() != null && searchDTO.getSortBy().equalsIgnoreCase("payercountry")){
@@ -388,10 +407,22 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			}
 			
 			//sort initiated by name
+			if (searchDTO.getSortBy() != null && searchDTO.getSortBy().equalsIgnoreCase("initiatedby")){				
+				if (UserModelNew.FIELD_FIRSTNAME != null) {
+					Join<TaskModel, UserModelNew> conAnnexIdJoin= rootModelType.join(
+							TaskModel.FIELD_ASSIGNED_TO);
+					buildSortingOrder(builder, conAnnexIdJoin, UserModelNew.FIELD_FIRSTNAME,
+							searchDTO.isSortDescending(), sortOrders);
+					applySorting(builder, query, sortOrders);
+				}
+								
+			}
+			/*
+			
 			if (searchDTO.getSortBy() != null && searchDTO.getSortBy().equalsIgnoreCase("initiatedby")){
 				applySorting(builder, query, TaskModel.FIELD_CREATED_BY,
 						searchDTO.isSortDescending(), rootModelType);
-			}
+			}*/
 			
 			//sort event name
 			if (searchDTO.getSortBy() != null && searchDTO.getSortBy().equalsIgnoreCase("eventname")){
@@ -502,6 +533,8 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			if (sortByField != null){
 				applySorting(builder, query, sortByField, sortDescending(), root);
 			}*/
+			root.fetch(TaskModel.FIELD_CONS,JoinType.INNER);
+			root.fetch(TaskModel.FIELD_ASSIGNED_TO,JoinType.INNER);
 			CriteriaQuery<TaskModel> select = query.select(root);
 			TypedQuery<TaskModel> typedQuery = entityManager.createQuery(select);
 			typedQuery.setFirstResult(firstIndex);
@@ -618,6 +651,8 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			if (sortByField != null){
 				applySorting(builder, query, sortByField, sortDescending(), root);
 			}*/
+			root.fetch(TaskModel.FIELD_CONS,JoinType.INNER);
+			root.fetch(TaskModel.FIELD_ASSIGNED_TO,JoinType.INNER);
 			CriteriaQuery<TaskModel> select = query.select(root);
 			TypedQuery<TaskModel> typedQuery = entityManager.createQuery(select);
 			typedQuery.setFirstResult(firstIndex);
