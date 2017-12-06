@@ -3,6 +3,7 @@ package com.pfizer.gcms.dataaccess.repository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -210,7 +211,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 				Path<ConsentAnnexModel> pathConsentAnnexModel=rootConsentAnnex.get(ConsentAnnexModel.FIELD_PAYERCOUNTRY);
 				Subquery<ConsentAnnexModel> subqueryConsentAnnex=query.subquery(ConsentAnnexModel.class);
 				Root<CountryModel> rootCountry=subqueryConsentAnnex.from(CountryModel.class);
-				Predicate predicateCountryName = builder.like(builder.lower(rootCountry.get(CountryModel.FIELD_COUNTRY_NAME)), country.toLowerCase()+"%");	
+				Predicate predicateCountryName = builder.like(builder.lower(rootCountry.get(CountryModel.FIELD_COUNTRY_NAME)), "%"+country.toLowerCase()+"%");	
 				subqueryConsentAnnex.where(predicateCountryName);
 				subqueryConsentAnnex = subqueryConsentAnnex.select(rootCountry.get(CountryModel.FIELD_COUNTRY_ID));					
 				Predicate predicateConsentID=builder.in(pathConsentAnnexModel).value(subqueryConsentAnnex);					
@@ -228,7 +229,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 				Path<ConsentAnnexModel> pathConsentAnnexModel=rootConsentAnnex.get(ConsentAnnexModel.FIELD_BPID);
 				Subquery<ConsentAnnexModel> subqueryConsentAnnex=query.subquery(ConsentAnnexModel.class);
 				Root<BusinessProfileModel> rootBusinessProfile=subqueryConsentAnnex.from(BusinessProfileModel.class);
-				Predicate predicateLastName = builder.like(builder.lower(rootBusinessProfile.get(BusinessProfileModel.FIELD_LAST_NAME)), lastname.toLowerCase()+"%");	
+				Predicate predicateLastName = builder.like(builder.lower(rootBusinessProfile.get(BusinessProfileModel.FIELD_LAST_NAME)), "%"+lastname.toLowerCase()+"%");	
 				subqueryConsentAnnex.where(predicateLastName);
 				subqueryConsentAnnex = subqueryConsentAnnex.select(rootBusinessProfile.get(BusinessProfileModel.FIELD_BP_ID));					
 				Predicate predicateBusinessID=builder.in(pathConsentAnnexModel).value(subqueryConsentAnnex);					
@@ -246,7 +247,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 				Path<ConsentAnnexModel> pathConsentAnnexModel=rootConsentAnnex.get(ConsentAnnexModel.FIELD_BPID);
 				Subquery<ConsentAnnexModel> subqueryConsentAnnex=query.subquery(ConsentAnnexModel.class);
 				Root<BusinessProfileModel> rootBusinessProfile=subqueryConsentAnnex.from(BusinessProfileModel.class);
-				Predicate predicateFirstName = builder.like(builder.lower(rootBusinessProfile.get(BusinessProfileModel.FIELD_FIRST_NAME)), firstname.toLowerCase()+"%");	
+				Predicate predicateFirstName = builder.like(builder.lower(rootBusinessProfile.get(BusinessProfileModel.FIELD_FIRST_NAME)), "%"+firstname.toLowerCase()+"%");	
 				subqueryConsentAnnex.where(predicateFirstName);
 				subqueryConsentAnnex = subqueryConsentAnnex.select(rootBusinessProfile.get(BusinessProfileModel.FIELD_BP_ID));					
 				Predicate predicateBusinessID=builder.in(pathConsentAnnexModel).value(subqueryConsentAnnex);					
@@ -265,7 +266,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 				Path<ConsentAnnexModel> pathConsentAnnexModel=rootConsentAnnex.get(ConsentAnnexModel.FIELD_PROFILECOUNTRY);
 				Subquery<ConsentAnnexModel> subqueryConsentAnnex=query.subquery(ConsentAnnexModel.class);
 				Root<CountryModel> rootCountry=subqueryConsentAnnex.from(CountryModel.class);
-				Predicate predicateCountryName = builder.like(builder.lower(rootCountry.get(CountryModel.FIELD_COUNTRY_NAME)), country.toLowerCase()+"%");	
+				Predicate predicateCountryName = builder.like(builder.lower(rootCountry.get(CountryModel.FIELD_COUNTRY_NAME)), "%"+country.toLowerCase()+"%");	
 				subqueryConsentAnnex.where(predicateCountryName);
 				subqueryConsentAnnex = subqueryConsentAnnex.select(rootCountry.get(CountryModel.FIELD_COUNTRY_ID));					
 				Predicate predicateConsentID=builder.in(pathConsentAnnexModel).value(subqueryConsentAnnex);					
@@ -283,7 +284,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 				Path<ConsentAnnexModel> pathConsentAnnexModel=rootConsentAnnex.get(ConsentAnnexModel.FIELD_CONSENT);
 				Subquery<ConsentAnnexModel> subqueryConsentAnnex=query.subquery(ConsentAnnexModel.class);
 				Root<ConsentLovModel> rootConsentLov=subqueryConsentAnnex.from(ConsentLovModel.class);
-				Predicate predicateConsentName = builder.like(builder.lower(rootConsentLov.get(ConsentLovModel.FIELD_CONSENT_NAME)), consentstatus.toLowerCase()+"%");	
+				Predicate predicateConsentName = builder.like(builder.lower(rootConsentLov.get(ConsentLovModel.FIELD_CONSENT_NAME)), "%"+consentstatus.toLowerCase()+"%");	
 				subqueryConsentAnnex.where(predicateConsentName);
 				subqueryConsentAnnex = subqueryConsentAnnex.select(rootConsentLov.get(ConsentLovModel.FIELD_CONSENT_STS_ID));					
 				Predicate predicateConsentID=builder.in(pathConsentAnnexModel).value(subqueryConsentAnnex);					
@@ -298,7 +299,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 				Path<TaskModel> pathTaskModel=rootModelType.get(TaskModel.FIELD_CONS);
 				Subquery<TaskModel> subqueryTask=query.subquery(TaskModel.class);
 				Root<ConsentAnnexModel> rootConsentAnnex=subqueryTask.from(ConsentAnnexModel.class);					
-				Predicate eventpredicate = builder.like(builder.lower(rootConsentAnnex.get(ConsentAnnexModel.FIELD_EVENTNAME)), eventname.toLowerCase()+"%");					
+				Predicate eventpredicate = builder.like(builder.lower(rootConsentAnnex.get(ConsentAnnexModel.FIELD_EVENTNAME)), "%"+eventname.toLowerCase()+"%");					
 				subqueryTask.where(eventpredicate);
 				subqueryTask = subqueryTask.select(rootConsentAnnex.get(ConsentAnnexModel.FIELD_ID));
 				Predicate predicate=builder.in(pathTaskModel).value(subqueryTask);
@@ -313,20 +314,28 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			//search initiated by name  from task page			
 			if(searchDTO.getInitiatedBy() !=null){
 				String initiatedBy=searchDTO.getInitiatedBy();
+				List<Predicate> orPredicates = new ArrayList<Predicate>();
 				Path<TaskModel> pathTaskModel=rootModelType.get(TaskModel.FIELD_ASSIGNED_TO);
 				Subquery<TaskModel> subqueryTask=query.subquery(TaskModel.class);
 				Root<UserModelNew> rootConsentAnnex=subqueryTask.from(UserModelNew.class);					
-				Predicate inipredicate = builder.like(builder.lower(rootConsentAnnex.get(UserModelNew.FIELD_FIRSTNAME)), initiatedBy.toLowerCase()+"%");					
-				subqueryTask.where(inipredicate);
+				Predicate inipredicate1 = builder.like(builder.lower(rootConsentAnnex.get(UserModelNew.FIELD_FIRSTNAME)),"%"+initiatedBy.toLowerCase()+"%");
+				Predicate inipredicate2 = builder.like(builder.lower(rootConsentAnnex.get(UserModelNew.FIELD_USERNAME)), "%"+initiatedBy.toLowerCase()+"%");
+				Predicate inipredicate3 = builder.like(builder.lower(rootConsentAnnex.get(UserModelNew.FIELD_LASTNAME)), "%"+initiatedBy.toLowerCase()+"%");				
+				Predicate newpredicate=builder.or(inipredicate1,inipredicate2,inipredicate3);
+				subqueryTask.where(newpredicate);
 				subqueryTask = subqueryTask.select(rootConsentAnnex.get(UserModelNew.FIELD_USERNAME));
 				Predicate predicate=builder.in(pathTaskModel).value(subqueryTask);
 				andPredicates.add(predicate);
 				}
 			//search updated date  from task page			
 			if(searchDTO.getUpdateddate() != null){
-				String date=searchDTO.getUpdateddate();					
-				Expression<String> idkey= rootModelType.get(TaskModel.FIELD_UPDATED_DATE).as(String.class);
-				Predicate datePredicate =  builder.like(idkey,date+"%");					 
+				String date=searchDTO.getUpdateddate();
+				
+				Path<Date> path = rootModelType.get(TaskModel.FIELD_UPDATED_DATE);
+				Expression<String> dateStringExpr = builder.function("TO_CHAR", String.class, path, builder.literal("dd-MM-YYYY"));				
+				Predicate datePredicate =  builder.like(dateStringExpr, "%" + date + "%");				
+				/*Expression<String> idkey= rootModelType.get(TaskModel.FIELD_UPDATED_DATE).as(String.class);
+				Predicate datePredicate =  builder.like(idkey,date+"%");*/					 
 				andPredicates.add(datePredicate);
 			}
 			
