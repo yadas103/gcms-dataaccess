@@ -67,8 +67,17 @@ public class TaskModel extends AbstractModel {
 @Column(name = "DELETE_REASON_DESC")
 	private String 	deleteReasonDesc;
 	
-	
-	
+@Column(name = "REASSIGN_REASON ")
+private String 	reassignReason;
+@Column(name = "UNDELETE_REASON")
+private String 	undeleteReason;
+
+ 
+
+
+
+
+
 	/**
 	 * Default constructor.
 	 */
@@ -176,5 +185,29 @@ public class TaskModel extends AbstractModel {
 		this.deleteReasonDesc = deleteReasonDesc;
 	}
 
+	
+	public String getUndeleteReason() {
+	return undeleteReason;
+}
 
+
+
+
+public String getReassignReason() {
+		return reassignReason;
+	}
+
+
+
+
+	public void setReassignReason(String reassignReason) {
+		this.reassignReason = reassignReason;
+	}
+
+
+
+
+public void setUndeleteReason(String undeleteReason) {
+	this.undeleteReason = undeleteReason;
+}
 }
