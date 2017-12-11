@@ -89,8 +89,19 @@ public class ConsentAnnexModel extends AbstractModel {
 	
 	@Column(name = "CONSENT_STATUS_CHANGE_REASON")
 	private String consentstatuschangeReason;
+	
+	@Column(name = "EVENT_END_DATE")
+	private Date eventEndDate;
 
 	
+
+	public Date getEventEndDate() {
+		return eventEndDate;
+	}
+
+	public void setEventEndDate(Date eventEndDate) {
+		this.eventEndDate = eventEndDate;
+	}
 
 	@ManyToOne/*(fetch = FetchType.LAZY)*///commented to improve task page performance
 	@JoinColumn(name = "BP_ID", referencedColumnName = "BP_ID")
