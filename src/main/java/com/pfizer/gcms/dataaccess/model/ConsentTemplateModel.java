@@ -30,6 +30,10 @@ public class ConsentTemplateModel extends AbstractModel {
 	private static final long serialVersionUID = 1L;
 
 	public static final String FIELD_TMPL_CODE = "tmpl_code";
+	
+	public static final String FIELD_TMPL_STAT = "tmpl_status";
+	
+	public static final String FIELD_TMPL_ID = "id";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GCMS_SEQ")
@@ -68,6 +72,12 @@ public class ConsentTemplateModel extends AbstractModel {
 
 	@Column(name = "TMPL_STATUS")
 	private String tmpl_status;
+	
+	@Column(name = "CONSENT_CHK_FLAG")
+	private Character consentCheck;
+
+	@Column(name = "MANUAL_UPLOAD_TXT")
+	private String manualUpload;
 
 	@Column(name = "DELETE_FLAG")
 	private Character deleted;
@@ -75,6 +85,12 @@ public class ConsentTemplateModel extends AbstractModel {
 	@Column(name = "TMPL_DESC")
 	private String tmpl_desc;
 
+	@Column(name = "SIGNATURE_PAGE_NO")
+	private BigDecimal signPageNo;
+	
+	@Column(name = "CONSENT_PAGE_NO")
+	private BigDecimal consentPageNo;
+	
 	public BigDecimal getId() {
 		return id;
 	}
@@ -179,4 +195,40 @@ public class ConsentTemplateModel extends AbstractModel {
 		this.tmpl_desc = tmpl_desc;
 	}
 
+	
+
+	public Character getConsentCheck() {
+		return consentCheck;
+	}
+
+	public void setConsentCheck(Character consentCheck) {
+		this.consentCheck = consentCheck;
+	}
+
+	
+
+	public BigDecimal getSignPageNo() {
+		return signPageNo;
+	}
+
+	public void setSignPageNo(BigDecimal signPageNo) {
+		this.signPageNo = signPageNo;
+	}
+
+	public BigDecimal getConsentPageNo() {
+		return consentPageNo;
+	}
+
+	public void setConsentPageNo(BigDecimal consentPageNo) {
+		this.consentPageNo = consentPageNo;
+	}
+
+	public String getManualUpload() {
+		return manualUpload;
+	}
+
+	public void setManualUpload(String manualUpload) {
+		this.manualUpload = manualUpload;
+	}
+	
 }

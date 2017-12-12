@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -23,7 +24,79 @@ public class ConsentTemplateRepository extends AbstractRepository<ConsentTemplat
 		setModelType(ConsentTemplateModel.class);
 	}
 	
+
+	/**
+	 * Customized find method
+	 * @param 
+	 * @return ModelType
+	 * @throws Exception
+	 * 		
+	 */
 	
+	public List<ConsentTemplateModel> find() {
+		LOG.debug("Inside method find()");
+		StopWatch timer = new StopWatch();
+        timer.start();
+        
+		EntityManager entityManager = getEntityManager();
+		List<ConsentTemplateModel> models = null;
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<ConsentTemplateModel> query = builder.createQuery(getModelType());
+		Root<ConsentTemplateModel> root = query.from(getModelType());
+		Predicate deleteFilter = prepareSoftDeletePredicate(builder, root);
+		if (deleteFilter != null) {
+			query.where(deleteFilter);
+		}	
+/*		applySorting(builder, query, ConsentTemplateModel.FIELD_TMPL_STAT,
+				false, root);*/
+		String sortByField = sortByField();
+		if (sortByField != null){
+			applySorting(builder, query, sortByField, sortDescending(), root);
+		}
+		query.select(root);
+		models = entityManager.createQuery(query).getResultList();
+		
+		LOG.debug("#Performance#Repository#Total time took for find() operation is - " + timer.getTime());
+		return models;
+	}
+
+
+	/**
+	 * Informs whether sort by field need to be applied on which column.
+	 * If no sorting needed then returns null otherwise overrides the particular column.
+	 * @return the sort by field value
+	 */
+	public String sortByField() {
+		
+		return ConsentTemplateModel.FIELD_UPDATED_DATE;
+		//return null;
+		
+	}
+	/**
+	 * @return If true return decending order
+	 */
+	public Boolean sortDescending() {
+		return true;
+	}
+	
+	
+
+	
+	/**
+	 * Applies sorting for all the orders.
+	 * @param builder
+	 * 		(CriteriaBuilder) - The builder criteria of type TaskModel representation
+	 * @param query
+	 * 	(CriteriaQuery<TaskModel>) - The query criteria of type TaskModel representation
+	 * @param sortOrders
+	 * 		(List<Order>) - The order list criteria of type TaskModel representation
+	 */
+  private void applySorting(CriteriaBuilder builder,
+			CriteriaQuery<ConsentTemplateModel> query, List<Order> sortOrders) {
+		if (sortOrders != null && !sortOrders.isEmpty()) {
+			query.orderBy(sortOrders);
+		}
+	}
 	
 	/**
 	 * selim
