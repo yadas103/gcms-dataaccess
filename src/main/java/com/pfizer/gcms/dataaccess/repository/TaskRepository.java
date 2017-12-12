@@ -74,26 +74,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 		return ids;
 	}
 
-	/**
-	 * This method gets all task id from the task table Returns the collection
-	 * of all the ids
-	 * 
-	 * @return ArrayList<ids>
-	 */
-	public List<BigDecimal> findID() throws Exception {
-		LOG.debug("Inside method findID()");
-		StopWatch timer = new StopWatch();
-		timer.start();
-		EntityManager entityManager = getEntityManager();
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<BigDecimal> query = builder.createQuery(BigDecimal.class);
-		Root<TaskModel> root = query.from(getModelType());
-		query = query.select(root.<BigDecimal> get(TaskModel.FIELD_TASK_ID));
-		TypedQuery<BigDecimal> typedQuery = entityManager.createQuery(query);
-		List<BigDecimal> ids = (List<BigDecimal>) typedQuery.getResultList();
-		LOG.debug("#Performance#Repository#Total time took for find() operation is - " + timer.getTime());
-		return ids;
-	}
+
 
 	/**
 	 * This method for delete tempalte
