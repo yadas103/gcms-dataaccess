@@ -15,4 +15,4 @@ include 'api'
 include 'services:webservice'
 */
 
-rootProject.name = 'gmcs-dataaccess'
+rootProject.name = 'gcms-dataaccess'
