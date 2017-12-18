@@ -2,6 +2,7 @@ package com.pfizer.gcms.dataaccess.repository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -53,6 +54,10 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 		setModelType(TaskModel.class);
 	}
 
+	
+	public TaskRepository() {
+		setModelType(TaskModel.class);
+	}
 	/**
 	 * This method gets all task id from the task table Returns the collection
 	 * of all the ids
@@ -930,4 +935,82 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 	public Predicate prepareSoftDeletePredicate(CriteriaBuilder builder, Root<TaskModel> rootModelType) {
 		return null;
 	}
+	
+	/**
+	 * Get task for reminders
+	 * @param searchDTO , countryId
+	 * 		(TaskSearchDTO) - The Search Criteria provided by the user.
+	 * 		 (BigDecimal) - Country ID
+	 * @return the PagingSearchResultDTO<TaskModel>
+	 * @throws Exception
+	 * 		If finding the recipient based on search criteria fails.
+	 */
+	public PagingSearchResultDTO<TaskModel> findTaskForReminder(String daysOffset) throws Exception{
+		LOG.debug("Inside method findTaskForReminder");
+		StopWatch timer = new StopWatch();
+        timer.start();
+
+        Long count = null;
+        PagingSearchResultDTO<TaskModel> pagingResult = new PagingSearchResultDTO<TaskModel>();
+        List<TaskModel> models = new ArrayList<TaskModel>();	        
+		EntityManager entityManager = getEntityManager();			
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();				
+		CriteriaQuery<TaskModel> query = builder.createQuery(getModelType());
+		Root<TaskModel> root = query.from(getModelType());
+		
+		Predicate wherePredicate = buildReminderSearchCriteriaPredicate(builder,
+				query, root,daysOffset);
+		
+		Predicate deleteFilter = prepareSoftDeletePredicate(builder, root);
+		query.where(wherePredicate);
+		if (deleteFilter != null) {
+			query.where(deleteFilter);
+		}
+		
+		root.fetch(TaskModel.FIELD_CONS,JoinType.INNER);
+		root.fetch(TaskModel.FIELD_ASSIGNED_TO,JoinType.INNER);
+		CriteriaQuery<TaskModel> select = query.select(root);
+		TypedQuery<TaskModel> typedQuery = entityManager.createQuery(select);
+
+		models = typedQuery.getResultList();							        
+
+		Collection<TaskModel> result = new LinkedHashSet<TaskModel>(models);
+	    List<TaskModel> resultList = new ArrayList<TaskModel>();
+	    resultList.addAll(result);
+		pagingResult.setTotalRecordsCount(count);
+		pagingResult.setCurrentPageData(resultList);			
+		LOG.debug("Time took for reminder task data - " + timer.getTime());
+		return pagingResult;
+	}
+	/**
+	 * Builds the search criteria predicate for country specific task.
+	 * @param builder
+	 * 		(CriteriaBuilder) - The builder for type TaskModel representation
+	 * @param query
+	 * 		(CriteriaQuery<TaskModel>) - The query of type TaskModel representation
+	 * @param rootModelType
+	 * 		(Root<TaskModel>) - The root of type TaskModel representation
+	 */
+	
+	public Predicate buildReminderSearchCriteriaPredicate(CriteriaBuilder builder,
+			CriteriaQuery<TaskModel> query, Root<TaskModel> rootModelType, String daysOffset) {
+		
+		List<Predicate> andPredicates = new ArrayList<Predicate>();
+		
+		Predicate taskstatusPredicate =  builder.equal(rootModelType.get(TaskModel.FIELD_TASKSTATUS), "INCOMPLETE");					 
+		andPredicates.add(taskstatusPredicate);
+	    
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -Integer.parseInt(daysOffset));
+		
+		Predicate createdDatePredicate =  builder.lessThan(rootModelType.get(TaskModel.FIELD_CREATED_DATE), cal.getTime());					 
+		andPredicates.add(createdDatePredicate);
+		
+		Predicate andPredicate = null;
+		if (andPredicates != null && !andPredicates.isEmpty()) {
+			andPredicate = builder.and(buildPredicatesArray(andPredicates));
+		}
+		return andPredicate;
+	}
+
 }
