@@ -6,7 +6,7 @@ package com.pfizer.gcms.dataaccess.common;
 import java.util.Locale;
 
 /**
- * @author rtalapaneni
+ * @author kaswas
  * This class provides base configuration values like default locale,
  * language and mock_hibernate or not.
  */

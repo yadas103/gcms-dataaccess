@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * @author rtalapaneni
+ * @author kaswas
  * DateUtil class is used to convert dates to the required format.
  */
 public class DateUtil {
