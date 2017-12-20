@@ -1,5 +1,9 @@
 package com.pfizer.gcms.dataaccess.repository;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -70,6 +74,7 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
 	 * @throws Exception
 	 *             if save is unsuccessful
 	 */
+	@SuppressWarnings("rawtypes")
 	public List<ProfileRequestModel> findReviewerRecord(String userNTID) throws Exception {
 		LOG.debug("Inside method List<ProfileRequestModel> findReviewerRecord(String userNTID )" + userNTID);
 		if (null == userNTID || userNTID.trim().isEmpty()) {
@@ -92,11 +97,46 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
 		LOG.debug("typedQuery" + typedQuery);
 		List<String> country = typedQuery.getResultList();
 
-		typedQuery = entityManager.createQuery(
+		/*typedQuery = entityManager.createQuery(
 				"FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel WHERE country IN (:country) order by createdDate DESC");
 		typedQuery.setParameter("country", country);
 		LOG.debug("typedQuery" + typedQuery);
 		models = typedQuery.getResultList();
+		LOG.info("Getting Results from ProfileReview and Users" +  new Date().toString() );*/
+		
+		// Get Profile Review data from GCMS_PROFILE_REQUEST table and Created user information from GCMS_USERS table.
+		try {
+			typedQuery = entityManager.createQuery(
+					"SELECT pr.id,pr.profileTypeId,pr.firstName,pr.lastName,pr.organizationName,pr.country,pr.address,pr.city,"
+					+ "pr.specility,pr.notes,pr.status,pr.bpid, user.firstName, user.lastName, user.userName FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
+					+ "com.pfizer.gcms.dataaccess.model.UserModelNew user WHERE UPPER(pr.createdBy) = UPPER(user.userName) and  pr.country IN (:country) order by pr.createdDate DESC");
+			typedQuery.setParameter("country", country);			
+			models = new ArrayList<ProfileRequestModel>();
+			List newModels = null;
+			newModels = typedQuery.getResultList();
+			for (Iterator iterator = newModels.iterator(); iterator.hasNext();) {
+				 Object[] values = (Object[]) iterator.next();
+				ProfileRequestModel model = new ProfileRequestModel();
+				model.setId((BigDecimal)values[0]);
+				model.setProfileTypeId((String)values[1]);
+				model.setFirstName((String)values[2]);
+				model.setLastName((String)values[3]);
+				model.setOrganizationName((String)values[4]);
+				model.setCountry((String)values[5]);
+				model.setAddress((String)values[6]);
+				model.setCity((String)values[7]);
+				model.setSpecility((String)values[8]);
+				model.setNotes((String)values[9]);
+				model.setStatus((String)values[10]);
+				model.setBpid((BigDecimal)values[11]); 
+				model.setCreatedBy((String)values[12] + " " + (String)values[13] + "(" + (String)values[14] + ")");
+				models.add(model);
+			}			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
 		LOG.debug("models" + models);
 		if (models == null || models.isEmpty()) {
 			return null;
