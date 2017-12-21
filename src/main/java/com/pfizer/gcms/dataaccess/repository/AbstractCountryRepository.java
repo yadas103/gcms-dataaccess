@@ -59,7 +59,7 @@ extends AbstractRepository<ModelType> {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<ModelType> query = builder.createQuery(getModelType());
 		Root<ModelType> root = query.from(getModelType());
-		//removed country specific criteria
+		//Removed country specific criteria
 		//Predicate countryPredicate = prepareCountryPredicate(root, searchDTO.getCountryCode());
 		Predicate deleteFilter = prepareSoftDeletePredicate(builder, root);
 		
