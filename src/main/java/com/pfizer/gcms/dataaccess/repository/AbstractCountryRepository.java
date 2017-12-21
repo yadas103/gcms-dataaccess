@@ -20,6 +20,7 @@ import com.pfizer.gcms.dataaccess.common.exception.GCMSBadDataException;
 import com.pfizer.gcms.dataaccess.dto.ISearchDTO;
 import com.pfizer.gcms.dataaccess.model.AbstractCountryModel;
 import com.pfizer.gcms.dataaccess.model.CountryModel;
+import com.pfizer.gcms.dataaccess.model.UserModel;
 
 /**
  * @author rtalapaneni
@@ -46,7 +47,8 @@ extends AbstractRepository<ModelType> {
 	 */
 	@Override
 	public List<ModelType> find(ISearchDTO<ModelType> searchDTO) throws Exception {
-		if (searchDTO == null || searchDTO.getCountryCode() == null) {
+		//if (searchDTO == null || searchDTO.getCountryCode() == null) {
+		if (searchDTO == null) {
 			String message = "Invalid Search DTO";
 			LOG.warn(message);
 			throw new GCMSBadDataException(message);
@@ -57,23 +59,24 @@ extends AbstractRepository<ModelType> {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<ModelType> query = builder.createQuery(getModelType());
 		Root<ModelType> root = query.from(getModelType());
-		
-		Predicate countryPredicate = prepareCountryPredicate(root, searchDTO.getCountryCode());
+		//removed country specific criteria
+		//Predicate countryPredicate = prepareCountryPredicate(root, searchDTO.getCountryCode());
 		Predicate deleteFilter = prepareSoftDeletePredicate(builder, root);
 		
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (deleteFilter == null){
-			predicates.add(countryPredicate);
+			//predicates.add(countryPredicate);
 		} else {
 			predicates.add(deleteFilter);
-			predicates.add(countryPredicate);
+			//predicates.add(countryPredicate);
 		}
-		query.where(buildPredicatesArray(predicates));
+		//query.where(buildPredicatesArray(predicates));
 		String sortByField = sortByField();
 		if (sortByField != null){
 			applySorting(builder, query, sortByField, sortDescending(), root);
 		}
 		query = query.select(root);
+		query.orderBy(builder.asc(root.get(UserModel.FIELD_USERNAME)),builder.asc(root.get(AbstractCountryModel.FIELD_COUNTRY_ID)));
 		models = entityManager.createQuery(query).getResultList();
 		return models;
 	}
