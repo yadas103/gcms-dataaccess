@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Locale;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
 import javax.persistence.criteria.CriteriaBuilder;
 
 import org.apache.commons.logging.Log;
