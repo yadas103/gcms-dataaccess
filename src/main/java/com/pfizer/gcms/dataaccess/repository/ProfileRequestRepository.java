@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
