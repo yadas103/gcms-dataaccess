@@ -1,6 +1,7 @@
 package com.pfizer.gcms.dataaccess.repository;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -8,8 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.commons.logging.Log;
@@ -19,6 +22,7 @@ import com.pfizer.gcms.dataaccess.common.NumericUtil;
 import com.pfizer.gcms.dataaccess.common.exception.GCMSBadDataException;
 import com.pfizer.gcms.dataaccess.model.AbstractModel;
 import com.pfizer.gcms.dataaccess.model.ConsentAnnexModel;
+import com.pfizer.gcms.dataaccess.model.TaskModel;
 
 /**
  * @author khans129
@@ -50,12 +54,31 @@ public class ConsentAnnexRepository extends AbstractRepository<ConsentAnnexModel
 		LOG.debug("Inside method find(BigDecimal id)");
 		StopWatch timer = new StopWatch();
         timer.start();
-        
+        List<ConsentAnnexModel> models1=new ArrayList<ConsentAnnexModel>();
 		if (NumericUtil.isNullOrLessThanOrEqualToZero(id)) {
 			throw new GCMSBadDataException("Invalid ID");
 		}
-		
 		EntityManager entityManager = getEntityManager();		
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		
+		CriteriaQuery<TaskModel> query = builder.createQuery(TaskModel.class);
+		Root<TaskModel> root = query.from(TaskModel.class);
+		Predicate wherePredicate = buildPredicate(builder,
+				query, root,id );
+		//Predicate idPredicate = builder.equal(root.get(ConsentAnnexModel.FIELD_BPID), id);
+		Predicate deleteFilter = prepareDeletePredicate(builder, root);
+		query.where(wherePredicate);
+		if (deleteFilter != null) {
+			query.where(deleteFilter);
+		}
+		query = query.select(root);
+		List<TaskModel> models = entityManager.createQuery(query).getResultList();
+		
+		for (TaskModel model : models) {
+			models1.add(model.getConsannexid());
+		}
+		
+		/*EntityManager entityManager = getEntityManager();		
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();		
 		CriteriaQuery<ConsentAnnexModel> query = builder.createQuery(getModelType());
 		Root<ConsentAnnexModel> root = query.from(getModelType());
@@ -68,7 +91,7 @@ public class ConsentAnnexRepository extends AbstractRepository<ConsentAnnexModel
 				? idPredicate : builder.and(idPredicate, deleteFilter);
 		query.where(predicate);
 		query = query.select(root);
-		List<ConsentAnnexModel> models1 = entityManager.createQuery(query).getResultList();
+		List<ConsentAnnexModel> models1 = entityManager.createQuery(query).getResultList();*/
 		
 		LOG.debug("#Performance#Repository#Total time took for find(BigDecimal id) operation is - " + timer.getTime());
 		
@@ -77,4 +100,50 @@ public class ConsentAnnexRepository extends AbstractRepository<ConsentAnnexModel
 		} 
 		return models1;
 	}
+	
+	
+	public Predicate buildPredicate(CriteriaBuilder builder,
+			CriteriaQuery<TaskModel> query, Root<TaskModel> rootModelType,
+			BigDecimal id) {
+	  	LOG.debug("Inside method buildPredicate");
+		StopWatch timer = new StopWatch();
+        timer.start();
+		List<Predicate> andPredicates = new ArrayList<Predicate>();
+		
+		Predicate taskstatusPredicate =  builder.equal(rootModelType.get(TaskModel.FIELD_TASKSTATUS), "COMPLETED");					 
+		andPredicates.add(taskstatusPredicate);
+		
+		
+		Path<TaskModel> pathTaskModel=rootModelType.get(TaskModel.FIELD_CONS);
+		Subquery<TaskModel> subqueryTask=query.subquery(TaskModel.class);
+		Root<ConsentAnnexModel> rootConsentAnnex=subqueryTask.from(ConsentAnnexModel.class);					
+		Predicate idpredicate = builder.equal(rootConsentAnnex.get(ConsentAnnexModel.FIELD_BPID), id) ;					
+		subqueryTask.where(idpredicate);
+		subqueryTask = subqueryTask.select(rootConsentAnnex.get(ConsentAnnexModel.FIELD_ID));
+		Predicate predicate=builder.in(pathTaskModel).value(subqueryTask);
+		andPredicates.add(predicate);
+		
+		
+		
+		Predicate andPredicate = null;
+		if (andPredicates != null && !andPredicates.isEmpty()) {
+			andPredicate = builder.and(buildPredicatesArray(andPredicates));
+		}
+		LOG.debug("Time took for search criteria execution - " + timer.getTime());
+		return andPredicate;
+		
+	}
+	
+	public Predicate prepareDeletePredicate(CriteriaBuilder builder, Root<TaskModel> rootModelType) {
+		if (isSoftDeleteEnabled()) {
+			Predicate nullPredicate = builder.isNull(rootModelType.get(AbstractModel.FIELD_DELETED));
+			Predicate notDeletedPredicate = builder.equal(
+					rootModelType.get(AbstractModel.FIELD_DELETED), 'N');
+			
+			return builder.or(nullPredicate, notDeletedPredicate);			
+		}
+		return null;
+	}
+	
+	
 }
