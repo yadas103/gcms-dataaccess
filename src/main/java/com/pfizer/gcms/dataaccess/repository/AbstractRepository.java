@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
@@ -30,6 +31,8 @@ import org.apache.commons.logging.LogFactory;
 import com.pfizer.gcms.dataaccess.common.NumericUtil;
 import com.pfizer.gcms.dataaccess.common.exception.GCMSBadDataException;
 import com.pfizer.gcms.dataaccess.common.exception.GCMSInternalServerError;
+import com.pfizer.gcms.dataaccess.dto.BusinessProfileDisplayDTO;
+import com.pfizer.gcms.dataaccess.dto.BusinessProfileSearchDTO;
 import com.pfizer.gcms.dataaccess.dto.ISearchDTO;
 import com.pfizer.gcms.dataaccess.model.AbstractModel;
 import com.pfizer.gcms.dataaccess.model.BaseModel;
@@ -832,7 +835,7 @@ public abstract class AbstractRepository<ModelType extends BaseModel> implements
 		return null;
 	}
 
-	public List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality)
+	public List<BusinessProfileDisplayDTO> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality)
 			throws Exception {
 		return null;
 	}

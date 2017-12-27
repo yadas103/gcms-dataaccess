@@ -25,6 +25,7 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 
 import com.pfizer.gcms.dataaccess.common.exception.GCMSBadDataException;
+import com.pfizer.gcms.dataaccess.dto.BusinessProfileDisplayDTO;
 import com.pfizer.gcms.dataaccess.model.BusinessProfileModel;
 
 /**
@@ -57,7 +58,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public  List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality ) throws Exception {
+	public  List<BusinessProfileDisplayDTO> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality ) throws Exception {
 		LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality )" );
 		BigDecimal zero = BigDecimal.ZERO;
 			if (name == null || name.trim().isEmpty()) {
@@ -68,7 +69,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 			
 			EntityManager entityManager = getEntityManager();
 			LOG.debug("entityManager"+entityManager);
-			List<BusinessProfileModel> models = null;
+			List<BusinessProfileDisplayDTO> models = null;
 				
 			try {
 				
@@ -122,9 +123,10 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 				ResultSet resultSet = pStmt.executeQuery(); 
 				resultSet.setFetchSize(2000);
 				LOG.info("After query execute" + new Date().toString() );
-				models = new ArrayList<BusinessProfileModel>();
-				while(resultSet.next()) {	
-					BusinessProfileModel bp = new BusinessProfileModel();
+				models = new ArrayList<BusinessProfileDisplayDTO>();
+				while(resultSet.next()) {
+					// Populate Business Profile DTO to be send to service layer
+					BusinessProfileDisplayDTO bp = new BusinessProfileDisplayDTO();
 					bp.setId(resultSet.getBigDecimal("BP_ID"));
 					bp.setProfileType(resultSet.getString("PROFILE_TYPE_ID"));
 					bp.setFirstName(resultSet.getString("FIRST_NAME"));
