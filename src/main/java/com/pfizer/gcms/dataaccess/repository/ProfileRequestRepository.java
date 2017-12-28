@@ -76,7 +76,7 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
 	 * @throws Exception
 	 *             if save is unsuccessful
 	 */
-@SuppressWarnings("rawtypes")	public List<ProfileRequestModel> findReviewerRecord(String userNTID) throws Exception {
+@SuppressWarnings("rawtypes")	public List<ProfileRequestModel> findReviewerRecord(String userNTID,String status) throws Exception {
 		LOG.debug("Inside method List<ProfileRequestModel> findReviewerRecord(String userNTID )" + userNTID);
 		if (null == userNTID || userNTID.trim().isEmpty()) {
 			String message = "Invalid userNTID";
@@ -100,11 +100,22 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
 
 		// Get Profile Review data from GCMS_PROFILE_REQUEST table and Created user information from GCMS_USERS table.
 		try {
+			if (null == status || status.trim().isEmpty()) {
 			typedQuery = entityManager.createQuery(
 					"SELECT pr.id,pr.profileTypeId,pr.firstName,pr.lastName,pr.organizationName,pr.country,pr.address,pr.city,"
 					+ "pr.specility,pr.notes,pr.status,pr.bpid, user.firstName, user.lastName, user.userName FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
-					+ "com.pfizer.gcms.dataaccess.model.UserModelNew user WHERE UPPER(pr.createdBy) = UPPER(user.userName) and  pr.country IN (:country) order by pr.createdDate DESC");
-			typedQuery.setParameter("country", country);			
+					+ "com.pfizer.gcms.dataaccess.model.UserModelNew user WHERE  UPPER(pr.createdBy) = UPPER(user.userName) and pr.status= 'Pending'and  pr.country IN (:country) order by pr.createdDate DESC");
+			typedQuery.setParameter("country", country);
+			
+			}else{
+				
+				typedQuery = entityManager.createQuery(
+						"SELECT pr.id,pr.profileTypeId,pr.firstName,pr.lastName,pr.organizationName,pr.country,pr.address,pr.city,"
+						+ "pr.specility,pr.notes,pr.status,pr.bpid, user.firstName, user.lastName, user.userName FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
+						+ "com.pfizer.gcms.dataaccess.model.UserModelNew user WHERE UPPER(pr.createdBy) = UPPER(user.userName) and  pr.status IN (:status) and pr.country IN (:country) order by pr.createdDate DESC");
+				typedQuery.setParameter("country", country);
+				typedQuery.setParameter("status", status);
+			}
 			models = new ArrayList<ProfileRequestModel>();
 			List newModels = null;
 			newModels = typedQuery.getResultList();
@@ -170,7 +181,7 @@ LOG.debug("models" + models);
 		}
 		return models;
 	}
-	public List<ProfileRequestModel> findAllRequest() throws Exception {
+	public List<ProfileRequestModel> findAllRequest(String status) throws Exception {
 		LOG.debug("Inside method List<ProfileRequestModel> findAllRequest(String userNTID )" );
 		EntityManager entityManager = getEntityManager();
 		LOG.debug("entityManager" + entityManager);
@@ -182,11 +193,20 @@ LOG.debug("models" + models);
 		
 		// Get Profile Review data from GCMS_PROFILE_REQUEST table and Created user information from GCMS_USERS table.
 		try {
+			if (null == status || status.trim().isEmpty()) {
 			typedQuery = entityManager.createQuery(
 					"SELECT pr.id,pr.profileTypeId,pr.firstName,pr.lastName,pr.organizationName,pr.country,pr.address,pr.city,"
 					+ "pr.specility,pr.notes,pr.status,pr.bpid, user.firstName, user.lastName, user.userName FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
-					+ "com.pfizer.gcms.dataaccess.model.UserModelNew user WHERE UPPER(pr.createdBy) = UPPER(user.userName)  order by pr.createdDate DESC");
-						
+					+ "com.pfizer.gcms.dataaccess.model.UserModelNew user WHERE UPPER(pr.createdBy) = UPPER(user.userName) and pr.status= 'Pending'  order by pr.createdDate DESC");
+		
+			}
+			else{
+				typedQuery = entityManager.createQuery(
+						"SELECT pr.id,pr.profileTypeId,pr.firstName,pr.lastName,pr.organizationName,pr.country,pr.address,pr.city,"
+						+ "pr.specility,pr.notes,pr.status,pr.bpid, user.firstName, user.lastName, user.userName FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
+						+ "com.pfizer.gcms.dataaccess.model.UserModelNew user WHERE UPPER(pr.createdBy) = UPPER(user.userName) and pr.status IN (:status) order by pr.createdDate DESC");
+				typedQuery.setParameter("status", status);
+			}
 			models = new ArrayList<ProfileRequestModel>();
 			List newModels = null;
 			newModels = typedQuery.getResultList();
