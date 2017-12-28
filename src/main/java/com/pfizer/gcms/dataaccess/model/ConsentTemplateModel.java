@@ -86,7 +86,7 @@ public class ConsentTemplateModel extends AbstractModel {
 	private String tmpl_desc;
 
 	@Column(name = "SIGNATURE_PAGE_NO")
-	private BigDecimal signPageNo;
+	private String signPageNo;
 	
 	@Column(name = "CONSENT_PAGE_NO")
 	private BigDecimal consentPageNo;
@@ -207,11 +207,11 @@ public class ConsentTemplateModel extends AbstractModel {
 
 	
 
-	public BigDecimal getSignPageNo() {
+	public String getSignPageNo() {
 		return signPageNo;
 	}
 
-	public void setSignPageNo(BigDecimal signPageNo) {
+	public void setSignPageNo(String signPageNo) {
 		this.signPageNo = signPageNo;
 	}
 
