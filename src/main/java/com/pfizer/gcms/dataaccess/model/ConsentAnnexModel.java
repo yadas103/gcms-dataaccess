@@ -93,6 +93,9 @@ public class ConsentAnnexModel extends AbstractModel {
 	
 	@Column(name = "EVENT_END_DATE")
 	private Date eventEndDate;
+	
+	@Column(name = "CONSENT_CNTRY_TYPE")
+	private String consentType;
 
 	
 
@@ -259,5 +262,13 @@ public class ConsentAnnexModel extends AbstractModel {
 
 	public void setConsentstatuschangeReason(String consentstatuschangeReason) {
 		this.consentstatuschangeReason = consentstatuschangeReason;
+	}
+
+	public String getConsentType() {
+		return consentType;
+	}
+
+	public void setConsentType(String consentType) {
+		this.consentType = consentType;
 	}
 }
