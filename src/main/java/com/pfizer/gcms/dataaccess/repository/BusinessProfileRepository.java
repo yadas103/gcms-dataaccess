@@ -121,7 +121,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 				
 				// execute query  
 				ResultSet resultSet = pStmt.executeQuery(); 
-				resultSet.setFetchSize(2000);
+				resultSet.setFetchSize(10000);
 				LOG.info("After query execute" + new Date().toString() );
 				models = new ArrayList<BusinessProfileDisplayDTO>();
 				while(resultSet.next()) {
