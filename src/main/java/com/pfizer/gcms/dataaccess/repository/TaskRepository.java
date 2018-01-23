@@ -299,7 +299,11 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			Predicate predicateLastName = builder.like(
 					builder.lower(rootBusinessProfile.get(BusinessProfileModel.FIELD_LAST_NAME)),
 					"%" + lastname.toLowerCase() + "%");
-			subqueryConsentAnnex.where(predicateLastName);
+			Predicate predicateLastName2 = builder.like(
+					builder.lower(rootBusinessProfile.get(BusinessProfileModel.FIELD_ORGANISATION_NAME)),
+					"%" + lastname.toLowerCase() + "%");
+			Predicate newpredicate = builder.or(predicateLastName, predicateLastName2);
+			subqueryConsentAnnex.where(newpredicate);
 			subqueryConsentAnnex = subqueryConsentAnnex
 					.select(rootBusinessProfile.get(BusinessProfileModel.FIELD_BP_ID));
 			Predicate predicateBusinessID = builder.in(pathConsentAnnexModel).value(subqueryConsentAnnex);
