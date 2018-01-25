@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
  */
 @Entity
-@Table(name = "GCMS_CONSENT_STATUS_VIEW")
+@Table(name = "GCMS_ODS.GCMS_CONSENT_STATUS_VIEW")
 public class ConsentLovModel extends AbstractModel{
 	
 	/**

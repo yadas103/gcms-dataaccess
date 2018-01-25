@@ -23,7 +23,7 @@ import javax.persistence.Table;
  * holding instances of data objects.This holds the User data object.
  */
 @Entity
-@Table(name = "GCMS_USERS")
+@Table(name = "GCMS_ODS.GCMS_USERS")
 public class UserModelNew extends AbstractModel {
 	/**
 	 * The constant user profiles.

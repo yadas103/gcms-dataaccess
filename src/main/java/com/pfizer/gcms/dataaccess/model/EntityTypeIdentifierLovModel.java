@@ -13,7 +13,7 @@ import javax.persistence.Table;
  * for holding instances of data objects.This holds the EntityTypeIdentifier data object.
  */
 @Entity
-@Table(name = "GCMS_ENTITY_TYPES")
+@Table(name = "GCMS_ODS.GCMS_ENTITY_TYPES")
 public class EntityTypeIdentifierLovModel extends AbstractModel {
 	
 	/**

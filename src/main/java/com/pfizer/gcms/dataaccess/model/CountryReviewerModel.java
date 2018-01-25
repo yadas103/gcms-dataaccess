@@ -18,7 +18,7 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "GCMS_COUNTRY_REVIEWER_DATA")
+@Table(name = "GCMS_ODS.GCMS_COUNTRY_REVIEWER_DATA")
 public class CountryReviewerModel extends AbstractModel {
 
 	

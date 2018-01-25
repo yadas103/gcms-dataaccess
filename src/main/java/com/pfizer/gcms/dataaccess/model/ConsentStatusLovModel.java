@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * they are responsible for holding instances of data objects.This holds the consentStatusLov data object.
  */
 @Entity
-@Table(name = "ODS_CONSENT_STATUS")
+@Table(name = "GCMS_ODS.ODS_CONSENT_STATUS")
 public class ConsentStatusLovModel {
 	
 	/**

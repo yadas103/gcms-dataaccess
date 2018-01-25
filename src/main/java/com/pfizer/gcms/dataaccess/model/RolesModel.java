@@ -18,7 +18,7 @@ import javax.persistence.Table;
  * holding instances of data objects.This holds the roles data object.
  */
 @Entity
-@Table(name = "GCMS_ROLES")
+@Table(name = "GCMS_ODS.GCMS_ROLES")
 public class RolesModel extends AbstractModel {
 	/**
 	 * The serial version UID.

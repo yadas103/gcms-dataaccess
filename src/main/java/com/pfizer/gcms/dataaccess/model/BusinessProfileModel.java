@@ -14,7 +14,7 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "GCMS_BUS_PROFILE_MVIEW_NEW")
+@Table(name = "GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW")
 public class BusinessProfileModel implements BaseModel {
 
 	private static final long serialVersionUID = 1L;

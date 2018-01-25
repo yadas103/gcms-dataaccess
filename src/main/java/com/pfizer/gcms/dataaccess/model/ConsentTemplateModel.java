@@ -24,7 +24,7 @@ import org.hibernate.annotations.FetchMode;
  */
 
 @Entity
-@Table(name = "GCMS_CONSENT_TEMPLATE")
+@Table(name = "GCMS_ODS.GCMS_CONSENT_TEMPLATE")
 public class ConsentTemplateModel extends AbstractModel {
 
 	private static final long serialVersionUID = 1L;

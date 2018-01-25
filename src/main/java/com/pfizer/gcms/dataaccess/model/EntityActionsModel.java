@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * for holding instances of data objects.This holds the EntityTypes data object.
  */
 @Entity
-@Table(name = "GCMS_ENTITY_ACTIONS")
+@Table(name = "GCMS_ODS.GCMS_ENTITY_ACTIONS")
 public class EntityActionsModel extends AbstractModel {
 
 	/**

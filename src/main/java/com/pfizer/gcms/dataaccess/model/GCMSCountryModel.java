@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "GCMS_COUNTRIES_MVIEW")
+@Table(name = "GCMS_ODS.GCMS_COUNTRIES_MVIEW")
 public class GCMSCountryModel extends AbstractModel{/**
 	 * The serial version UID.
 	 */

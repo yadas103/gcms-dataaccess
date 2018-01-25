@@ -16,7 +16,7 @@ import javax.persistence.Table;
  * for holding instances of data objects.This holds the role permission data object.
  */
 @Entity
-@Table(name = "GCMS_PERMISSIONS")
+@Table(name = "GCMS_ODS.GCMS_PERMISSIONS")
 public class RolePermissionsModel extends AbstractModel {
 	
 	/**

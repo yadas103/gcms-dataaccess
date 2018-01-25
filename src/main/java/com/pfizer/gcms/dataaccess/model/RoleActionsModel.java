@@ -13,7 +13,7 @@ import javax.persistence.Table;
  * for holding instances of data objects.This holds the role action data object.
  */
 @Entity
-@Table(name = "GCMS_ROLE_ACTIONS")
+@Table(name = "GCMS_ODS.GCMS_ROLE_ACTIONS")
 public class RoleActionsModel  extends AbstractModel{
 	
 	/**

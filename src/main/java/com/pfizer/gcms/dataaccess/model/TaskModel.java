@@ -26,7 +26,7 @@ import org.hibernate.annotations.CascadeType;
 
 
 @Entity
-@Table(name = "GCMS_TASKS")
+@Table(name = "GCMS_ODS.GCMS_TASKS")
 public class TaskModel extends AbstractModel {
 
 	/**

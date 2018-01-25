@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * holding instances of data objects.
  */
 @Entity
-@Table(name = "GCMS_PROFILE_REQUEST")
+@Table(name = "GCMS_ODS.GCMS_PROFILE_REQUEST")
 public class ProfileRequestModel extends AbstractModel {
 	
 	/**

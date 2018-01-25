@@ -19,7 +19,7 @@ import javax.persistence.Table;
  * holding instances of data objects.This holds the User profile data object.
  */
 @Entity
-@Table(name = "GCMS_USER_PROFILES")
+@Table(name = "GCMS_ODS.GCMS_USER_PROFILES")
 public class UserProfileModel extends AbstractCountryModel {
 	/**
 	 * The serial version UID.
