@@ -85,7 +85,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 				Statement stmt=conn.createStatement(); 		
 				
 				
-				String searchBPQuery = "select BP_ID, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDR_LN_1_TXT,SPECIALITY from GCMS_BUS_PROFILE_MVIEW_NEW  where COUNTRY= '"+name.trim()+"' and PROFILE_TYPE_ID= '"+type.trim()+"'  " ;
+				String searchBPQuery = "select BP_ID, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDR_LN_1_TXT,SPECIALITY from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW  where COUNTRY= '"+name.trim()+"' and PROFILE_TYPE_ID= '"+type.trim()+"'  " ;
 				if(lastName != null && !lastName.equals("lastName")){
 				lastName = '%'+lastName+'%';	
 				searchBPQuery = searchBPQuery + " and( " + 
