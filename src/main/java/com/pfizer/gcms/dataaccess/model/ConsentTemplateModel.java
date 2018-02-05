@@ -37,7 +37,7 @@ public class ConsentTemplateModel extends AbstractModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GCMS_SEQ")
-	@SequenceGenerator(name = "GCMS_SEQ", sequenceName = "GCMS_SEQ", allocationSize = 1)
+	@SequenceGenerator(name = "GCMS_SEQ", sequenceName = "GCMS_ODS.GCMS_SEQ", allocationSize = 1)
 	@Column(name = "COSN_TMPL_ID")
 	private BigDecimal id;
 

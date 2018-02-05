@@ -26,7 +26,7 @@ public class ProfileRequestModel extends AbstractModel {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@SequenceGenerator(name="seq",sequenceName="GCMS_SEQ")
+	@SequenceGenerator(name="seq",sequenceName="GCMS_ODS.GCMS_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	@Column(name = "PROFILE_REQ_ID")
 	private BigDecimal   id;

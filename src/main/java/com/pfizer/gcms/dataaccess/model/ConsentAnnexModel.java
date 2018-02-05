@@ -38,7 +38,7 @@ public class ConsentAnnexModel extends AbstractModel {
 	public static final String FIELD_TEMPLATEID = "tmpl_id";
 
 	@Id
-	@SequenceGenerator(name = "seq", sequenceName = "GCMS_SEQ")
+	@SequenceGenerator(name = "seq", sequenceName = "GCMS_ODS.GCMS_SEQ")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
 	@Column(name = "COSN_ANNEX_ID")
 	private BigDecimal id;

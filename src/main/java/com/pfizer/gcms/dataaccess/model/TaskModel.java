@@ -40,7 +40,7 @@ public class TaskModel extends AbstractModel {
 	public static final String FIELD_TASKSTATUS = "taskstatus";
 	
 	@Id
-	@SequenceGenerator(name="seq",sequenceName="GCMS_SEQ")
+	@SequenceGenerator(name="seq",sequenceName="GCMS_ODS.GCMS_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	@Column(name = "TASK_ID")
 	private BigDecimal	id;
