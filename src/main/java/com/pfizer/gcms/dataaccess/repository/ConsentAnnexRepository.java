@@ -110,9 +110,12 @@ public class ConsentAnnexRepository extends AbstractRepository<ConsentAnnexModel
         timer.start();
 		List<Predicate> andPredicates = new ArrayList<Predicate>();
 		
-		Predicate taskstatusPredicate =  builder.equal(rootModelType.get(TaskModel.FIELD_TASKSTATUS), "COMPLETED");					 
+		//Start: Release 2.0 :  Added by nandap02 for Addition of predicate to include pending task in Consent History pop-up
+		Predicate taskstatusPredicateForComplete =  builder.equal(rootModelType.get(TaskModel.FIELD_TASKSTATUS), "COMPLETED");	
+		Predicate taskstatusPredicateForIncomplete = builder.equal(rootModelType.get(TaskModel.FIELD_TASKSTATUS), "INCOMPLETE");
+		Predicate taskstatusPredicate = builder.or(taskstatusPredicateForComplete,taskstatusPredicateForIncomplete);
 		andPredicates.add(taskstatusPredicate);
-		
+		//End
 		
 		Path<TaskModel> pathTaskModel=rootModelType.get(TaskModel.FIELD_CONS);
 		Subquery<TaskModel> subqueryTask=query.subquery(TaskModel.class);
