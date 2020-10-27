@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -114,6 +115,8 @@ public class ConsentAnnexModel extends AbstractModel {
 	@ManyToOne/*(fetch = FetchType.LAZY)*///commented to improve task page performance
 	@JoinColumn(name = "CONSENT_STATUS", referencedColumnName = "CNSN_STS_ID")
 	private ConsentLovModel consentstatus;
+	@Transient
+	private String assignedTo;
 
 	/**
 	 * Default constructor.
@@ -270,5 +273,12 @@ public class ConsentAnnexModel extends AbstractModel {
 
 	public void setConsentType(String consentType) {
 		this.consentType = consentType;
+	}
+	public String getAssignedTo() {
+		return assignedTo;
+	}
+
+	public void setAssignedTo(String assignedTo) {
+		this.assignedTo = assignedTo;
 	}
 }
