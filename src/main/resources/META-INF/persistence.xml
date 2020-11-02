@@ -8,10 +8,7 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		
 		<!-- JBOSS Specific JTA Configuration     -->
-	    <!-- <non-jta-data-source>java:jboss/datasources/GCMSPORTALDS</non-jta-data-source> -->
-	    
-	    <!-- Tomcat Specific JTA Configuration -->
-        <non-jta-data-source>java:comp/env/GCMSPORTALDS</non-jta-data-source>
+	    <non-jta-data-source>java:jboss/datasources/TRSPORTALDS</non-jta-data-source>
 
 		<!-- Tomcat Specific JTA Configuration 
 		<non-jta-data-source>java:comp/env/TRSPORTALDS</non-jta-data-source>  -->
