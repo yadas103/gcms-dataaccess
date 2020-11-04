@@ -58,8 +58,8 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public  List<BusinessProfileDisplayDTO> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality ) throws Exception {
-		LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality )" );
+	public  List<BusinessProfileDisplayDTO> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality,String uniqueTypeCode,BigDecimal uniqueTypeId) throws Exception {
+		LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality,String uniqueTypeCode,BigDecimal uniqueTypeId)" );
 		BigDecimal zero = BigDecimal.ZERO;
 			if (name == null || name.trim().isEmpty()) {
 				String message = "Invalid Country Name";
@@ -85,7 +85,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 				Statement stmt=conn.createStatement(); 		
 				
 				
-				String searchBPQuery = "select BP_ID, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDR_LN_1_TXT,SPECIALITY from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW  where COUNTRY= '"+name.trim()+"' and PROFILE_TYPE_ID= '"+type.trim()+"'  " ;
+				String searchBPQuery = "select BP_ID,PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME, ORGANISATION_NAME, CITY, ADDR_LN_1_TXT, SPECIALITY from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW  where COUNTRY= '"+name.trim()+"' and PROFILE_TYPE_ID= '"+type.trim()+"'  "+" and UNIQUE_TYPE_CODE = 'TR-ID'" ;
 				if(lastName != null && !lastName.equals("lastName")){
 				lastName = '%'+lastName+'%';	
 				searchBPQuery = searchBPQuery + " and( " + 
@@ -113,6 +113,22 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 					searchBPQuery = searchBPQuery + " and UPPER(SPECIALITY) LIKE UPPER('"+speciality.trim()+"')";
 				
 				}
+			  if(uniqueTypeCode != null && uniqueTypeId != null){
+				  uniqueTypeCode = '%'+uniqueTypeCode+'%';
+				  searchBPQuery = searchBPQuery + " and bp_id in \r\n" + 
+				  		"(select master_bp_id from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW\r\n" + 
+				  		"where UPPER(UNIQUE_TYPE_CODE) LIKE UPPER('"+uniqueTypeCode.trim()+"') and UNQ_ID_VAL LIKE ('"+uniqueTypeId+"'))";
+				}
+				
+
+
+
+
+
+
+
+				}
+			 
 				PreparedStatement pStmt = conn.prepareStatement(searchBPQuery);
 				
 							

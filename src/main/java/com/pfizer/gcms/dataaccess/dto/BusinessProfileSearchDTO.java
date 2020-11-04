@@ -22,6 +22,8 @@ public class BusinessProfileSearchDTO extends BaseSearchDTO<BusinessProfileModel
 	private String address;
 	private String city;
 	private String speciality;
+	private String uniqueTypeCode;
+	private BigDecimal uniqueTypeId;
 	private BigDecimal id;
 	private BigDecimal[] ids;
 
@@ -103,5 +105,21 @@ public class BusinessProfileSearchDTO extends BaseSearchDTO<BusinessProfileModel
 
 	public void setSpeciality(String speciality) {
 		this.speciality = speciality;
+	}
+
+	public String getUniqueTypeCode() {
+		return uniqueTypeCode;
+	}
+
+	public void setUniqueTypeCode(String uniqueTypeCode) {
+		this.uniqueTypeCode = uniqueTypeCode;
+	}
+
+	public BigDecimal getUniqueTypeId() {
+		return uniqueTypeId;
+	}
+
+	public void setUniqueTypeId(BigDecimal uniqueTypeId) {
+		this.uniqueTypeId = uniqueTypeId;
 	}
 }

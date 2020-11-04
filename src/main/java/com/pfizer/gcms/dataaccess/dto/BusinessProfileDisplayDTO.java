@@ -20,6 +20,8 @@ public class BusinessProfileDisplayDTO {
 	private String city;
 	private String region;
 	private String speciality;
+	private String uniqueTypeCode;
+	private BigDecimal uniqueTypeId;
 	
 	
 	public BigDecimal getId() {
@@ -107,6 +109,17 @@ public class BusinessProfileDisplayDTO {
 	public void setSpeciality(String speciality) {
 		this.speciality = speciality;
 	}
-
+	public String getUniqueTypeCode() {
+		return uniqueTypeCode;
+	}
+	public void setUniqueTypeCode(String uniqueTypeCode) {
+		this.uniqueTypeCode = uniqueTypeCode;
+	}
+	public BigDecimal getUniqueTypeId() {
+		return uniqueTypeId;
+	}
+	public void setUniqueTypeId(BigDecimal uniqueTypeId) {
+		this.uniqueTypeId = uniqueTypeId;
+	}
 
 }

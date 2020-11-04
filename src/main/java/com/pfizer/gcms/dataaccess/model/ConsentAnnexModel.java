@@ -115,6 +115,7 @@ public class ConsentAnnexModel extends AbstractModel {
 	@ManyToOne/*(fetch = FetchType.LAZY)*///commented to improve task page performance
 	@JoinColumn(name = "CONSENT_STATUS", referencedColumnName = "CNSN_STS_ID")
 	private ConsentLovModel consentstatus;
+	
 	@Transient
 	private String assignedTo;
 

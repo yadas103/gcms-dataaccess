@@ -30,6 +30,9 @@ public class BusinessProfileModel implements BaseModel {
 	@Id
 	@Column(name = "BP_ID")
 	private BigDecimal id;
+	
+	@Column(name = "UNQ_ID_VAL")
+	private BigDecimal uniqueTypeId;
 
 	@Column(name = "PROFILE_TYPE_ID")
 	private String profileType;
@@ -66,6 +69,10 @@ public class BusinessProfileModel implements BaseModel {
 
 	@Column(name = "SPECIALITY")
 	private String speciality;
+	
+	@Column(name = "UNIQUE_TYPE_CODE")
+	private String uniqueTypeCode;
+	
 
 	public BigDecimal getId() {
 		return id;
@@ -171,4 +178,20 @@ public class BusinessProfileModel implements BaseModel {
 		this.speciality = speciality;
 	}
 
+	public String getUniqueTypeCode() {
+		return uniqueTypeCode;
+	}
+
+	public void setUniqueTypeCode(String uniqueTypeCode) {
+		this.uniqueTypeCode = uniqueTypeCode;
+	}
+
+
+	public BigDecimal getUniqueTypeId() {
+		return uniqueTypeId;
+	}
+
+	public void setUniqueTypeId(BigDecimal uniqueTypeId) {
+		this.uniqueTypeId = uniqueTypeId;
+	}
 }
