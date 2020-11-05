@@ -120,14 +120,6 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 				  		"where UPPER(UNIQUE_TYPE_CODE) LIKE UPPER('"+uniqueTypeCode.trim()+"') and UNQ_ID_VAL LIKE ('"+uniqueTypeId+"'))";
 				}
 				
-
-
-
-
-
-
-
-				}
 			 
 				PreparedStatement pStmt = conn.prepareStatement(searchBPQuery);
 				
