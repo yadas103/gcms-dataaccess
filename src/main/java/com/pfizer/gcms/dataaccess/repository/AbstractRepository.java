@@ -835,7 +835,7 @@ public abstract class AbstractRepository<ModelType extends BaseModel> implements
 		return null;
 	}
 
-	public List<BusinessProfileDisplayDTO> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality)
+	public List<BusinessProfileDisplayDTO> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality,String uniqueTypeCode, BigDecimal uniqueTypeId)
 			throws Exception {
 		return null;
 	}
