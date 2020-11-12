@@ -1,6 +1,7 @@
 package com.pfizer.gcms.dataaccess.model;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -18,6 +21,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Subselect;
+import org.hibernate.annotations.Where;
 
 /**
  * @author khans129 ConsentAnnex is a POJO classes,annotated with hibernate
@@ -37,6 +42,9 @@ public class ConsentAnnexModel extends AbstractModel {
 	public static final String FIELD_EVENTNAME = "eventname";
 	public static final String FIELD_CONSENT = "consentstatus";
 	public static final String FIELD_TEMPLATEID = "tmpl_id";
+	public static final String FIELD_REGIONID = "regionId";
+	public static final String FIELD_TEMP_PROFILE = "tempProfile";
+	
 
 	@Id
 	@SequenceGenerator(name = "seq", sequenceName = "GCMS_ODS.GCMS_SEQ")
@@ -97,8 +105,14 @@ public class ConsentAnnexModel extends AbstractModel {
 	
 	@Column(name = "CONSENT_CNTRY_TYPE")
 	private String consentType;
+	
+	// R2.0 - arunkv
+	@Column(name = "TEMP_PROFILE")
+	private String tempProfile;
 
 	
+	@Column(name = "REG_ID")
+	private BigDecimal regionId;
 
 	public Date getEventEndDate() {
 		return eventEndDate;
@@ -109,6 +123,13 @@ public class ConsentAnnexModel extends AbstractModel {
 	}
 
 	@ManyToOne/*(fetch = FetchType.LAZY)*///commented to improve task page performance
+	/*
+	 * @JoinColumns( {
+	 * 
+	 * @JoinColumn(name = "BP_ID", referencedColumnName = "BP_ID"),
+	 * 
+	 * @JoinColumn(name = "REG_ID", referencedColumnName = "REG_ID") })
+	 */
 	@JoinColumn(name = "BP_ID", referencedColumnName = "BP_ID")
 	private BusinessProfileModel bpid;
 
@@ -275,6 +296,15 @@ public class ConsentAnnexModel extends AbstractModel {
 	public void setConsentType(String consentType) {
 		this.consentType = consentType;
 	}
+
+	public String getTempProfile() {
+		return tempProfile;
+	}
+
+	public void setTempProfile(String tempProfile) {
+		this.tempProfile = tempProfile;
+	}
+
 	public String getAssignedTo() {
 		return assignedTo;
 	}
@@ -282,4 +312,14 @@ public class ConsentAnnexModel extends AbstractModel {
 	public void setAssignedTo(String assignedTo) {
 		this.assignedTo = assignedTo;
 	}
+
+	public BigDecimal getRegionId() {
+		return regionId;
+	}
+
+	public void setRegionId(BigDecimal regionId) {
+		this.regionId = regionId;
+	}
+	
+	
 }

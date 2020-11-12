@@ -64,7 +64,19 @@ public class ProfileRequestModel extends AbstractModel {
 	@Column(name = "BP_ID")
 	private BigDecimal bpid;
 	
-
+	//R2.0
+	@Column(name = "TEMP_BP_ID")
+	private BigDecimal tempBpid;
+	
+	//R2.0
+	@Column(name = "CCID")
+	private BigDecimal uniqueTypeCodeForCCID;
+	//R2.0
+	@Column(name = "NIT")
+	private BigDecimal uniqueTypeCodeForNIT;
+	//R2.0
+	@Column(name = "REG_ID")
+	private BigDecimal regionId;
 
 	/**
 	 * @return the profileReqId
@@ -239,6 +251,70 @@ public class ProfileRequestModel extends AbstractModel {
 		this.bpid = bpid;
 	}
 
-	
+
+	/**
+	 * @return the tempBpid
+	 */
+	public BigDecimal getTempBpid() {
+		return tempBpid;
+	}
+
+
+	/**
+	 * @param tempBpid the tempBpid to set
+	 */
+	public void setTempBpid(BigDecimal tempBpid) {
+		this.tempBpid = tempBpid;
+	}
+
+
+	/**
+	 * @return the uniqueTypeCodeForCCID
+	 */
+	public BigDecimal getUniqueTypeCodeForCCID() {
+		return uniqueTypeCodeForCCID;
+	}
+
+
+	/**
+	 * @param uniqueTypeCodeForCCID the uniqueTypeCodeForCCID to set
+	 */
+	public void setUniqueTypeCodeForCCID(BigDecimal uniqueTypeCodeForCCID) {
+		this.uniqueTypeCodeForCCID = uniqueTypeCodeForCCID;
+	}
+
+
+	/**
+	 * @return the uniqueTypeCodeForNIT
+	 */
+	public BigDecimal getUniqueTypeCodeForNIT() {
+		return uniqueTypeCodeForNIT;
+	}
+
+
+	/**
+	 * @param uniqueTypeCodeForNIT the uniqueTypeCodeForNIT to set
+	 */
+	public void setUniqueTypeCodeForNIT(BigDecimal uniqueTypeCodeForNIT) {
+		this.uniqueTypeCodeForNIT = uniqueTypeCodeForNIT;
+	}
+
+
+	/**
+	 * @return the regionId
+	 */
+	public BigDecimal getRegionId() {
+		return regionId;
+	}
+
+
+	/**
+	 * @param regionId the regionId to set
+	 */
+	public void setRegionId(BigDecimal regionId) {
+		this.regionId = regionId;
+	}
+
+
 
 }

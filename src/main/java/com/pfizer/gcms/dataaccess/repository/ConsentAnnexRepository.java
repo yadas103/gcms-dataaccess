@@ -50,7 +50,7 @@ public class ConsentAnnexRepository extends AbstractRepository<ConsentAnnexModel
 	 * @throws Exception
 	 * 		If id is invalid and able to found
 	 */
-	public List<ConsentAnnexModel> findBPid(BigDecimal id) throws Exception {
+	public List<ConsentAnnexModel> findBPid(BigDecimal id, BigDecimal regionId) throws Exception {
 		LOG.debug("Inside method find(BigDecimal id)");
 		StopWatch timer = new StopWatch();
         timer.start();
@@ -64,7 +64,7 @@ public class ConsentAnnexRepository extends AbstractRepository<ConsentAnnexModel
 		CriteriaQuery<TaskModel> query = builder.createQuery(TaskModel.class);
 		Root<TaskModel> root = query.from(TaskModel.class);
 		Predicate wherePredicate = buildPredicate(builder,
-				query, root,id );
+				query, root,id,regionId);
 		//Predicate idPredicate = builder.equal(root.get(ConsentAnnexModel.FIELD_BPID), id);
 		Predicate deleteFilter = prepareDeletePredicate(builder, root);
 		query.where(wherePredicate);
@@ -75,38 +75,7 @@ public class ConsentAnnexRepository extends AbstractRepository<ConsentAnnexModel
 		List<TaskModel> models = entityManager.createQuery(query).getResultList();
 		
 		for (TaskModel model : models) {
-			//models1.add(model.getConsannexid());
-			String userInfo = "";
-			ConsentAnnexModel consentDetails = new ConsentAnnexModel();
-			consentDetails.setId(model.getConsannexid().getId());
-			consentDetails.setEventEndDate(model.getConsannexid().getEventEndDate());
-			consentDetails.setEventname(model.getConsannexid().getEventname());
-			consentDetails.setConsentstatus(model.getConsannexid().getConsentstatus());
-			consentDetails.setConsentstatuschangeReason(model.getConsannexid().getConsentstatuschangeReason());
-			consentDetails.setConsentstartdate(model.getConsannexid().getConsentstartdate());
-			consentDetails.setConsentType(model.getConsannexid().getConsentType());
-			consentDetails.setConsentenddate(model.getConsannexid().getConsentenddate());
-			consentDetails.setUpdatedDate(model.getConsannexid().getUpdatedDate());
-			consentDetails.setPayercountry(model.getConsannexid().getPayercountry());
-			consentDetails.setProfilecountry(model.getConsannexid().getProfilecountry());
-			consentDetails.setTemplatetype(model.getConsannexid().getTemplatetype());
-			consentDetails.setTmpl_id(model.getConsannexid().getTmpl_id());
-			consentDetails.setProfileType(model.getConsannexid().getProfileType());
-			consentDetails.setPocode(model.getConsannexid().getPocode());
-			consentDetails.setAcmcode(model.getConsannexid().getAcmcode());
-			consentDetails.setAnnnexlocation(model.getConsannexid().getAnnnexlocation());
-			consentDetails.setQrcode(model.getConsannexid().getQrcode());
-			consentDetails.setRevocationDocLink(model.getConsannexid().getRevocationDocLink());
-			consentDetails.setRevocationReason(model.getConsannexid().getRevocationReason());
-			consentDetails.setBpid(model.getConsannexid().getBpid());
-			userInfo = model.getAssignedto().getFirstName().concat(" ").concat(model.getAssignedto().getLastName()).concat("(").concat(model.getAssignedto().getUserName()).concat(")");
-			consentDetails.setAssignedTo(userInfo);
-			consentDetails.setCreatedBy(model.getConsannexid().getCreatedBy());
-			consentDetails.setUpdatedBy(model.getConsannexid().getUpdatedBy());
-			consentDetails.setCreatedDate(model.getConsannexid().getCreatedDate());
-			consentDetails.setUpdatedDate(model.getConsannexid().getUpdatedDate());
-			//consentDetails.setRegionId(model.getConsannexid().getRegionId());
-			models1.add(consentDetails);			
+			models1.add(model.getConsannexid());
 		}
 		
 		/*EntityManager entityManager = getEntityManager();		
@@ -135,7 +104,7 @@ public class ConsentAnnexRepository extends AbstractRepository<ConsentAnnexModel
 	
 	public Predicate buildPredicate(CriteriaBuilder builder,
 			CriteriaQuery<TaskModel> query, Root<TaskModel> rootModelType,
-			BigDecimal id) {
+			BigDecimal id, BigDecimal regionId) {
 	  	LOG.debug("Inside method buildPredicate");
 		StopWatch timer = new StopWatch();
         timer.start();
@@ -150,8 +119,11 @@ public class ConsentAnnexRepository extends AbstractRepository<ConsentAnnexModel
 		
 		Path<TaskModel> pathTaskModel=rootModelType.get(TaskModel.FIELD_CONS);
 		Subquery<TaskModel> subqueryTask=query.subquery(TaskModel.class);
-		Root<ConsentAnnexModel> rootConsentAnnex=subqueryTask.from(ConsentAnnexModel.class);					
-		Predicate idpredicate = builder.equal(rootConsentAnnex.get(ConsentAnnexModel.FIELD_BPID), id) ;					
+		Root<ConsentAnnexModel> rootConsentAnnex=subqueryTask.from(ConsentAnnexModel.class);	
+						
+		Predicate idpredicate1 = builder.equal(rootConsentAnnex.get(ConsentAnnexModel.FIELD_BPID), id);
+		Predicate idpredicate2 = builder.equal(rootConsentAnnex.get(ConsentAnnexModel.FIELD_REGIONID), regionId);
+		Predicate idpredicate = builder.and(idpredicate1,idpredicate2);
 		subqueryTask.where(idpredicate);
 		subqueryTask = subqueryTask.select(rootConsentAnnex.get(ConsentAnnexModel.FIELD_ID));
 		Predicate predicate=builder.in(pathTaskModel).value(subqueryTask);

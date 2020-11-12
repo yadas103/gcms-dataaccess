@@ -7,14 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Where;
+
 /**
  * @author VENKAD09 BusinessProfileModel is a POJO classes,annotated with hibernate
  *         mappings and they are responsible for holding instances of data
  *         objects.This holds the Business Profile data object.
  */
-
 @Entity
 @Table(name = "GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW")
+@Where(clause = "UNIQUE_TYPE_CODE = 'TR-ID'")
 public class BusinessProfileModel implements BaseModel {
 
 	private static final long serialVersionUID = 1L;
@@ -25,14 +27,19 @@ public class BusinessProfileModel implements BaseModel {
 	public static final String FIELD_FIRST_NAME = "firstName";
 	public static final String FIELD_ORGANISATION_NAME = "organisationName";
 	public static final String FIELD_SPECIALITY = "speciality";
+	public static final String FIELD_REGION_ID = "regionId";
+	public static final String FIELD_MASTER_ID = "masterId";
 
 	public static final String FIELD_BP_ID = "id";
 	@Id
 	@Column(name = "BP_ID")
 	private BigDecimal id;
 	
+	@Column(name = "MASTER_BP_ID")
+	private BigDecimal masterId;
+	
 	@Column(name = "UNQ_ID_VAL")
-	private BigDecimal uniqueTypeId;
+	private String uniqueTypeId;
 
 	@Column(name = "PROFILE_TYPE_ID")
 	private String profileType;
@@ -73,6 +80,8 @@ public class BusinessProfileModel implements BaseModel {
 	@Column(name = "UNIQUE_TYPE_CODE")
 	private String uniqueTypeCode;
 	
+	@Column(name = "REG_ID")
+	private BigDecimal regionId;
 
 	public BigDecimal getId() {
 		return id;
@@ -186,12 +195,29 @@ public class BusinessProfileModel implements BaseModel {
 		this.uniqueTypeCode = uniqueTypeCode;
 	}
 
+	public BigDecimal getMasterId() {
+		return masterId;
+	}
 
-	public BigDecimal getUniqueTypeId() {
+	public void setMasterId(BigDecimal masterId) {
+		this.masterId = masterId;
+	}
+
+	public String getUniqueTypeId() {
 		return uniqueTypeId;
 	}
 
-	public void setUniqueTypeId(BigDecimal uniqueTypeId) {
+	public void setUniqueTypeId(String uniqueTypeId) {
 		this.uniqueTypeId = uniqueTypeId;
 	}
+
+	public BigDecimal getRegionId() {
+		return regionId;
+	}
+
+	public void setRegionId(BigDecimal regionId) {
+		this.regionId = regionId;
+	}
+
+	
 }

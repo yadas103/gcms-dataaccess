@@ -64,19 +64,14 @@ public class TaskModel extends AbstractModel {
 	private String    deleteReason;
 	
 	
-@Column(name = "DELETE_REASON_DESC")
+	@Column(name = "DELETE_REASON_DESC")
 	private String 	deleteReasonDesc;
 	
-@Column(name = "REASSIGN_REASON ")
-private String 	reassignReason;
-@Column(name = "UNDELETE_REASON")
-private String 	undeleteReason;
-
- 
-
-
-
-
+	@Column(name = "REASSIGN_REASON ")
+	private String 	reassignReason;
+	
+	@Column(name = "UNDELETE_REASON")
+	private String 	undeleteReason;
 
 	/**
 	 * Default constructor.

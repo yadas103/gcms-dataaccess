@@ -63,6 +63,9 @@ public class CountryModel extends AbstractModel {
 	@Column(name = "EFPIA_CNTRY_FLAG")
 	private String efpiaCntryFlag;
 	
+	@Column(name = "REG_ID")
+	private BigDecimal regionId;
+	
 	//@OneToMany(cascade = CascadeType.ALL, mappedBy = "country", fetch = FetchType.LAZY)
 	//@JoinColumn(name = "CNTRY_ID", referencedColumnName = "CNTRY_ID")
 	//private List<CountryAttributeModel> attributes;
@@ -177,4 +180,19 @@ public class CountryModel extends AbstractModel {
 	public void setEfpiaCntryFlag(String efpiaCntryFlag) {
 		this.efpiaCntryFlag = efpiaCntryFlag;
 	}
+
+	/**
+	 * @return the regionId
+	 */
+	public BigDecimal getRegionId() {
+		return regionId;
+	}
+
+	/**
+	 * @param regionId the regionId to set
+	 */
+	public void setRegionId(BigDecimal regionId) {
+		this.regionId = regionId;
+	}
+	
 }

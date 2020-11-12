@@ -27,6 +27,8 @@ public class TaskSearchDTO {
 	public static final String FIELD_PAYER_COUNTRY = "payercountry";
 	public static final String FIELD_SORTBY = "sortBy";
 	public static final String FIELD_SORTDESCENDING = "sortDescending";
+	public static final String FIELD_REGIONID = "regionId";
+	public static final String FIELD_TEMPPROFILE = "tempProfile";
 
 
 	private String firstName;
@@ -41,7 +43,9 @@ public class TaskSearchDTO {
 	private String profilecountry;
 	private String payercountry;
 	private String sortBy;
+	private BigDecimal regionId;
 	private boolean	sortDescending = false;
+	private String tempProfile;
 	
 	
 	
@@ -124,6 +128,24 @@ public class TaskSearchDTO {
 	}
 	public void setUpdateddate(String updateddate) {
 		this.updateddate = updateddate;
+	}
+	public BigDecimal getRegionId() {
+		return regionId;
+	}
+	public void setRegionId(BigDecimal regionId) {
+		this.regionId = regionId;
+	}
+	/**
+	 * @return the tempProfile
+	 */
+	public String getTempProfile() {
+		return tempProfile;
+	}
+	/**
+	 * @param tempProfile the tempProfile to set
+	 */
+	public void setTempProfile(String tempProfile) {
+		this.tempProfile = tempProfile;
 	}
 	
 	

@@ -22,6 +22,7 @@ public class BusinessProfileDisplayDTO {
 	private String speciality;
 	private String uniqueTypeCode;
 	private BigDecimal uniqueTypeId;
+	private String isTempProfile;
 	
 	
 	public BigDecimal getId() {
@@ -121,5 +122,17 @@ public class BusinessProfileDisplayDTO {
 	public void setUniqueTypeId(BigDecimal uniqueTypeId) {
 		this.uniqueTypeId = uniqueTypeId;
 	}
-
+	
+	/**
+	 * @return the isTempProfile
+	 */
+	public String getIsTempProfile() {
+		return isTempProfile;
+	}
+	/**
+	 * @param isTempProfile the isTempProfile to set
+	 */
+	public void setIsTempProfile(String isTempProfile) {
+		this.isTempProfile = isTempProfile;
+	}
 }

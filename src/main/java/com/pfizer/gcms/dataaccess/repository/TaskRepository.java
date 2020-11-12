@@ -258,16 +258,49 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 		List<Predicate> andPredicates = new ArrayList<Predicate>();
 		List<Order> sortOrders = new ArrayList<Order>();
 		// server side searching
+		
 		// search by taskstatus
 		if (searchDTO.getTaskStatus() != null) {
-			Predicate taskstatusPredicate = builder.equal(rootModelType.get(TaskModel.FIELD_TASKSTATUS),
-					searchDTO.getTaskStatus());
-			andPredicates.add(taskstatusPredicate);
-		} else {
-			Predicate taskstatusPredicate = builder.equal(rootModelType.get(TaskModel.FIELD_TASKSTATUS), "INCOMPLETE");
-			andPredicates.add(taskstatusPredicate);
+            Path<TaskModel> pathTaskModel = rootModelType.get(TaskModel.FIELD_CONS);
+            Subquery<TaskModel> subquryTask = query.subquery(TaskModel.class);
+            Root<ConsentAnnexModel> rootConsentAnnex = subquryTask.from(ConsentAnnexModel.class);
+            Predicate predicateRegionId = builder.equal(rootConsentAnnex.get(ConsentAnnexModel.FIELD_REGIONID), searchDTO.getRegionId());
+            
+            //R2.0 arunkv - temprofile [dont show tempprofile task]
+			Predicate predicateTempProfile = builder.equal(rootConsentAnnex.get(ConsentAnnexModel.FIELD_TEMP_PROFILE), "N");
+			Predicate newPredicate = builder.and(predicateRegionId,predicateTempProfile);
+            subquryTask.where(newPredicate);
+            
+            subquryTask = subquryTask.select(rootConsentAnnex.get(ConsentAnnexModel.FIELD_ID));
+            Predicate predicate = builder.in(pathTaskModel).value(subquryTask);    
+            Predicate taskstatusPredicate = builder.equal(rootModelType.get(TaskModel.FIELD_TASKSTATUS),
+                    searchDTO.getTaskStatus());
+            Predicate predicate1 = builder.and(predicate,taskstatusPredicate);
+            //Predicate taskstatusPredicate2 = builder.equal(rootModelType.get(TaskModel.FIELD_CONS).get(ConsentAnnexModel.FIELD_REGIONID),searchDTO.getRegionId());
+            andPredicates.add(predicate1);
+        } else {            
+                
+            Path<TaskModel> pathTaskModel = rootModelType.get(TaskModel.FIELD_CONS);
+            Subquery<TaskModel> subquryTask = query.subquery(TaskModel.class);
+            Root<ConsentAnnexModel> rootConsentAnnex = subquryTask.from(ConsentAnnexModel.class);
+            Predicate predicateRegionId = builder.equal(rootConsentAnnex.get(ConsentAnnexModel.FIELD_REGIONID), searchDTO.getRegionId());
+            
+            //R2.0 arunkv - temprofile [dont show tempprofile task]
+			Predicate predicateTempProfile = builder.equal(rootConsentAnnex.get(ConsentAnnexModel.FIELD_TEMP_PROFILE), "N");
+			Predicate newPredicate = builder.and(predicateRegionId,predicateTempProfile);
+            subquryTask.where(newPredicate);
+            
+            subquryTask = subquryTask.select(rootConsentAnnex.get(ConsentAnnexModel.FIELD_ID));
+            Predicate predicate = builder.in(pathTaskModel).value(subquryTask);    
+            Predicate taskstatusPredicate = builder.equal(rootModelType.get(TaskModel.FIELD_TASKSTATUS),
+                    "INCOMPLETE");
+            Predicate predicate1 = builder.and(predicate,taskstatusPredicate);
+            andPredicates.add(predicate1);
 
-		}
+ 
+
+        }
+		
 		// search by payer country
 		if (searchDTO.getPayercountry() != null) {
 			String country = searchDTO.getPayercountry();
@@ -279,7 +312,10 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			Root<CountryModel> rootCountry = subqueryConsentAnnex.from(CountryModel.class);
 			Predicate predicateCountryName = builder.like(
 					builder.lower(rootCountry.get(CountryModel.FIELD_COUNTRY_NAME)), "%" + country.toLowerCase() + "%");
-			subqueryConsentAnnex.where(predicateCountryName);
+			//R2.0 arunkv - temprofile [dont show tempprofile task]
+			Predicate predicateTempProfile = builder.equal(rootConsentAnnex.get(ConsentAnnexModel.FIELD_TEMP_PROFILE), searchDTO.getTempProfile());
+			Predicate newPredicate = builder.and(predicateCountryName,predicateTempProfile);
+			subqueryConsentAnnex.where(newPredicate);
 			subqueryConsentAnnex = subqueryConsentAnnex.select(rootCountry.get(CountryModel.FIELD_COUNTRY_ID));
 			Predicate predicateConsentID = builder.in(pathConsentAnnexModel).value(subqueryConsentAnnex);
 			subquryTask.where(predicateConsentID);
@@ -820,7 +856,10 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			Root<ConsentAnnexModel> rt = sq.from(ConsentAnnexModel.class);
 
 			Predicate predicate = builder.equal(rt.get(ConsentAnnexModel.FIELD_PROFILECOUNTRY), countryId);
-			sq.where(predicate);
+			//R2.0 arunkv - temprofile [dont show tempprofile task]
+			Predicate predicateTempProfile = builder.equal(rt.get(ConsentAnnexModel.FIELD_TEMP_PROFILE), "N");
+			Predicate newPredicate = builder.and(predicate,predicateTempProfile);
+			sq.where(newPredicate);
 			sq = sq.select(rt.get(ConsentAnnexModel.FIELD_ID));
 			LOG.debug("Icando" + sq);
 

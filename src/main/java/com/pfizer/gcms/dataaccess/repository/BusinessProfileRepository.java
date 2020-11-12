@@ -24,6 +24,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 
+import com.pfizer.gcms.dataaccess.common.HibernateFactory;
 import com.pfizer.gcms.dataaccess.common.exception.GCMSBadDataException;
 import com.pfizer.gcms.dataaccess.dto.BusinessProfileDisplayDTO;
 import com.pfizer.gcms.dataaccess.model.BusinessProfileModel;
@@ -36,6 +37,7 @@ import com.pfizer.gcms.dataaccess.model.BusinessProfileModel;
 public class BusinessProfileRepository extends AbstractRepository<BusinessProfileModel> {
 
 	private static final Log LOG = LogFactory.getLog(AbstractRepository.class);
+	private BigDecimal regionId;
 
 	/**
 	 * Creates a new instance of the BusinessProfileRepository and configures
@@ -58,8 +60,8 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public  List<BusinessProfileDisplayDTO> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality,String uniqueTypeCode,BigDecimal uniqueTypeId) throws Exception {
-		LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality,String uniqueTypeCode,BigDecimal uniqueTypeId)" );
+	public  List<BusinessProfileDisplayDTO> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality ) throws Exception {
+		LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality )" );
 		BigDecimal zero = BigDecimal.ZERO;
 			if (name == null || name.trim().isEmpty()) {
 				String message = "Invalid Country Name";
@@ -84,8 +86,31 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 				// create the statement object  
 				Statement stmt=conn.createStatement(); 		
 				
+				/**
+				 * @author ARUNKV
+				 * R2.0 Starts
+				 * Profile creation
+				 */
+				String genericQueryHead = "select 'N' as TEMP_PROFILE, BP_ID, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDR_LN_1_TXT,SPECIALITY from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW" ;
+				String genericQueryTail = "  where COUNTRY= '"+name.trim()+"' and PROFILE_TYPE_ID= '"+type.trim()+"' ";
 				
-				String searchBPQuery = "select BP_ID,PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME, ORGANISATION_NAME, CITY, ADDR_LN_1_TXT, SPECIALITY from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW  where COUNTRY= '"+name.trim()+"' and PROFILE_TYPE_ID= '"+type.trim()+"'  "+" and UNIQUE_TYPE_CODE = 'TR-ID'" ;
+				String unionHead = "select * from (";
+				String unionTail = ") where 1=1 ";
+				
+				String colombiaQueryHead = "select 'Y' as TEMP_PROFILE, TEMP_BP_ID as BP_ID, TO_CHAR(PROFILE_TYPE_ID), FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDRESS as ADDR_LN_1_TXT,SPECILITY as SPECIALITY from GCMS_ODS.GCMS_PROFILE_REQUEST";
+				String colombiaQueryTail = "and REG_ID= 5 and BP_ID IS NULL";
+								
+				String searchBPQuery = (name.trim().equalsIgnoreCase("COLOMBIA")) 
+						? unionHead.concat(genericQueryHead)
+								.concat(genericQueryTail)
+								.concat(" UNION ")
+								.concat(colombiaQueryHead)
+								.concat(genericQueryTail)
+								.concat(colombiaQueryTail)
+								.concat(unionTail)
+						: genericQueryHead.concat(genericQueryTail);
+				/**R2.0 changes ends**/
+				
 				if(lastName != null && !lastName.equals("lastName")){
 				lastName = '%'+lastName+'%';	
 				searchBPQuery = searchBPQuery + " and( " + 
@@ -143,6 +168,8 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 					bp.setCity(resultSet.getString("CITY"));
 					bp.setAddress(resultSet.getString("ADDR_LN_1_TXT"));
 					bp.setSpeciality(resultSet.getString("SPECIALITY"));
+					// R2.0 - arunkv
+					bp.setIsTempProfile(resultSet.getString("TEMP_PROFILE"));
 					models.add(bp);
 				}
 				
@@ -185,8 +212,9 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 		Root<BusinessProfileModel> root = query.from(getModelType());
 		Expression<BigDecimal[]> idExp = root.get(BusinessProfileModel.FIELD_BP_ID);
 		List<BigDecimal> ids = Arrays.asList(id);
-		Query typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE id IN (:ids)");
+		Query typedQuery = entityManager.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE id IN (:ids) AND regionId = (:regionId)");
 		typedQuery.setParameter("ids", ids);
+		typedQuery.setParameter("regionId", regionId);
 		models = typedQuery.getResultList();
 		LOG.debug("models" + models);
 		if (models == null || models.isEmpty()) {
@@ -203,7 +231,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 	 * @description this method is used to get data for one particular Bpid from
 	 *              BusinessProfile table for validation in Profile Review
 	 */
-	public List<BusinessProfileModel> validationfindById(BigDecimal id) throws Exception {
+	public List<BusinessProfileModel> validationfindById(BigDecimal id,BigDecimal regionId) throws Exception {
 		LOG.debug("Inside method List<BusinessProfileModel> validationfindById(BigDecimal id )");
 		if (id == null) {
 			String message = "Invalid selection";
@@ -219,8 +247,9 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 		Expression<BigDecimal> idExp = root.get(BusinessProfileModel.FIELD_BP_ID);
 		List<BigDecimal> ids = Arrays.asList(id);
 		Query typedQuery = entityManager
-				.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE id IN (:ids)");
+				.createQuery("FROM com.pfizer.gcms.dataaccess.model.BusinessProfileModel WHERE id IN (:ids) AND regionId = (:regionId)");
 		typedQuery.setParameter("ids", ids);
+		typedQuery.setParameter("regionId", regionId);
 		models = typedQuery.getResultList();
 		LOG.debug("models" + models);
 		if (models == null || models.isEmpty()) {
@@ -228,4 +257,70 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 		}
 		return models;
 	}
+	
+	public List<BusinessProfileModel> validationfindByCode(BigDecimal id,BigDecimal regionId) throws Exception {
+		LOG.debug("Inside method List<BusinessProfileModel> validationfindById(BigDecimal id )");
+		if (id == null) {
+			String message = "Invalid selection";
+			LOG.warn(message);
+			throw new GCMSBadDataException(message);
+		}
+
+		List<BusinessProfileModel> models = null;
+		EntityManager entityManager = HibernateFactory.createEntityManager();		
+		
+		try {
+
+			Session session = entityManager.unwrap(org.hibernate.Session.class);
+			SessionFactory sessionFactory = session.getSessionFactory();
+			SessionFactoryImplementor impl = (SessionFactoryImplementor) sessionFactory;
+			ConnectionProvider cp = impl.getConnectionProvider();
+			Connection conn = cp.getConnection();
+			String sqlString = "query in here";
+			conn.setAutoCommit(false);
+
+			Statement stmt = conn.createStatement();
+
+			String searchBPQuery = "select BP_ID, MASTER_BP_ID, UNQ_ID_VAL, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME, ORGANISATION_NAME, CITY, ADDR_LN_1_TXT,"
+					+ " SPECIALITY, STATUS, UNIQUE_TYPE_CODE, COUNTRY, REG_ID from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW  where UNQ_ID_VAL = '"
+					+ id + "' and REG_ID = '" + regionId + "' and UNIQUE_TYPE_CODE IN ('NIT','CCID')";
+
+			PreparedStatement pStmt = conn.prepareStatement(searchBPQuery);
+
+			LOG.info("Before time execute" + new Date().toString());
+			LOG.info("Query executed " + searchBPQuery);
+
+			// execute query
+			ResultSet resultSet = pStmt.executeQuery();
+			System.out.println("Size of reslt set : " + resultSet.getFetchSize());
+			LOG.info("After query execute" + new Date().toString());
+			models = new ArrayList<BusinessProfileModel>();
+			while (resultSet.next()) {
+				// Populate Business Profile DTO to be send to service layer
+				BusinessProfileModel bp = new BusinessProfileModel();
+				bp.setId(resultSet.getBigDecimal("BP_ID"));
+				bp.setMasterId(resultSet.getBigDecimal("MASTER_BP_ID"));
+				bp.setProfileType(resultSet.getString("PROFILE_TYPE_ID"));
+				bp.setFirstName(resultSet.getString("FIRST_NAME"));
+				bp.setLastName(resultSet.getString("LAST_NAME"));
+				bp.setOrganisationName(resultSet.getString("ORGANISATION_NAME"));
+				bp.setCity(resultSet.getString("CITY"));
+				bp.setAddress(resultSet.getString("ADDR_LN_1_TXT"));
+				bp.setSpeciality(resultSet.getString("SPECIALITY"));
+				bp.setUniqueTypeId(resultSet.getString("UNQ_ID_VAL"));
+				bp.setCountry(resultSet.getString("COUNTRY"));
+				models.add(bp);
+			}
+			//closing connection
+			resultSet.close();
+			pStmt.close();
+			conn.close();
+			session.disconnect();
+
+		} catch (Exception e) {
+			LOG.debug(e.getStackTrace());
+		} 
+		return models;
+	}
+	
 }
