@@ -91,18 +91,18 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 				 * R2.0 Starts
 				 * Profile creation
 				 */
-				String genericQueryHead = "select 'N' as TEMP_PROFILE, BP_ID, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDR_LN_1_TXT,SPECIALITY from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW" ;
+				String genericQueryHead = "select 'N' as TEMP_PROFILE, BP_ID, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDR_LN_1_TXT,SPECIALITY,STATUS,UNIQUE_TYPE_CODE,UNQ_ID_VAL from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW" ;
 				String genericQueryTail = "  where COUNTRY= '"+name.trim()+"' and PROFILE_TYPE_ID= '"+type.trim()+"' ";
 				
 				String unionHead = "select * from (";
 				String unionTail = ") where 1=1 ";
 				
-				String colombiaQueryHead = "select 'Y' as TEMP_PROFILE, TEMP_BP_ID as BP_ID, TO_CHAR(PROFILE_TYPE_ID), FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDRESS as ADDR_LN_1_TXT,SPECILITY as SPECIALITY from GCMS_ODS.GCMS_PROFILE_REQUEST";
+				String colombiaQueryHead = "select 'Y' as TEMP_PROFILE, TEMP_BP_ID as BP_ID, TO_CHAR(PROFILE_TYPE_ID), FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDRESS as ADDR_LN_1_TXT,SPECILITY as SPECIALITY, NULL, NULL, NULL from GCMS_ODS.GCMS_PROFILE_REQUEST";
 				String colombiaQueryTail = "and REG_ID= 5 and BP_ID IS NULL";
-								
+				
 				String searchBPQuery = (name.trim().equalsIgnoreCase("COLOMBIA")) 
 						? unionHead.concat(genericQueryHead)
-								.concat(genericQueryTail)
+								.concat(genericQueryTail.concat((regionId != null) ? " and UNIQUE_TYPE_CODE = 'TR-ID' and REG_ID LIKE ('"+regionId+"')" : ""))
 								.concat(" UNION ")
 								.concat(colombiaQueryHead)
 								.concat(genericQueryTail)
@@ -110,9 +110,6 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 								.concat(unionTail)
 						: genericQueryHead.concat(genericQueryTail);
 				/**R2.0 changes ends**/
-				if(regionId != null){
-					  searchBPQuery = searchBPQuery+" and UNIQUE_TYPE_CODE = 'TR-ID' and REG_ID LIKE ('"+regionId+"')";
-				}
 				
 				if(lastName != null && !lastName.equals("lastName")){
 				lastName = '%'+lastName+'%';	
