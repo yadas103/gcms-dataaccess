@@ -21,8 +21,9 @@ public class BusinessProfileDisplayDTO {
 	private String region;
 	private String speciality;
 	private String uniqueTypeCode;
-	private BigDecimal uniqueTypeId;
+	private String uniqueTypeId;
 	private String isTempProfile;
+	private BigDecimal regionId;
 	
 	
 	public BigDecimal getId() {
@@ -116,10 +117,10 @@ public class BusinessProfileDisplayDTO {
 	public void setUniqueTypeCode(String uniqueTypeCode) {
 		this.uniqueTypeCode = uniqueTypeCode;
 	}
-	public BigDecimal getUniqueTypeId() {
+	public String getUniqueTypeId() {
 		return uniqueTypeId;
 	}
-	public void setUniqueTypeId(BigDecimal uniqueTypeId) {
+	public void setUniqueTypeId(String uniqueTypeId) {
 		this.uniqueTypeId = uniqueTypeId;
 	}
 	
@@ -134,5 +135,11 @@ public class BusinessProfileDisplayDTO {
 	 */
 	public void setIsTempProfile(String isTempProfile) {
 		this.isTempProfile = isTempProfile;
+	}
+	public BigDecimal getRegionId() {
+		return regionId;
+	}
+	public void setRegionId(BigDecimal regionId) {
+		this.regionId = regionId;
 	}
 }
