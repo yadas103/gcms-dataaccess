@@ -60,7 +60,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public  List<BusinessProfileDisplayDTO> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality ) throws Exception {
+	public  List<BusinessProfileDisplayDTO> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality,String uniqueTypeCode,String uniqueTypeId) throws Exception {
 		LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality )" );
 		BigDecimal zero = BigDecimal.ZERO;
 			if (name == null || name.trim().isEmpty()) {

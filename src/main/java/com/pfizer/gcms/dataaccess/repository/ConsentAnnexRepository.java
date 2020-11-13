@@ -75,7 +75,38 @@ public class ConsentAnnexRepository extends AbstractRepository<ConsentAnnexModel
 		List<TaskModel> models = entityManager.createQuery(query).getResultList();
 		
 		for (TaskModel model : models) {
-			models1.add(model.getConsannexid());
+			//models1.add(model.getConsannexid());
+			String userInfo = "";
+			ConsentAnnexModel consentDetails = new ConsentAnnexModel();
+			consentDetails.setId(model.getConsannexid().getId());
+			consentDetails.setEventEndDate(model.getConsannexid().getEventEndDate());
+			consentDetails.setEventname(model.getConsannexid().getEventname());
+			consentDetails.setConsentstatus(model.getConsannexid().getConsentstatus());
+			consentDetails.setConsentstatuschangeReason(model.getConsannexid().getConsentstatuschangeReason());
+			consentDetails.setConsentstartdate(model.getConsannexid().getConsentstartdate());
+			consentDetails.setConsentType(model.getConsannexid().getConsentType());
+			consentDetails.setConsentenddate(model.getConsannexid().getConsentenddate());
+			consentDetails.setUpdatedDate(model.getConsannexid().getUpdatedDate());
+			consentDetails.setPayercountry(model.getConsannexid().getPayercountry());
+			consentDetails.setProfilecountry(model.getConsannexid().getProfilecountry());
+			consentDetails.setTemplatetype(model.getConsannexid().getTemplatetype());
+			consentDetails.setTmpl_id(model.getConsannexid().getTmpl_id());
+			consentDetails.setProfileType(model.getConsannexid().getProfileType());
+			consentDetails.setPocode(model.getConsannexid().getPocode());
+			consentDetails.setAcmcode(model.getConsannexid().getAcmcode());
+			consentDetails.setAnnnexlocation(model.getConsannexid().getAnnnexlocation());
+			consentDetails.setQrcode(model.getConsannexid().getQrcode());
+			consentDetails.setRevocationDocLink(model.getConsannexid().getRevocationDocLink());
+			consentDetails.setRevocationReason(model.getConsannexid().getRevocationReason());
+			consentDetails.setBpid(model.getConsannexid().getBpid());
+			userInfo = model.getAssignedto().getFirstName().concat(" ").concat(model.getAssignedto().getLastName()).concat("(").concat(model.getAssignedto().getUserName()).concat(")");
+			consentDetails.setAssignedTo(userInfo);
+			consentDetails.setCreatedBy(model.getConsannexid().getCreatedBy());
+			consentDetails.setUpdatedBy(model.getConsannexid().getUpdatedBy());
+			consentDetails.setCreatedDate(model.getConsannexid().getCreatedDate());
+			consentDetails.setUpdatedDate(model.getConsannexid().getUpdatedDate());
+			consentDetails.setRegionId(model.getConsannexid().getRegionId());
+			models1.add(consentDetails);			
 		}
 		
 		/*EntityManager entityManager = getEntityManager();		
