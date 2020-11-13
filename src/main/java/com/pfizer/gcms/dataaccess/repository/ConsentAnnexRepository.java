@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import com.pfizer.gcms.dataaccess.common.NumericUtil;
 import com.pfizer.gcms.dataaccess.common.exception.GCMSBadDataException;
 import com.pfizer.gcms.dataaccess.model.AbstractModel;
+import com.pfizer.gcms.dataaccess.model.BusinessProfileModel;
 import com.pfizer.gcms.dataaccess.model.ConsentAnnexModel;
 import com.pfizer.gcms.dataaccess.model.TaskModel;
 
@@ -150,12 +151,22 @@ public class ConsentAnnexRepository extends AbstractRepository<ConsentAnnexModel
 		
 		Path<TaskModel> pathTaskModel=rootModelType.get(TaskModel.FIELD_CONS);
 		Subquery<TaskModel> subqueryTask=query.subquery(TaskModel.class);
-		Root<ConsentAnnexModel> rootConsentAnnex=subqueryTask.from(ConsentAnnexModel.class);	
-						
-		Predicate idpredicate1 = builder.equal(rootConsentAnnex.get(ConsentAnnexModel.FIELD_BPID), id);
+		Root<ConsentAnnexModel> rootConsentAnnex=subqueryTask.from(ConsentAnnexModel.class);
+		Path<ConsentAnnexModel> pathConsentAnnexModel = rootConsentAnnex.get(ConsentAnnexModel.FIELD_BPID);
+		Subquery<ConsentAnnexModel> subqueryConsentAnnex = query.subquery(ConsentAnnexModel.class);
+		Root<BusinessProfileModel> rootBusinessProfile = subqueryConsentAnnex.from(BusinessProfileModel.class);
+		
+		Predicate idpredicate1 = builder.equal(rootBusinessProfile.get(BusinessProfileModel.FIELD_BP_ID), id);
+		Predicate idpredicate3 = builder.equal(rootBusinessProfile.get(BusinessProfileModel.FIELD_MASTER_ID), id);
+		Predicate bpIdSearch = builder.or(idpredicate1,idpredicate3);
 		Predicate idpredicate2 = builder.equal(rootConsentAnnex.get(ConsentAnnexModel.FIELD_REGIONID), regionId);
-		Predicate idpredicate = builder.and(idpredicate1,idpredicate2);
-		subqueryTask.where(idpredicate);
+		Predicate idpredicate = builder.and(bpIdSearch,idpredicate2);
+		
+		subqueryConsentAnnex.where(idpredicate);
+		subqueryConsentAnnex = subqueryConsentAnnex.select(rootBusinessProfile.get(BusinessProfileModel.FIELD_BP_ID));
+		Predicate predicateBusinessID = builder.in(pathConsentAnnexModel).value(subqueryConsentAnnex);
+		
+		subqueryTask.where(predicateBusinessID);
 		subqueryTask = subqueryTask.select(rootConsentAnnex.get(ConsentAnnexModel.FIELD_ID));
 		Predicate predicate=builder.in(pathTaskModel).value(subqueryTask);
 		andPredicates.add(predicate);
