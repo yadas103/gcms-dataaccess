@@ -107,6 +107,7 @@ public class ConsentAnnexRepository extends AbstractRepository<ConsentAnnexModel
 			consentDetails.setCreatedDate(model.getConsannexid().getCreatedDate());
 			consentDetails.setUpdatedDate(model.getConsannexid().getUpdatedDate());
 			consentDetails.setRegionId(model.getConsannexid().getRegionId());
+			consentDetails.setTempProfile(model.getConsannexid().getTempProfile());
 			models1.add(consentDetails);			
 		}
 		

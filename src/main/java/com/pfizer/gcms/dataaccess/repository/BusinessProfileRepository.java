@@ -103,6 +103,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 				String searchBPQuery = (name.trim().equalsIgnoreCase("COLOMBIA")) 
 						? unionHead.concat(genericQueryHead)
 								.concat(genericQueryTail.concat((regionId != null) ? " and UNIQUE_TYPE_CODE = 'TR-ID' and REG_ID LIKE ('"+regionId+"')" : ""))
+								.concat((regionId.intValue() == 5 && uniqueTypeId.equals("uniqueTypeId")) ? " and STATUS = 'ACTIVE' " : "")
 								.concat(" UNION ")
 								.concat(colombiaQueryHead)
 								.concat(genericQueryTail)
@@ -141,13 +142,13 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 			
 			  	if(uniqueTypeCode != null && !uniqueTypeId.equals("uniqueTypeId")){
 				  uniqueTypeCode = '%'+uniqueTypeCode+'%';
-				  searchBPQuery = searchBPQuery + " and bp_id in \r\n" + 
+				  searchBPQuery = searchBPQuery + " and BP_ID in \r\n" + 
 				  		"(select master_bp_id from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW\r\n" + 
 				  		"where UPPER(UNIQUE_TYPE_CODE) LIKE UPPER('"+uniqueTypeCode.trim()+"') and UNQ_ID_VAL LIKE ('"+uniqueTypeId+"'))";
 				}
-				if(regionId.intValue() == 5 && uniqueTypeId.equals("uniqueTypeId")){
-					  searchBPQuery = searchBPQuery+" and STATUS = 'ACTIVE' ";
-				}
+
+
+
 			 
 				PreparedStatement pStmt = conn.prepareStatement(searchBPQuery);
 				
