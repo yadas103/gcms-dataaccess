@@ -338,10 +338,12 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			Predicate predicateLastName2 = builder.like(
 					builder.lower(rootBusinessProfile.get(BusinessProfileModel.FIELD_ORGANISATION_NAME)),
 					"%" + lastname.toLowerCase() + "%");
+			Predicate predicateRegionId = builder.equal(rootBusinessProfile.get(BusinessProfileModel.FIELD_REGION_ID), searchDTO.getRegionId());
 			Predicate newpredicate = builder.or(predicateLastName, predicateLastName2);
-			subqueryConsentAnnex.where(newpredicate);
-			subqueryConsentAnnex = subqueryConsentAnnex
-					.select(rootBusinessProfile.get(BusinessProfileModel.FIELD_BP_ID));
+			Predicate newPredicate2 = builder.and(newpredicate,predicateRegionId);
+			subqueryConsentAnnex.where(newPredicate2);
+			subqueryConsentAnnex = subqueryConsentAnnex.select(rootBusinessProfile.get(BusinessProfileModel.FIELD_BP_ID));
+
 			Predicate predicateBusinessID = builder.in(pathConsentAnnexModel).value(subqueryConsentAnnex);
 			subquryTask.where(predicateBusinessID);
 			subquryTask = subquryTask.select(rootConsentAnnex.get(ConsentAnnexModel.FIELD_ID));
@@ -360,7 +362,9 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 			Predicate predicateFirstName = builder.like(
 					builder.lower(rootBusinessProfile.get(BusinessProfileModel.FIELD_FIRST_NAME)),
 					"%" + firstname.toLowerCase() + "%");
-			subqueryConsentAnnex.where(predicateFirstName);
+			Predicate predicateRegionId = builder.equal(rootBusinessProfile.get(BusinessProfileModel.FIELD_REGION_ID), searchDTO.getRegionId());
+			Predicate newPredicate = builder.and(predicateFirstName,predicateRegionId);
+			subqueryConsentAnnex.where(newPredicate);
 			subqueryConsentAnnex = subqueryConsentAnnex
 					.select(rootBusinessProfile.get(BusinessProfileModel.FIELD_BP_ID));
 			Predicate predicateBusinessID = builder.in(pathConsentAnnexModel).value(subqueryConsentAnnex);
