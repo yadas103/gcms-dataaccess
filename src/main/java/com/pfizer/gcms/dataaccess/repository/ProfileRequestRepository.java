@@ -103,7 +103,7 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
 			if (null == status || status.trim().isEmpty()) {
 			typedQuery = entityManager.createQuery(
 					"SELECT pr.id,pr.profileTypeId,pr.firstName,pr.lastName,pr.organizationName,pr.country,pr.address,pr.city,"
-					+ "pr.specility,pr.notes,pr.status,pr.bpid, user.firstName, user.lastName, user.userName, pr.regionId, pr.tempBpid FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
+					+ "pr.specility,pr.notes,pr.status,pr.bpid, user.firstName, user.lastName, user.userName, pr.regionId, pr.tempBpid, pr.uniqueTypeCodeForCCID, pr.uniqueTypeCodeForNIT FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
 					+ "com.pfizer.gcms.dataaccess.model.UserModelNew user WHERE  UPPER(pr.createdBy) = UPPER(user.userName) and pr.status= 'Pending'and  pr.country IN (:country) order by pr.createdDate DESC");
 			typedQuery.setParameter("country", country);
 			
@@ -111,7 +111,7 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
 				
 				typedQuery = entityManager.createQuery(
 						"SELECT pr.id,pr.profileTypeId,pr.firstName,pr.lastName,pr.organizationName,pr.country,pr.address,pr.city,"
-						+ "pr.specility,pr.notes,pr.status,pr.bpid, user.firstName, user.lastName, user.userName, pr.regionId, pr.tempBpid FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
+						+ "pr.specility,pr.notes,pr.status,pr.bpid, user.firstName, user.lastName, user.userName, pr.regionId, pr.tempBpid, pr.uniqueTypeCodeForCCID, pr.uniqueTypeCodeForNIT FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
 						+ "com.pfizer.gcms.dataaccess.model.UserModelNew user WHERE UPPER(pr.createdBy) = UPPER(user.userName) and  pr.status IN (:status) and pr.country IN (:country) order by pr.createdDate DESC");
 				typedQuery.setParameter("country", country);
 				typedQuery.setParameter("status", status);
@@ -137,6 +137,8 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
 				model.setCreatedBy((String)values[12] + " " + (String)values[13] + "(" + (String)values[14] + ")");
 				model.setRegionId((BigDecimal)values[15]); 
 				model.setTempBpid((BigDecimal)values[16]);
+				model.setUniqueTypeCodeForCCID((BigDecimal)values[17]);
+				model.setUniqueTypeCodeForNIT((BigDecimal)values[18]);
 				models.add(model);
 			}			
 			
@@ -198,14 +200,14 @@ LOG.debug("models" + models);
 			if (null == status || status.trim().isEmpty()) {
 			typedQuery = entityManager.createQuery(
 					"SELECT pr.id,pr.profileTypeId,pr.firstName,pr.lastName,pr.organizationName,pr.country,pr.address,pr.city,"
-					+ "pr.specility,pr.notes,pr.status,pr.bpid,user.firstName, user.lastName, user.userName,pr.regionId, pr.tempBpid FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
+					+ "pr.specility,pr.notes,pr.status,pr.bpid,user.firstName, user.lastName, user.userName,pr.regionId, pr.tempBpid, pr.uniqueTypeCodeForCCID, pr.uniqueTypeCodeForNIT FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
 					+ "com.pfizer.gcms.dataaccess.model.UserModelNew user WHERE UPPER(pr.createdBy) = UPPER(user.userName) and pr.status= 'Pending'  order by pr.createdDate DESC");
 		
 			}
 			else{
 				typedQuery = entityManager.createQuery(
 						"SELECT pr.id,pr.profileTypeId,pr.firstName,pr.lastName,pr.organizationName,pr.country,pr.address,pr.city,"
-						+ "pr.specility,pr.notes,pr.status,pr.bpid, user.firstName, user.lastName, user.userName,pr.regionId, pr.tempBpid FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
+						+ "pr.specility,pr.notes,pr.status,pr.bpid, user.firstName, user.lastName, user.userName,pr.regionId, pr.tempBpid, pr.uniqueTypeCodeForCCID, pr.uniqueTypeCodeForNIT FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
 						+ "com.pfizer.gcms.dataaccess.model.UserModelNew user WHERE UPPER(pr.createdBy) = UPPER(user.userName) and pr.status IN (:status) order by pr.createdDate DESC");
 				typedQuery.setParameter("status", status);
 			}
@@ -230,6 +232,8 @@ LOG.debug("models" + models);
 				model.setCreatedBy((String)values[12] + " " + (String)values[13] + "(" + (String)values[14] + ")");
 				model.setRegionId((BigDecimal)values[15]);
 				model.setTempBpid((BigDecimal)values[16]);
+				model.setUniqueTypeCodeForCCID((BigDecimal)values[17]);
+				model.setUniqueTypeCodeForNIT((BigDecimal)values[18]);
 				models.add(model);
 			}			
 			
