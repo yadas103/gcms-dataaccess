@@ -185,6 +185,8 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 				
 			} catch (Exception e) {
 				LOG.debug(e.getStackTrace());
+			}finally {
+				entityManager.close();
 			}
 						
 			LOG.debug("models" +models);
@@ -323,6 +325,8 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 
 		} catch (Exception e) {
 			LOG.debug(e.getStackTrace());
+		} finally {
+			entityManager.close();
 		} 
 		return models;
 	}
