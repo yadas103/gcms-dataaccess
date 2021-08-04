@@ -78,6 +78,10 @@ public class ProfileRequestModel extends AbstractModel {
 	@Column(name = "REG_ID")
 	private BigDecimal regionId;
 
+	//R2.3
+	@Column(name = "Credential")
+	private String credential;
+		
 	/**
 	 * @return the profileReqId
 	 */
@@ -315,6 +319,20 @@ public class ProfileRequestModel extends AbstractModel {
 		this.regionId = regionId;
 	}
 
+	/**
+	 * @return the credential
+	 */
+	public String getCredential() {
+		return credential;
+	}
+
+
+	/**
+	 * @param credential - the credential to set
+	 */
+	public void setCredential(String credential) {
+		this.credential = credential;
+	}
 
 
 }

@@ -60,8 +60,8 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public  List<BusinessProfileDisplayDTO> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality,String uniqueTypeCode,String uniqueTypeId,BigDecimal regionId) throws Exception {
-		LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality,String uniqueTypeCode,BigDecimal uniqueTypeId, BigDecimal regionId)" );
+	public  List<BusinessProfileDisplayDTO> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality,String credential,String uniqueTypeCode,String uniqueTypeId,BigDecimal regionId) throws Exception {
+		LOG.debug("Inside method List<BusinessProfileModel> findByCountry(String name,String type,String lastName, String city,String firstName,String address,String speciality,String credential,String uniqueTypeCode,BigDecimal uniqueTypeId, BigDecimal regionId)" );
 		BigDecimal zero = BigDecimal.ZERO;
 			if (name == null || name.trim().isEmpty()) {
 				String message = "Invalid Country Name";
@@ -91,19 +91,19 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 				 * R2.0 Starts
 				 * Profile creation
 				 */
-				String genericQueryHead = "select 'N' as TEMP_PROFILE, BP_ID, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDR_LN_1_TXT,SPECIALITY,STATUS,UNIQUE_TYPE_CODE,UNQ_ID_VAL from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW" ;
-				String genericQueryTail = "  where COUNTRY= '"+name.trim()+"' and PROFILE_TYPE_ID= '"+type.trim()+"' ";
+				String genericQueryHead = "SELECT 'N' AS TEMP_PROFILE, BP_ID, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME, ORGANISATION_NAME, CITY, ADDR_LN_1_TXT, SPECIALITY, CREDENTIAL, STATUS, UNIQUE_TYPE_CODE, UNQ_ID_VAL from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW" ;
+				String genericQueryTail = " WHERE COUNTRY = '"+name.trim()+"' and PROFILE_TYPE_ID = '"+type.trim()+"' ";
 				
-				String unionHead = "select * from (";
-				String unionTail = ") where 1=1 ";
+				String unionHead = "SELECT * FROM (";
+				String unionTail = ") WHERE 1=1 ";
 				
-				String colombiaQueryHead = "select 'Y' as TEMP_PROFILE, TEMP_BP_ID as BP_ID, TO_CHAR(PROFILE_TYPE_ID), FIRST_NAME, LAST_NAME,ORGANISATION_NAME,CITY, ADDRESS as ADDR_LN_1_TXT,SPECILITY as SPECIALITY, NULL, NULL, NULL from GCMS_ODS.GCMS_PROFILE_REQUEST";
-				String colombiaQueryTail = "and REG_ID= 5 and BP_ID IS NULL";
+				String colombiaQueryHead = "SELECT 'Y' AS TEMP_PROFILE, TEMP_BP_ID AS BP_ID, TO_CHAR(PROFILE_TYPE_ID), FIRST_NAME, LAST_NAME, ORGANISATION_NAME, CITY, ADDRESS as ADDR_LN_1_TXT, SPECILITY AS SPECIALITY, CREDENTIAL, NULL, NULL, NULL from GCMS_ODS.GCMS_PROFILE_REQUEST";
+				String colombiaQueryTail = "AND REG_ID = 5 AND BP_ID IS NULL";
 				
 				String searchBPQuery = (name.trim().equalsIgnoreCase("COLOMBIA")) 
 						? unionHead.concat(genericQueryHead)
-								.concat(genericQueryTail.concat((regionId != null) ? " and UNIQUE_TYPE_CODE = 'TR-ID' and REG_ID LIKE ('"+regionId+"')" : ""))
-								.concat((regionId.intValue() == 5 && uniqueTypeId.equals("uniqueTypeId")) ? " and STATUS = 'ACTIVE' " : "")
+								.concat(genericQueryTail.concat((regionId != null) ? " AND UNIQUE_TYPE_CODE = 'TR-ID' AND REG_ID = " + regionId : ""))
+								.concat((regionId.intValue() == 5 && uniqueTypeId.equals("uniqueTypeId")) ? " and (STATUS IS NULL OR STATUS = 'ACTIVE') " : "")
 								.concat(" UNION ")
 								.concat(colombiaQueryHead)
 								.concat(genericQueryTail)
@@ -174,6 +174,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 					bp.setSpeciality(resultSet.getString("SPECIALITY"));
 					// R2.0 - arunkv
 					bp.setIsTempProfile(resultSet.getString("TEMP_PROFILE"));
+					bp.setCredential(resultSet.getString("CREDENTIAL"));
 					models.add(bp);
 				}
 				
@@ -265,7 +266,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 	}
 	
 	public List<BusinessProfileModel> validationfindByCode(BigDecimal id,BigDecimal regionId) throws Exception {
-		LOG.debug("Inside method List<BusinessProfileModel> validationfindById(BigDecimal id )");
+		LOG.debug("Inside method List<BusinessProfileModel> validationfindByCode(BigDecimal id )");
 		if (id == null) {
 			String message = "Invalid selection";
 			LOG.warn(message);
@@ -288,7 +289,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 			Statement stmt = conn.createStatement();
 
 			String searchBPQuery = "select BP_ID, MASTER_BP_ID, UNQ_ID_VAL, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME, ORGANISATION_NAME, CITY, ADDR_LN_1_TXT,"
-					+ " SPECIALITY, STATUS, UNIQUE_TYPE_CODE, COUNTRY, REG_ID from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW  where UNQ_ID_VAL = '"
+					+ " SPECIALITY, CREDENTIAL, STATUS, UNIQUE_TYPE_CODE, COUNTRY, REG_ID from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW  where UNQ_ID_VAL = '"
 					+ id + "' and REG_ID = '" + regionId + "' and UNIQUE_TYPE_CODE IN ('NIT','CCID')";
 
 			PreparedStatement pStmt = conn.prepareStatement(searchBPQuery);
@@ -315,6 +316,7 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 				bp.setSpeciality(resultSet.getString("SPECIALITY"));
 				bp.setUniqueTypeId(resultSet.getString("UNQ_ID_VAL"));
 				bp.setCountry(resultSet.getString("COUNTRY"));
+				bp.setCredential(resultSet.getString("CREDENTIAL"));
 				models.add(bp);
 			}
 			//closing connection

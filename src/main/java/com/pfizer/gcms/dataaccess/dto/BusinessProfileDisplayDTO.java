@@ -24,7 +24,7 @@ public class BusinessProfileDisplayDTO {
 	private String uniqueTypeId;
 	private String isTempProfile;
 	private BigDecimal regionId;
-	
+	private String credential;
 	
 	public BigDecimal getId() {
 		return id;
@@ -141,5 +141,19 @@ public class BusinessProfileDisplayDTO {
 	}
 	public void setRegionId(BigDecimal regionId) {
 		this.regionId = regionId;
+	}
+	
+	/**
+	 * @return the credential
+	 */
+	public String getCredential() {
+		return credential;
+	}
+
+	/**
+	 * @param credential - the credential to set
+	 */
+	public void setCredential(String credential) {
+		this.credential = credential;
 	}
 }

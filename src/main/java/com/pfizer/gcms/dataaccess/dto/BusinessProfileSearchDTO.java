@@ -27,6 +27,7 @@ public class BusinessProfileSearchDTO extends BaseSearchDTO<BusinessProfileModel
 	private BigDecimal id;
 	private BigDecimal[] ids;
 	private BigDecimal regionId;
+	private String credential;
 
 	public BigDecimal[] getIds() {
 		return ids;
@@ -132,5 +133,18 @@ public class BusinessProfileSearchDTO extends BaseSearchDTO<BusinessProfileModel
 		this.uniqueTypeId = uniqueTypeId;
 	}
 	
+	/**
+	 * @return the credential
+	 */
+	public String getCredential() {
+		return credential;
+	}
+
+	/**
+	 * @param credential - the credential to set
+	 */
+	public void setCredential(String credential) {
+		this.credential = credential;
+	}
 	
 }

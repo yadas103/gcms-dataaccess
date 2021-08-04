@@ -27,6 +27,7 @@ public class BusinessProfileModel implements BaseModel {
 	public static final String FIELD_FIRST_NAME = "firstName";
 	public static final String FIELD_ORGANISATION_NAME = "organisationName";
 	public static final String FIELD_SPECIALITY = "speciality";
+	public static final String FIELD_CREDENTIAL = "credential";
 	public static final String FIELD_REGION_ID = "regionId";
 	public static final String FIELD_MASTER_ID = "masterId";
 
@@ -82,6 +83,9 @@ public class BusinessProfileModel implements BaseModel {
 	
 	@Column(name = "REG_ID")
 	private BigDecimal regionId;
+	
+	@Column(name = "CREDENTIAL")
+	private String credential;
 
 	public BigDecimal getId() {
 		return id;
@@ -219,5 +223,18 @@ public class BusinessProfileModel implements BaseModel {
 		this.regionId = regionId;
 	}
 
+	/**
+	 * @return the credential
+	 */
+	public String getCredential() {
+		return credential;
+	}
+
+	/**
+	 * @param credential - the credential to set
+	 */
+	public void setCredential(String credential) {
+		this.credential = credential;
+	}
 	
 }
