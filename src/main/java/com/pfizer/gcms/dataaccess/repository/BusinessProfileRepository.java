@@ -92,7 +92,8 @@ public class BusinessProfileRepository extends AbstractRepository<BusinessProfil
 				 * Profile creation
 				 */
 				String genericQueryHead = "SELECT 'N' AS TEMP_PROFILE, BP_ID, PROFILE_TYPE_ID, FIRST_NAME, LAST_NAME, ORGANISATION_NAME, CITY, ADDR_LN_1_TXT, SPECIALITY, CREDENTIAL, STATUS, UNIQUE_TYPE_CODE, UNQ_ID_VAL from GCMS_ODS.GCMS_BUS_PROFILE_MVIEW_NEW" ;
-				String genericQueryTail = " WHERE COUNTRY = '"+name.trim()+"' and PROFILE_TYPE_ID = '"+type.trim()+"' ";
+				String genericQueryTail = " WHERE COUNTRY = '" + name.trim() + "' and PROFILE_TYPE_ID = '" + type.trim()
+					+ "' AND STATUS != 'INACTIVE'";
 				
 				String unionHead = "SELECT * FROM (";
 				String unionTail = ") WHERE 1=1 ";
