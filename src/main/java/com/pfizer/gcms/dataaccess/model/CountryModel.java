@@ -194,5 +194,14 @@ public class CountryModel extends AbstractModel {
 	public void setRegionId(BigDecimal regionId) {
 		this.regionId = regionId;
 	}
+
+	@Override
+	public String toString() {
+		return "CountryModel [id=" + id + ", isoCode=" + isoCode + ", code=" + code + ", name=" + name
+				+ ", uniqueIDTypeID=" + uniqueIDTypeID + ", currencyID=" + currencyID + ", efpiaCntryFlag="
+				+ efpiaCntryFlag + ", regionId=" + regionId + "]";
+	}
+	
+	
 	
 }

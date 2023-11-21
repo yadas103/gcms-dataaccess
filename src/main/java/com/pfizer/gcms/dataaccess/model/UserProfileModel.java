@@ -169,4 +169,13 @@ public class UserProfileModel extends AbstractCountryModel {
 	public void setDeleted(Character deleted) {
 		this.deleted = deleted;
 	}
+
+
+	@Override
+	public String toString() {
+		return "UserProfileModel [id=" + id + ", roles=" + roles + ", roleId=" + roleId + ", defaultProfileIndicator="
+				+ defaultProfileIndicator + ", user=" + user + ", userName=" + userName + ", deleted=" + deleted + "]";
+	}
+	
+	
 }

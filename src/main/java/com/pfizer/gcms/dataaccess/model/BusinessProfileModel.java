@@ -236,5 +236,17 @@ public class BusinessProfileModel implements BaseModel {
 	public void setCredential(String credential) {
 		this.credential = credential;
 	}
+
+	@Override
+	public String toString() {
+		return "BusinessProfileModel [id=" + id + ", masterId=" + masterId + ", uniqueTypeId=" + uniqueTypeId
+				+ ", profileType=" + profileType + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", organisationName=" + organisationName + ", country=" + country + ", address=" + address
+				+ ", address2=" + address2 + ", address3=" + address3 + ", address4=" + address4 + ", city=" + city
+				+ ", region=" + region + ", speciality=" + speciality + ", uniqueTypeCode=" + uniqueTypeCode
+				+ ", regionId=" + regionId + ", credential=" + credential + "]";
+	}
+	
+	
 	
 }

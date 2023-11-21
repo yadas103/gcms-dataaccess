@@ -97,4 +97,10 @@ public class RolePermissionsModel extends AbstractModel {
 	public void setEntityActionsModel(EntityActionsModel entityActionsModel) {
 		this.entityActions = entityActionsModel;
 	}
+	@Override
+	public String toString() {
+		return "RolePermissionsModel [id=" + id + ", roleID=" + roleID + ", entityActions=" + entityActions + "]";
+	}
+	
+	
 }

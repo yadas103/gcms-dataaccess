@@ -21,6 +21,7 @@ public class ConsentTemplateRepository extends AbstractRepository<ConsentTemplat
 	private static final Log LOG = LogFactory.getLog(AbstractRepository.class);
 
 	public ConsentTemplateRepository(Locale country) {
+		System.out.println("In respository:"+ country);
 		setModelType(ConsentTemplateModel.class);
 	}
 	
@@ -55,8 +56,9 @@ public class ConsentTemplateRepository extends AbstractRepository<ConsentTemplat
 		}
 		query.select(root);
 		models = entityManager.createQuery(query).getResultList();
+		System.out.println("Model in Consent Repo:"+models.toString());
 		
-		LOG.debug("#Performance#Repository#Total time took for find() operation is - " + timer.getTime());
+		//LOG.debug("#Performance#Repository#Total time took for find() operation is - " + timer.getTime());
 		return models;
 	}
 

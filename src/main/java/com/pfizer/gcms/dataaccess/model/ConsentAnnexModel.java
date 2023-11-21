@@ -320,6 +320,20 @@ public class ConsentAnnexModel extends AbstractModel {
 	public void setRegionId(BigDecimal regionId) {
 		this.regionId = regionId;
 	}
+
+	@Override
+	public String toString() {
+		return "ConsentAnnexModel [id=" + id + ", payercountry=" + payercountry + ", profilecountry=" + profilecountry
+				+ ", tmpl_id=" + tmpl_id + ", templatetype=" + templatetype + ", profileType=" + profileType
+				+ ", eventname=" + eventname + ", pocode=" + pocode + ", acmcode=" + acmcode + ", consentstartdate="
+				+ consentstartdate + ", consentenddate=" + consentenddate + ", qrcode=" + qrcode + ", annnexlocation="
+				+ annnexlocation + ", revocationReason=" + revocationReason + ", revocationDocLink=" + revocationDocLink
+				+ ", consentstatuschangeReason=" + consentstatuschangeReason + ", eventEndDate=" + eventEndDate
+				+ ", consentType=" + consentType + ", tempProfile=" + tempProfile + ", regionId=" + regionId + ", bpid="
+				+ bpid + ", consentstatus=" + consentstatus + ", assignedTo=" + assignedTo + "]";
+	}
+	
+	
 	
 	
 }

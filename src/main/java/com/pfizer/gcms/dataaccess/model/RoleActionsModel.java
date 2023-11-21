@@ -1,10 +1,13 @@
 package com.pfizer.gcms.dataaccess.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -24,6 +27,7 @@ public class RoleActionsModel  extends AbstractModel{
 	@Id
 	@Column(name = "ACTN_ID")
 	private BigDecimal id;
+	
 	
 	@Column(name = "ACTN_NM")
 	private String actionName;

@@ -147,6 +147,17 @@ public class TaskSearchDTO {
 	public void setTempProfile(String tempProfile) {
 		this.tempProfile = tempProfile;
 	}
+	@Override
+	public String toString() {
+		return "TaskSearchDTO [firstName=" + firstName + ", lastName=" + lastName + ", consentStatus=" + consentStatus
+				+ ", taskStatus=" + taskStatus + ", pageNumber=" + pageNumber + ", pageSize=" + pageSize
+				+ ", eventName=" + eventName + ", initiatedBy=" + initiatedBy + ", updateddate=" + updateddate
+				+ ", profilecountry=" + profilecountry + ", payercountry=" + payercountry + ", sortBy=" + sortBy
+				+ ", regionId=" + regionId + ", sortDescending=" + sortDescending + ", tempProfile=" + tempProfile
+				+ "]";
+	}
+	
+	
 	
 	
 }

@@ -48,5 +48,13 @@ public class PagingSearchResultDTO<S> implements Serializable{
 	 */
 	public void setCurrentPageData(List<S> currentPageData) {
 		this.currentPageData = currentPageData;
+	}
+
+	@Override
+	public String toString() {
+		return "PagingSearchResultDTO [totalRecordsCount=" + totalRecordsCount + ", currentPageData=" + currentPageData
+				+ "]";
 	}	
+	
+	
 }

@@ -3,8 +3,13 @@ package com.pfizer.gcms.dataaccess.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
+
+import org.hibernate.FetchMode;
+import org.hibernate.annotations.Fetch;
 
 /**
  * @author rnarne 

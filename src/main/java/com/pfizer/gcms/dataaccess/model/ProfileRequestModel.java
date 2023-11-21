@@ -335,4 +335,16 @@ public class ProfileRequestModel extends AbstractModel {
 	}
 
 
+	@Override
+	public String toString() {
+		return "ProfileRequestModel [id=" + id + ", profileTypeId=" + profileTypeId + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", organizationName=" + organizationName + ", country=" + country
+				+ ", address=" + address + ", city=" + city + ", specility=" + specility + ", notes=" + notes
+				+ ", status=" + status + ", bpid=" + bpid + ", tempBpid=" + tempBpid + ", uniqueTypeCodeForCCID="
+				+ uniqueTypeCodeForCCID + ", uniqueTypeCodeForNIT=" + uniqueTypeCodeForNIT + ", regionId=" + regionId
+				+ ", credential=" + credential + "]";
+	}
+	
+	
+
 }

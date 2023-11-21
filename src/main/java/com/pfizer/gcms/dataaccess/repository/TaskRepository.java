@@ -210,7 +210,9 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 		TypedQuery<TaskModel> typedQuery = entityManager.createQuery(select);
 		typedQuery.setFirstResult(firstIndex);
 		typedQuery.setMaxResults(pageSize);
+		System.out.println("before models getResultList():-");
 		models = typedQuery.getResultList();
+		System.out.println("after models :-"+models);
 		CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
 		Root<TaskModel> countRoot = countQuery.from(query.getResultType());
 		countQuery.where(wherePredicate);
@@ -682,6 +684,7 @@ public class TaskRepository extends AbstractRepository<TaskModel> {
 		typedQuery.setFirstResult(firstIndex);
 		typedQuery.setMaxResults(pageSize);
 		models = typedQuery.getResultList();
+		System.out.println("models typedQuery: "+models);
 		CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
 		Root<TaskModel> countRoot = countQuery.from(query.getResultType());
 		countQuery.where(wherePredicate);

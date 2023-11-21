@@ -230,5 +230,17 @@ public class ConsentTemplateModel extends AbstractModel {
 	public void setManualUpload(String manualUpload) {
 		this.manualUpload = manualUpload;
 	}
+
+	@Override
+	public String toString() {
+		return "ConsentTemplateModel [id=" + id + ", cntry_id=" + cntry_id + ", tmpl_name=" + tmpl_name + ", tmpl_code="
+				+ tmpl_code + ", tmpl_type=" + tmpl_type + ", total_pages=" + total_pages + ", dates_rages="
+				+ dates_rages + ", validity_start_date=" + validity_start_date + ", validity_end_date="
+				+ validity_end_date + ", tmpl_location=" + tmpl_location + ", tmpl_status=" + tmpl_status
+				+ ", consentCheck=" + consentCheck + ", manualUpload=" + manualUpload + ", deleted=" + deleted
+				+ ", tmpl_desc=" + tmpl_desc + ", signPageNo=" + signPageNo + ", consentPageNo=" + consentPageNo + "]";
+	}
+	
+	
 	
 }

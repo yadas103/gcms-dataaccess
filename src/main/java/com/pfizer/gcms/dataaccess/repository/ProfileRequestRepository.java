@@ -1,5 +1,6 @@
 package com.pfizer.gcms.dataaccess.repository;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -95,16 +96,18 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
 		typedQuery = entityManager.createQuery(
 				"select name FROM com.pfizer.gcms.dataaccess.model.CountryModel where id IN (select countries.id FROM com.pfizer.gcms.dataaccess.model.CountryReviewerModel WHERE UPPER(cntryReviewer) Like UPPER((:userNTID)))");
 		typedQuery.setParameter("userNTID", userNTID.trim());
-		LOG.debug("typedQuery" + typedQuery);
+		System.out.println("typedQuery" + typedQuery.toString());
 		List<String> country = typedQuery.getResultList();
 
 		// Get Profile Review data from GCMS_PROFILE_REQUEST table and Created user information from GCMS_USERS table.
 		try {
 			if (null == status || status.trim().isEmpty()) {
-			typedQuery = entityManager.createQuery(
-					"SELECT pr.id,pr.profileTypeId,pr.firstName,pr.lastName,pr.organizationName,pr.country,pr.address,pr.city,"
-					+ "pr.specility,pr.notes,pr.status,pr.bpid, user.firstName, user.lastName, user.userName, pr.regionId, pr.tempBpid, pr.uniqueTypeCodeForCCID, pr.uniqueTypeCodeForNIT FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
-					+ "com.pfizer.gcms.dataaccess.model.UserModelNew user WHERE  UPPER(pr.createdBy) = UPPER(user.userName) and pr.status= 'Pending'and  pr.country IN (:country) order by pr.createdDate DESC");
+				
+				  typedQuery = entityManager.createQuery(
+				  "SELECT pr.id,pr.profileTypeId,pr.firstName,pr.lastName,pr.organizationName,pr.country,pr.address,pr.city,"
+				  +"pr.specility,pr.notes,pr.status,pr.bpid, user.firstName, user.lastName, user.userName, pr.regionId, pr.tempBpid, pr.uniqueTypeCodeForCCID, pr.uniqueTypeCodeForNIT FROM com.pfizer.gcms.dataaccess.model.ProfileRequestModel pr, "
+				  +"com.pfizer.gcms.dataaccess.model.UserModelNew user WHERE  UPPER(pr.createdBy) = UPPER(user.userName) and pr.status= 'Pending'and  pr.country IN (:country) order by pr.createdDate DESC");
+				 
 			typedQuery.setParameter("country", country);
 			
 			}else{
@@ -116,9 +119,14 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
 				typedQuery.setParameter("country", country);
 				typedQuery.setParameter("status", status);
 			}
+			
+			
+			System.out.println("typedQuery in getHints:"+typedQuery.getResultList());
 			models = new ArrayList<ProfileRequestModel>();
 			List newModels = null;
+			System.out.println("before gerResultList()");
 			newModels = typedQuery.getResultList();
+			System.out.println("after gerResultList()"+newModels);
 			for (Iterator iterator = newModels.iterator(); iterator.hasNext();) {
 				 Object[] values = (Object[]) iterator.next();
 				ProfileRequestModel model = new ProfileRequestModel();
@@ -145,7 +153,7 @@ public class ProfileRequestRepository extends AbstractRepository<ProfileRequestM
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-LOG.debug("models" + models);
+		LOG.debug("models" + models);
 		if (models == null || models.isEmpty()) {
 			return null;
 		}
@@ -211,6 +219,7 @@ LOG.debug("models" + models);
 						+ "com.pfizer.gcms.dataaccess.model.UserModelNew user WHERE UPPER(pr.createdBy) = UPPER(user.userName) and pr.status IN (:status) order by pr.createdDate DESC");
 				typedQuery.setParameter("status", status);
 			}
+			System.out.println("typedQuery :"+typedQuery.toString());
 			models = new ArrayList<ProfileRequestModel>();
 			List newModels = null;
 			newModels = typedQuery.getResultList();
@@ -240,7 +249,6 @@ LOG.debug("models" + models);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-LOG.debug("models" + models);
 		if (models == null || models.isEmpty()) {
 			return null;
 		}

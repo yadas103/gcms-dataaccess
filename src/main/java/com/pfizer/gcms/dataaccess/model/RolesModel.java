@@ -122,4 +122,12 @@ public class RolesModel extends AbstractModel {
 	public void setRolePermissions(List<RolePermissionsModel> rolePermissions) {
 		this.rolePermissions = rolePermissions;
 	}
+
+	@Override
+	public String toString() {
+		return "RolesModel [id=" + id + ", roleName=" + roleName + ", roleDescription=" + roleDescription
+				+ ", userProfiles=" + userProfiles + ", rolePermissions=" + rolePermissions + "]";
+	}
+	
+	
 }

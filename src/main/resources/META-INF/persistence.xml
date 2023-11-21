@@ -8,10 +8,10 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		
 		<!-- JBOSS Specific JTA Configuration     -->
-	    <non-jta-data-source>java:jboss/datasources/TRSPORTALDS</non-jta-data-source>
-
-		<!-- Tomcat Specific JTA Configuration 
-		<non-jta-data-source>java:comp/env/TRSPORTALDS</non-jta-data-source>  -->
+		<non-jta-data-source>java:jboss/datasources/TRSPORTALDS</non-jta-data-source>
+   
+		<!-- Tomcat Specific JTA Configuration -->
+		<!-- <non-jta-data-source>java:comp/env/TRSPORTALDS</non-jta-data-source>  -->
 
 		<!-- All classes should be mapped here -->
 		<class>com.pfizer.gcms.dataaccess.model.AbstractCountryModel</class>
@@ -46,7 +46,12 @@
 		<class>com.pfizer.gcms.dataaccess.model.CredentialsLovModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.CurrencyLovModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.ConsentAnnexModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.PreConsentAnnexModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.ConsentTemplateModel</class>
+		
+		<class>com.pfizer.gcms.dataaccess.model.PreConsentTemplateModel</class>
+		<class>com.pfizer.gcms.dataaccess.model.PreNotificationLogsModel</class>
+		
 		<class>com.pfizer.gcms.dataaccess.model.GCMSCountryModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.EntityActionsModel</class>
 		<class>com.pfizer.gcms.dataaccess.model.EntityTypeIdentifierLovModel</class>
